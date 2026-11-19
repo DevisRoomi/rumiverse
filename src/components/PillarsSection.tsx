@@ -236,11 +236,12 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
                     {/* Subtle darkening vignette on container hover */}
                     <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/25 transition-colors duration-300 pointer-events-none" />
 
-                    {/* Responsive Action Badge: reacts whenever anywhere on the image is hovered */}
-                    <div className="absolute bottom-2.5 right-2.5 z-10 pointer-events-none flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#121311]/85 backdrop-blur-md text-[#F4F3EF] border border-white/20 font-mono text-[11px] font-semibold tracking-wide shadow-md transition-all duration-300 group-hover/img:bg-[#1B3B2B] group-hover/img:text-[#74C69D] group-hover/img:border-[#74C69D]/50 group-hover/img:shadow-lg">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#74C69D] group-hover/img:scale-125 transition-transform duration-300" />
-                      <span>Bedah Spesifikasi</span>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-[#D0D6CF] group-hover/img:text-[#74C69D] transition-transform duration-300 group-hover/img:translate-x-0.5 group-hover/img:-translate-y-0.5" />
+                    {/* Minimalist Frosted Glass Circle (Expands smoothly into Pill on Image Hover) */}
+                    <div className="absolute top-3 right-3 z-10 pointer-events-none flex items-center h-8 px-2 rounded-full bg-[#121311]/70 backdrop-blur-md border border-white/20 text-[#F4F3EF] shadow-md transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/img:bg-[#1B3B2B] group-hover/img:border-[#74C69D]/60 group-hover/img:text-[#74C69D] group-hover/img:shadow-lg group-hover/img:px-3">
+                      <ArrowUpRight className="w-4 h-4 text-[#F4F3EF] group-hover/img:text-[#74C69D] transition-transform duration-300 group-hover/img:translate-x-0.5 group-hover/img:-translate-y-0.5 shrink-0" />
+                      <span className="max-w-0 opacity-0 overflow-hidden whitespace-nowrap font-mono text-[11px] font-semibold tracking-wider transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/img:max-w-[100px] group-hover/img:opacity-100 group-hover/img:ml-1.5">
+                        Spesifikasi
+                      </span>
                     </div>
                   </div>
 
