@@ -3,6 +3,7 @@ import {
   ArrowRight,
   Camera,
   CheckCircle2,
+  ChevronRight,
   Compass,
   Cpu,
   Droplets,
@@ -234,7 +235,7 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
             </MaskedHeading>
 
             <p className="text-sm sm:text-base text-[#4A4D46] leading-relaxed">
-              Masterplan kawasan terpadu ini dirancang sebagai cetak biru arsitektur dan peta jalan strategis jangka panjang (<strong>Horizon 2030–2035</strong>). Kawasan ini menguji coba sistem pertanian-peternakan sirkular tertutup (<em>zero-waste</em>) di Lumajang guna menekan 70% biaya pakan dan energi secara mandiri.
+              Masterplan kawasan terpadu ini dirancang sebagai cetak biru arsitektur dan peta jalan strategis jangka panjang (<strong>Horizon 2030–2035</strong>). Living lab di Lumajang ini menjadi sarana uji coba rekayasa kami untuk mengukur batas efisiensi sistem siklus tertutup (<em>closed-loop zero-waste</em>)—dengan target desain memangkas hingga 70% ketergantungan pada pakan pabrikan serta menyuplai kebutuhan energi instrumen secara mandiri.
             </p>
 
             {/* Modular Readiness Callout */}
@@ -674,59 +675,112 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
 
         {/* Circular Closed Loop Visual Stepper */}
         <div className="p-6 sm:p-10 lg:p-12 bg-[#FAF9F6]">
-          <div className="max-w-3xl mb-8 space-y-2">
-            <span className="font-mono text-xs text-[#2E7D5B] tracking-wider uppercase">
-              Prinsip Tanpa Sisa (Zero Organic Waste)
-            </span>
-            <h3 className="font-display font-bold text-xl sm:text-2xl text-[#121311] tracking-tight">
-              Enam Tahapan Rantai Pasok Biologis Mandiri
-            </h3>
-            <p className="text-sm text-[#4A4D46] leading-relaxed">
-              Setiap keluaran dari satu zona menjadi masukan bagi zona berikutnya. Tidak ada limbah organik
-              yang terbuang ke luar kawasan, memangkas 70% biaya pakan komersial secara berkelanjutan.
-            </p>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+            <div className="max-w-2xl space-y-2">
+              <span className="font-mono text-xs text-[#2E7D5B] tracking-wider uppercase font-semibold">
+                Prinsip Tanpa Sisa (Zero Organic Waste)
+              </span>
+              <h3 className="font-display font-bold text-xl sm:text-2xl text-[#121311] tracking-tight">
+                Enam Tahapan Rantai Pasok Biologis Mandiri
+              </h3>
+              <p className="text-sm text-[#4A4D46] leading-relaxed">
+                Setiap residu dari satu zona diolah menjadi masukan bernutrisi bagi zona berikutnya. Siklus biologis ini menargetkan pemangkasan hingga 70% ketergantungan pada pakan pabrikan melalui biokonversi mandiri yang seluruh simpulnya dikendalikan sensor dan otomasi perangkat lunak.
+              </p>
+            </div>
+            <div className="hidden lg:flex items-center gap-2 font-mono text-[11px] text-[#6B6E66] border border-[#D8D6CE] bg-[#F4F3EF] px-3 py-1.5 rounded-lg shrink-0">
+              <span className="w-2 h-2 rounded-full bg-[#2E7D5B]" />
+              <span>DIAGRAM ALUR SIKLUS (01 → 06 ↺ 01)</span>
+            </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+          {/* 6 Sequential Flow Cards with Software/AI Control and Directional Arrows */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
             {[
-              { step: '01', title: 'Ternak & Unggas', desc: 'Pemberian pakan & pemantauan amonia' },
-              { step: '02', title: 'Kotoran Segar', desc: 'Dialirkan ke media biokonversi' },
-              { step: '03', title: 'Maggot BSF', desc: 'Penguraian menjadi 42% protein larva' },
-              { step: '04', title: 'Pakan Ikan & Ayam', desc: 'Nutrisi alami tanpa beli konsentrat' },
-              { step: '05', title: 'Air Kaya Nitrat', desc: 'Dipompa ke hidroponik & mina padi' },
-              { step: '06', title: 'Air Bersih & Pakan', desc: 'Kembali murni ke ternak & rumput' },
-            ].map((node) => (
+              {
+                step: '01',
+                title: 'Ternak & Unggas',
+                desc: 'Pemeliharaan ayam & ruminansia dengan pakan presisi',
+                techControl: 'Sensor amonia & pakan via app mobile',
+              },
+              {
+                step: '02',
+                title: 'Kotoran Segar',
+                desc: 'Talang gravitasi mengalirkan feses tanpa jeda penumpukan bau',
+                techControl: 'Pembersihan mekanis terjadwal',
+              },
+              {
+                step: '03',
+                title: 'Maggot BSF',
+                desc: 'Biokonversi feses jadi larva berkadar protein 42%',
+                techControl: 'AI memprediksi siklus panen & separator pupa',
+              },
+              {
+                step: '04',
+                title: 'Pakan Mandiri',
+                desc: 'Larva segar & kasgot memangkas konsentrat pabrik',
+                techControl: 'Formulasi ransum dihitung AI harian',
+              },
+              {
+                step: '05',
+                title: 'Air Kaya Nitrat',
+                desc: 'Air kolam ikan dipompa ke hidroponik & mina padi',
+                techControl: 'Katup solenoid LoRa aktif via sensor EC',
+              },
+              {
+                step: '06',
+                title: 'Air Bersih & Pakan',
+                desc: 'Akar tanaman memfilter air kembali murni ke kolam ternak',
+                techControl: 'Probe DO/pH verifikasi air sebelum siklus berulang',
+              },
+            ].map((node, idx) => (
               <div
                 key={node.step}
-                className="p-4 rounded-xl bg-[#F4F3EF] border border-[#D8D6CE] flex flex-col justify-between"
+                className="p-4 rounded-xl bg-[#F4F3EF] border border-[#D8D6CE] flex flex-col justify-between shadow-2xs relative"
               >
                 <div>
-                  <span className="font-mono text-xs font-bold text-[#2E7D5B] block mb-2">
-                    TAHAP {node.step}
-                  </span>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#1B3B2B] text-[#74C69D]">
+                      TAHAP {node.step}
+                    </span>
+                    {idx < 5 ? (
+                      <span className="hidden lg:inline text-[#2E7D5B] font-mono text-xs font-bold">
+                        →
+                      </span>
+                    ) : (
+                      <span className="hidden lg:inline text-[#2E7D5B] font-mono text-[9px] font-bold bg-[#FAF9F6] border border-[#D8D6CE] px-1 py-0.5 rounded">
+                        ↺ SIKLUS
+                      </span>
+                    )}
+                  </div>
                   <h4 className="font-display font-bold text-sm text-[#121311] mb-1">
                     {node.title}
                   </h4>
+                  <p className="text-[11px] text-[#4A4D46] leading-relaxed">
+                    {node.desc}
+                  </p>
                 </div>
-                <p className="text-[11px] text-[#6B6E66] leading-relaxed mt-2">{node.desc}</p>
+
+                {/* Software / AI Control Layer Badge */}
+                <div className="pt-2.5 mt-2.5 border-t border-[#D8D6CE] flex items-start gap-1.5 text-[10px] font-mono text-[#2E7D5B]">
+                  <Cpu className="w-3 h-3 text-[#2E7D5B] shrink-0 mt-0.5" />
+                  <span className="leading-tight">{node.techControl}</span>
+                </div>
               </div>
             ))}
           </div>
 
           {/* Ajakan Diskusi Ringan di Akhir Masterplan */}
-          <div className="mt-12 p-6 sm:p-8 rounded-2xl bg-[#EAE8E1]/80 border border-[#D8D6CE] flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-2xs">
-            <div className="space-y-1.5 max-w-2xl">
-              <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#2E7D5B]" />
-                <span className="font-mono text-[11px] font-bold text-[#2E7D5B] uppercase tracking-wider">
-                  DARI CETAK BIRU MENUJU LAPANGAN
-                </span>
+          <div className="mt-12 p-6 sm:p-8 rounded-2xl bg-[#EAE8E1]/90 border border-[#D8D6CE] flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-2xs">
+            <div className="space-y-2 max-w-2xl">
+              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-[#1B3B2B] text-[#74C69D] border border-[#74C69D]/30 font-mono text-[10px] font-bold tracking-wider">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#74C69D] animate-pulse" />
+                <span>DARI CETAK BIRU MENUJU IMPLEMENTASI NYATA</span>
               </div>
               <h4 className="font-display font-bold text-lg sm:text-xl text-[#121311] leading-snug">
                 Punya lahan, fasilitas peternakan, atau sistem operasional yang ingin diotomatisasi?
               </h4>
               <p className="text-xs sm:text-sm text-[#4A4D46] leading-relaxed">
-                Anda tidak harus langsung membangun seluruh kawasan terpadu. Kami dapat membantu mengaudit kebutuhan Anda dan mengintegrasikan modul prioritas yang paling mendesak hari ini.
+                Anda tidak harus langsung membangun seluruh kawasan terpadu sekaligus. Kami dapat membantu mengaudit kebutuhan operasional Anda dan memulai dari satu bagian yang paling dibutuhkan lahan atau usaha Anda saat ini.
               </p>
             </div>
 
