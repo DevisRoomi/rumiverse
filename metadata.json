@@ -1,0 +1,6 @@
+{
+  "name": "Devis Systems — Arsitektur Sistem Presisi",
+  "description": "Studio rekayasa perangkat lunak, otomasi AI, dan ekosistem sirkular IoT untuk ketahanan pangan yang berpusat di Sentul, Jawa Barat.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
