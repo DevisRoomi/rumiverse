@@ -37,7 +37,7 @@ export const PILLARS_LIST: PillarData[] = [
     imageSrc: SOFTWARE_IMAGE_SRC,
     imageAlt: 'Ruang kerja monitor pemrograman dan perancangan antarmuka aplikasi',
     summary:
-      'Pembuatan aplikasi web & mobile kustom—mulai dari portal operasional internal, dasbor analitik waktu-nyata, hingga antarmuka manajemen dengan arsitektur kode modular yang teruji dan mudah dirawat.',
+      'Pembuatan website dan aplikasi sesuai kebutuhan—mulai dari company profile, web portofolio, toko online, hingga dasbor operasional dan aplikasi mobile yang cepat serta mudah dikelola.',
     deliverables: [
       'Aplikasi Web Responsif (Desktop & Mobile)',
       'Portal Manajemen & Dasbor Operasional',

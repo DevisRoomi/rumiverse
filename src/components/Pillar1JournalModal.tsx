@@ -2,9 +2,17 @@ import { useEffect, useRef, useState } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
+  Briefcase,
   CheckCircle2,
   ChevronRight,
+  FileCheck2,
+  Globe,
+  LayoutDashboard,
+  MessageSquare,
   Moon,
+  Rocket,
+  ShoppingBag,
+  Smartphone,
   Sun,
   X,
 } from 'lucide-react';
@@ -198,10 +206,12 @@ export function Pillar1JournalModal({
                   </span>
                   <div className="flex flex-wrap gap-2">
                     {[
+                      { id: 'p1-kategori', label: '§ Jenis Platform' },
                       { id: 'p1-bab-1', label: '§ I. Desain Modular' },
                       { id: 'p1-bab-2', label: '§ II. Dasbor Real-Time' },
                       { id: 'p1-bab-3', label: '§ III. Integrasi Mobile' },
                       { id: 'p1-bab-4', label: '§ IV. Tech Stack' },
+                      { id: 'p1-alur-pemesanan', label: '§ Alur Pemesanan' },
                       { id: 'p1-bab-cta', label: '§ Konsultasi' },
                     ].map((item) => (
                       <button
@@ -240,6 +250,167 @@ export function Pillar1JournalModal({
                   <strong className="text-[#121311]">FIG. 01</strong> — Lingkungan kerja studio RUMIVERSE: meja kayu alami dengan monitor lengkung ultrawide untuk pengembangan kode dan layar vertikal untuk pengujian prototipe antarmuka ponsel.
                 </figcaption>
               </figure>
+
+              {/* Bagian Solusi: Jenis Platform yang Kami Bangun (Bahasa Pembeli) */}
+              <section id="p1-kategori" className="space-y-6 pt-6 border-t border-[#D8D6CE] scroll-mt-20">
+                <div className="flex items-center gap-2 font-mono text-xs text-[#2E7D5B] tracking-wider uppercase">
+                  <span>Katalog Solusi</span>
+                  <span aria-hidden="true">/</span>
+                  <span>Berorientasi Bisnis</span>
+                </div>
+
+                <div className="space-y-3">
+                  <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#121311] tracking-tight">
+                    Jenis Platform yang Kami Bangun
+                  </h2>
+                  <p className="text-base text-[#353732] leading-relaxed">
+                    Setiap bisnis memiliki skala dan tantangan yang berbeda. Kami mengelompokkan pengembangan platform berdasarkan tujuan bisnis dan kebutuhan nyata—memastikan solusi tepat sasaran tanpa kerumitan istilah teknis:
+                  </p>
+                </div>
+
+                {/* Grid Kartu Solusi 5 Kategori */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                  {/* Kartu 1: Company Profile & Landing Page */}
+                  <div className="p-5 sm:p-6 rounded-2xl bg-[#F4F3EF] border border-[#D8D6CE] flex flex-col justify-between space-y-4 hover:border-[#1B3B2B]/40 transition-colors shadow-2xs">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-[#FAF9F6] border border-[#D8D6CE] text-[#1B3B2B]">
+                          01 · KREDIBILITAS &amp; PROFIL RESMI
+                        </span>
+                        <Globe className="w-4 h-4 text-[#2E7D5B]" />
+                      </div>
+                      <h3 className="font-display font-bold text-lg text-[#121311]">
+                        Company Profile &amp; Landing Page
+                      </h3>
+                      <p className="text-sm text-[#4A4D46] leading-relaxed">
+                        Situs resmi perusahaan, lembaga, atau produk untuk membangun kredibilitas terpercaya, menampilkan portofolio layanan unggulan, dan menangkap calon klien secara terarah lewat formulir digital atau tombol WhatsApp langsung.
+                      </p>
+                    </div>
+                    <ul className="pt-3 border-t border-[#D8D6CE]/70 space-y-1.5 text-xs text-[#2D2F2A]">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0" />
+                        <span>Kredibilitas instan &amp; integrasi formulir / WhatsApp</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0" />
+                        <span>Kecepatan kilat &amp; ramah mesin pencari (SEO Google)</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Kartu 2: Web Portofolio & Personal Branding */}
+                  <div className="p-5 sm:p-6 rounded-2xl bg-[#F4F3EF] border border-[#D8D6CE] flex flex-col justify-between space-y-4 hover:border-[#1B3B2B]/40 transition-colors shadow-2xs">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-[#FAF9F6] border border-[#D8D6CE] text-[#1B3B2B]">
+                          02 · REPUTASI &amp; KARYA
+                        </span>
+                        <Briefcase className="w-4 h-4 text-[#2E7D5B]" />
+                      </div>
+                      <h3 className="font-display font-bold text-lg text-[#121311]">
+                        Web Portofolio &amp; Personal Branding
+                      </h3>
+                      <p className="text-sm text-[#4A4D46] leading-relaxed">
+                        Tampilan khusus untuk arsitek, desainer, konsultan, atau profesional independen yang ingin memamerkan karya dengan tata letak editorial rapi layaknya buku seni cetak serta interaksi kurasi yang halus.
+                      </p>
+                    </div>
+                    <ul className="pt-3 border-t border-[#D8D6CE]/70 space-y-1.5 text-xs text-[#2D2F2A]">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0" />
+                        <span>Tata letak editorial presisi &amp; galeri visual tajam</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0" />
+                        <span>Penyajian studi kasus karya &amp; profil kepakaran</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Kartu 3: Katalog Digital & E-Commerce */}
+                  <div className="p-5 sm:p-6 rounded-2xl bg-[#F4F3EF] border border-[#D8D6CE] flex flex-col justify-between space-y-4 hover:border-[#1B3B2B]/40 transition-colors shadow-2xs">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-[#FAF9F6] border border-[#D8D6CE] text-[#1B3B2B]">
+                          03 · TRANSAKSI &amp; PENJUALAN
+                        </span>
+                        <ShoppingBag className="w-4 h-4 text-[#2E7D5B]" />
+                      </div>
+                      <h3 className="font-display font-bold text-lg text-[#121311]">
+                        Katalog Digital &amp; E-Commerce (Toko Online)
+                      </h3>
+                      <p className="text-sm text-[#4A4D46] leading-relaxed">
+                        Platform jualan dengan keranjang belanja mandiri, perhitungan ongkos kirim otomatis ke seluruh kecamatan, hingga integrasi pembayaran instan (QRIS, Virtual Account bank, dan kartu kredit).
+                      </p>
+                    </div>
+                    <ul className="pt-3 border-t border-[#D8D6CE]/70 space-y-1.5 text-xs text-[#2D2F2A]">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0" />
+                        <span>Hitung ongkir ekspedisi otomatis (JNE, SiCepat, dll.)</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0" />
+                        <span>Payment gateway resmi aman (QRIS &amp; Transfer Bank)</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Kartu 4: Aplikasi Operasional & Dasbor Internal */}
+                  <div className="p-5 sm:p-6 rounded-2xl bg-[#F4F3EF] border border-[#D8D6CE] flex flex-col justify-between space-y-4 hover:border-[#1B3B2B]/40 transition-colors shadow-2xs">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-[#FAF9F6] border border-[#D8D6CE] text-[#1B3B2B]">
+                          04 · EFISIENSI OPERASIONAL
+                        </span>
+                        <LayoutDashboard className="w-4 h-4 text-[#2E7D5B]" />
+                      </div>
+                      <h3 className="font-display font-bold text-lg text-[#121311]">
+                        Aplikasi Operasional &amp; Dasbor Internal
+                      </h3>
+                      <p className="text-sm text-[#4A4D46] leading-relaxed">
+                        Sistem custom penunjang operasional seperti manajemen stok pergudangan, pencatatan pesanan terpadu, sistem kasir (POS), atau aplikasi pemesanan jadwal reservasi (booking) tanpa risiko kekeliruan manual.
+                      </p>
+                    </div>
+                    <ul className="pt-3 border-t border-[#D8D6CE]/70 space-y-1.5 text-xs text-[#2D2F2A]">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0" />
+                        <span>Manajemen stok, pesanan &amp; multi-role (Admin/Staff)</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0" />
+                        <span>Laporan keuangan otomatis &amp; ekspor data terstruktur</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Kartu 5: Aplikasi Mobile (Android / iOS / PWA) */}
+                  <div className="p-5 sm:p-6 rounded-2xl bg-[#F4F3EF] border border-[#D8D6CE] flex flex-col justify-between space-y-4 hover:border-[#1B3B2B]/40 transition-colors shadow-2xs md:col-span-2">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-[#FAF9F6] border border-[#D8D6CE] text-[#1B3B2B]">
+                          05 · AKSES PORTABEL TIM &amp; PELANGGAN
+                        </span>
+                        <Smartphone className="w-4 h-4 text-[#2E7D5B]" />
+                      </div>
+                      <h3 className="font-display font-bold text-lg text-[#121311]">
+                        Aplikasi Mobile (Android / iOS / PWA)
+                      </h3>
+                      <p className="text-sm text-[#4A4D46] leading-relaxed">
+                        Aplikasi yang bisa dipasang langsung di layar utama ponsel pintar (HP) untuk memudahkan tim lapangan mencatat aktivitas secara mobile di lokasi, atau memudahkan pelanggan setia mengakses layanan Anda kapan pun dengan satu ketukan.
+                      </p>
+                    </div>
+                    <div className="pt-3 border-t border-[#D8D6CE]/70 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-[#2D2F2A]">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0" />
+                        <span>Bisa dipasang di homescreen HP tanpa instalasi rumit</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0" />
+                        <span>Sinkronisasi instan dua arah dengan dasbor pusat</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
 
               {/* Bab I: Dari Kertas ke Kode */}
               <section id="p1-bab-1" className="space-y-5 scroll-mt-20">
@@ -438,6 +609,92 @@ export function Pillar1JournalModal({
                         <span><strong>WebSocket</strong> untuk transmisi telemetri data langsung tanpa jeda.</span>
                       </li>
                     </ul>
+                  </div>
+                </div>
+              </section>
+
+              {/* Alur Pemesanan Singkat (Pilih Kebutuhan Anda) */}
+              <section id="p1-alur-pemesanan" className="space-y-6 pt-10 border-t border-[#D8D6CE] scroll-mt-20">
+                <div className="flex items-center gap-2 font-mono text-xs text-[#2E7D5B] tracking-wider uppercase">
+                  <span>Alur Kerja Sama</span>
+                  <span aria-hidden="true">/</span>
+                  <span>Transparan &amp; Terarah</span>
+                </div>
+
+                <div className="space-y-3">
+                  <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#121311] tracking-tight">
+                    Pilih Kebutuhan Anda: 3 Langkah Sederhana Memulai
+                  </h2>
+                  <p className="text-base text-[#353732] leading-relaxed">
+                    Banyak pembeli dan pemilik bisnis ragu menghubungi pengembang karena merasa belum paham seluk-beluk teknis website atau aplikasi. Di RUMIVERSE, Anda tidak perlu menguasai istilah rekayasa kode—cukup sampaikan tujuan usaha Anda:
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                  {/* Langkah 1 */}
+                  <div className="p-6 rounded-2xl bg-[#F4F3EF] border border-[#D8D6CE] flex flex-col justify-between space-y-4 shadow-2xs hover:border-[#1B3B2B]/40 transition-colors">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-[11px] font-bold px-2.5 py-0.5 rounded bg-[#1B3B2B] text-[#74C69D]">
+                          LANGKAH 01
+                        </span>
+                        <MessageSquare className="w-4 h-4 text-[#2E7D5B]" />
+                      </div>
+                      <h3 className="font-display font-bold text-lg text-[#121311] leading-snug">
+                        Ceritakan Kebutuhan &amp; Referensi
+                      </h3>
+                      <p className="text-sm text-[#4A4D46] leading-relaxed">
+                        Cukup sampaikan jenis web atau aplikasi yang Anda inginkan (misalnya <em>&ldquo;Mau buat company profile + katalog produk&rdquo;</em>), tanpa perlu paham istilah teknis.
+                      </p>
+                    </div>
+                    <div className="pt-3 border-t border-[#D8D6CE]/80 font-mono text-[11px] text-[#2E7D5B] flex items-center gap-1.5 font-medium">
+                      <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                      <span>Diskusi santai &amp; eksplorasi ide</span>
+                    </div>
+                  </div>
+
+                  {/* Langkah 2 */}
+                  <div className="p-6 rounded-2xl bg-[#F4F3EF] border border-[#D8D6CE] flex flex-col justify-between space-y-4 shadow-2xs hover:border-[#1B3B2B]/40 transition-colors">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-[11px] font-bold px-2.5 py-0.5 rounded bg-[#1B3B2B] text-[#74C69D]">
+                          LANGKAH 02
+                        </span>
+                        <FileCheck2 className="w-4 h-4 text-[#2E7D5B]" />
+                      </div>
+                      <h3 className="font-display font-bold text-lg text-[#121311] leading-snug">
+                        Dapatkan Rancangan &amp; Estimasi
+                      </h3>
+                      <p className="text-sm text-[#4A4D46] leading-relaxed">
+                        Kami buatkan gambaran tata letak awal, rincian fitur yang akan didapat, serta estimasi waktu pengerjaan dan penawaran biaya yang transparan tanpa biaya tersembunyi.
+                      </p>
+                    </div>
+                    <div className="pt-3 border-t border-[#D8D6CE]/80 font-mono text-[11px] text-[#2E7D5B] flex items-center gap-1.5 font-medium">
+                      <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                      <span>Rincian biaya &amp; jadwal pasti</span>
+                    </div>
+                  </div>
+
+                  {/* Langkah 3 */}
+                  <div className="p-6 rounded-2xl bg-[#F4F3EF] border border-[#D8D6CE] flex flex-col justify-between space-y-4 shadow-2xs hover:border-[#1B3B2B]/40 transition-colors">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-[11px] font-bold px-2.5 py-0.5 rounded bg-[#1B3B2B] text-[#74C69D]">
+                          LANGKAH 03
+                        </span>
+                        <Rocket className="w-4 h-4 text-[#2E7D5B]" />
+                      </div>
+                      <h3 className="font-display font-bold text-lg text-[#121311] leading-snug">
+                        Pengembangan &amp; Peluncuran
+                      </h3>
+                      <p className="text-sm text-[#4A4D46] leading-relaxed">
+                        Proses pengerjaan bertahap yang bisa Anda pantau progresnya secara berkala lewat link preview. Kami dampingi pengujian hingga sistem siap dipakai publik.
+                      </p>
+                    </div>
+                    <div className="pt-3 border-t border-[#D8D6CE]/80 font-mono text-[11px] text-[#2E7D5B] flex items-center gap-1.5 font-medium">
+                      <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                      <span>Pengujian tuntas &amp; siap rilis</span>
+                    </div>
                   </div>
                 </div>
               </section>
