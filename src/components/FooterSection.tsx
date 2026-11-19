@@ -26,7 +26,7 @@ export function FooterSection({ onOpenConsultation }: FooterSectionProps) {
       <div className="max-w-[1440px] mx-auto px-6 py-20 sm:px-10 sm:py-24 lg:px-12 lg:py-32">
         <div className="max-w-4xl space-y-10">
           <p className="font-mono text-xs text-[#2E7D5B] tracking-wide">
-            07. Kontak &amp; Konsultasi
+            08. Kontak &amp; Diskusi Teknis
           </p>
 
           <MaskedHeading

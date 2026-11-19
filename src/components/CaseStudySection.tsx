@@ -32,7 +32,7 @@ export function CaseStudySection() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-12 border-b border-[#F4F3EF]/20">
             <div className="lg:col-span-5">
               <p className="font-mono text-xs text-[#74C69D] tracking-wide mb-3">
-                03. Cara Kerja &amp; Simulasi
+                04. Simulasi Operasional // Estimasi Efisiensi
               </p>
               <MaskedHeading
                 as="h2"

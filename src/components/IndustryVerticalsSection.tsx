@@ -23,7 +23,7 @@ export function IndustryVerticalsSection({ onConsultSector }: IndustryVerticalsS
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pb-10 border-b border-[#D8D6CE] items-end">
           <div className="lg:col-span-6">
             <p className="font-mono text-xs text-[#2E7D5B] tracking-wide mb-3">
-              04. Sektor &amp; Studi Terapan
+              05. Sektor &amp; Studi Terapan
             </p>
             <MaskedHeading
               as="h2"

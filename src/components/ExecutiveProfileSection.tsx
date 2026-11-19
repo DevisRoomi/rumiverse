@@ -109,7 +109,7 @@ export function ExecutiveProfileSection() {
           >
             <div>
               <p className="font-mono text-xs text-[#2E7D5B] tracking-wide mb-3">
-                06. Profil Eksekutif
+                07. Profil Rekayasawan &amp; Pendiri
               </p>
               <MaskedHeading
                 as="h2"

@@ -11,7 +11,7 @@ export function EngagementRoadmapSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pb-12 border-b border-[#D8D6CE] items-end">
           <div className="lg:col-span-6">
             <p className="font-mono text-xs text-[#2E7D5B] tracking-wide mb-3">
-              05. Engagement Roadmap
+              06. Engagement Roadmap
             </p>
             <MaskedHeading
               as="h2"
