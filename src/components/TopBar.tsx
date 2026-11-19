@@ -22,7 +22,7 @@ export function TopBar({ onOpenConsultation }: TopBarProps) {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-[#F4F3EF]/95 backdrop-blur-sm border-b border-[#D8D6CE]">
+    <header className="sticky top-0 z-50 bg-[#F4F3EF] border-b border-[#D8D6CE] shadow-xs">
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12 h-[60px] flex items-center justify-between gap-8">
         {/* Zone 1: Single-line wordmark */}
         <a

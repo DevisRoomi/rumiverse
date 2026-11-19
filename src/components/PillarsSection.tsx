@@ -201,15 +201,17 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
                     <span className="text-[#6B6E66] uppercase text-[11px] tracking-wide">{pillar.tag}</span>
                   </div>
 
-                  {/* Title & Subtitle */}
-                  <h3 className="mt-4 font-display text-lg sm:text-xl font-bold text-[#121311] tracking-tight group-hover:text-[#1B3B2B] transition-colors">
-                    {pillar.title}
-                  </h3>
-                  <p className="mt-1 text-xs text-[#6B6E66] font-mono leading-relaxed">
-                    {pillar.subtitle}
-                  </p>
+                  {/* Title & Subtitle Container with min-height for uniform horizontal image alignment */}
+                  <div className="mt-4 min-h-[68px] sm:min-h-[76px] lg:min-h-[82px] flex flex-col justify-start">
+                    <h3 className="font-display text-lg sm:text-xl font-bold text-[#121311] tracking-tight group-hover:text-[#1B3B2B] transition-colors leading-[1.25]">
+                      {pillar.title}
+                    </h3>
+                    <p className="mt-1 text-xs text-[#6B6E66] font-mono leading-relaxed">
+                      {pillar.subtitle}
+                    </p>
+                  </div>
 
-                  {/* Interactive Clickable Image Frame with Hover Overlay */}
+                  {/* Interactive Clickable Image Frame with Whole-Card Hover Affordance */}
                   <div
                     role="button"
                     tabIndex={0}
@@ -221,7 +223,7 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
                       }
                     }}
                     aria-label={`Buka Bedah Spesifikasi untuk ${pillar.title}`}
-                    className="mt-4 relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-[#D8D6CE] bg-[#E2E0D8] group/img cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B3B2B] shadow-2xs"
+                    className="mt-4 relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-[#D8D6CE] hover:border-[#1B3B2B] bg-[#E2E0D8] group/img cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B3B2B] shadow-2xs transition-all duration-300"
                   >
                     <EditorialImage
                       src={pillar.imageSrc}
@@ -231,18 +233,14 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
                       fallbackSubtitle={pillar.tag}
                     />
 
-                    {/* Dark translucent glass overlay on hover with clear affordance */}
-                    <div className="absolute inset-0 bg-[#121311]/55 backdrop-blur-[2px] opacity-0 group-hover/img:opacity-100 transition-all duration-300 flex items-center justify-center p-3 z-10 pointer-events-none">
-                      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#FAF9F6] text-[#121311] font-mono text-xs font-bold tracking-tight shadow-lg transform translate-y-1 group-hover/img:translate-y-0 transition-transform duration-300">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#2E7D5B] animate-pulse" />
-                        <span>+ Bedah Spesifikasi</span>
-                        <ArrowUpRight className="w-3.5 h-3.5 text-[#1B3B2B]" />
-                      </div>
-                    </div>
+                    {/* Subtle darkening vignette on container hover */}
+                    <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/25 transition-colors duration-300 pointer-events-none" />
 
-                    {/* Subtle micro tag for instant affordance */}
-                    <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-[#121311]/70 backdrop-blur-xs font-mono text-[10px] text-[#F4F3EF] opacity-80 group-hover/img:opacity-0 transition-opacity pointer-events-none">
-                      <span>Klik Spesifikasi ↗</span>
+                    {/* Responsive Action Badge: reacts whenever anywhere on the image is hovered */}
+                    <div className="absolute bottom-2.5 right-2.5 z-10 pointer-events-none flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#121311]/85 backdrop-blur-md text-[#F4F3EF] border border-white/20 font-mono text-[11px] font-semibold tracking-wide shadow-md transition-all duration-300 group-hover/img:bg-[#1B3B2B] group-hover/img:text-[#74C69D] group-hover/img:border-[#74C69D]/50 group-hover/img:shadow-lg">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#74C69D] group-hover/img:scale-125 transition-transform duration-300" />
+                      <span>Bedah Spesifikasi</span>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-[#D0D6CF] group-hover/img:text-[#74C69D] transition-transform duration-300 group-hover/img:translate-x-0.5 group-hover/img:-translate-y-0.5" />
                     </div>
                   </div>
 
@@ -262,18 +260,18 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
                   </ul>
                 </div>
 
-                {/* Bottom Action: Clickable Button with Broad Hit Area & Glowing Indicator */}
-                <div className="mt-5 pt-3.5 border-t border-[#D8D6CE]">
+                {/* Bottom Action: Visible on mobile/touch screens, hidden on desktop to keep cards clean and above the fold */}
+                <div className="mt-5 pt-3.5 border-t border-[#D8D6CE] block md:hidden">
                   <button
                     type="button"
                     onClick={() => handlePillarClick(pillar.id)}
-                    className="w-full inline-flex items-center justify-between px-4 py-3 sm:py-3.5 rounded-xl border border-[#C8C6BC] bg-[#F4F3EF] hover:bg-[#1B3B2B] hover:border-[#1B3B2B] text-[#121311] hover:text-[#FFFFFF] text-xs font-mono font-semibold transition-all duration-200 cursor-pointer group/btn shadow-2xs hover:shadow-sm active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B3B2B]"
+                    className="w-full inline-flex items-center justify-between px-4 py-3 sm:py-3.5 rounded-xl border border-[#C8C6BC] bg-[#F4F3EF] active:bg-[#1B3B2B] active:text-[#FFFFFF] text-[#121311] text-xs font-mono font-semibold transition-all duration-200 cursor-pointer shadow-2xs active:scale-[0.98]"
                   >
                     <div className="flex items-center gap-2.5">
-                      <span className="w-2 h-2 rounded-full bg-[#2E7D5B] group-hover/btn:bg-[#74C69D] group-hover/btn:scale-125 transition-all duration-200" />
+                      <span className="w-2 h-2 rounded-full bg-[#2E7D5B]" />
                       <span>[+ Bedah Spesifikasi]</span>
                     </div>
-                    <ArrowUpRight className="w-4 h-4 text-[#4A4D46] group-hover/btn:text-[#74C69D] transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+                    <ArrowUpRight className="w-4 h-4 text-[#4A4D46]" />
                   </button>
                 </div>
               </article>
