@@ -37,7 +37,7 @@ export const PILLARS_LIST: PillarData[] = [
     imageSrc: SOFTWARE_IMAGE_SRC,
     imageAlt: 'Ruang kerja monitor pemrograman dan perancangan antarmuka aplikasi',
     summary:
-      'Kami mengerjakan berbagai macam permintaan pembuatan aplikasi web dan sistem digital—mulai dari profil usaha, portal operasional internal, dasbor analitik, hingga aplikasi ponsel. Fokus kami adalah struktur kode yang rapi, tampilan yang nyaman dipakai, dan kemudahan perawatan jangka panjang.',
+      'Pembuatan aplikasi web & mobile kustom—mulai dari portal operasional internal, dasbor analitik waktu-nyata, hingga antarmuka manajemen dengan arsitektur kode modular yang teruji dan mudah dirawat.',
     deliverables: [
       'Aplikasi Web Responsif (Desktop & Mobile)',
       'Portal Manajemen & Dasbor Operasional',
@@ -70,7 +70,7 @@ export const PILLARS_LIST: PillarData[] = [
     imageSrc: AI_IMAGE_SRC,
     imageAlt: 'Visualisasi orkestrasi agen AI di ruang Autonomous AI Foundry',
     summary:
-      'Kami membangun sistem agen AI yang mampu menyelesaikan tugas berulang secara mandiri: mulai dari membaca dan menyortir dokumen, mendeteksi anomali data, memantau alur sistem, hingga mengirimkan laporan ringkas ke WhatsApp atau email tanpa perlu campur tangan manual terus-menerus.',
+      'Sistem agen AI mandiri untuk tugas rutin 24/7: ekstraksi dokumen dan OCR, deteksi anomali data operasional, hingga pengiriman ringkasan eksekutif ke WhatsApp dan email tanpa jeda.',
     deliverables: [
       'Orkestrasi Multi-Agent Swarm (Riset & Sintesis)',
       'Pipeline Pemrosesan Dokumen & Ekstraksi Data',
@@ -103,7 +103,7 @@ export const PILLARS_LIST: PillarData[] = [
     imageSrc: IOT_IMAGE_SRC,
     imageAlt: 'Prototipe instalasi kandang modular terintegrasi kolam ikan dan rak hidroponik',
     summary:
-      'Kami menghubungkan software langsung ke lapangan fisik: merakit mikrokontroler sensor untuk membaca suhu, kelembapan, dan gas amonia, serta mengatur katup dan pompa otomatis. Seluruh modul prototipe fisik ini kami uji coba langsung di fasilitas Living Lab kami di Lumajang.',
+      'Integrasi kode langsung ke instrumen lapangan: pemantauan sensor mikroklimat (amonia, suhu, kelembaban) dan kendali katup pompa otomatis yang diuji langsung di Living Lab Lumajang.',
     deliverables: [
       'Panel Sensor Mikroklimat (Suhu, Udara & Air)',
       'Otomasi Aktuator Pompa & Katup (Closed-Loop)',
@@ -164,9 +164,9 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
     <section id="pilar" className="border-b border-[#D8D6CE] bg-[#F4F3EF]">
       <div className="max-w-[1440px] mx-auto">
         {/* Section Header */}
-        <div className="px-6 py-12 sm:px-10 lg:px-12 border-b border-[#D8D6CE] flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="px-6 py-8 sm:px-10 lg:px-12 lg:py-10 border-b border-[#D8D6CE] flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <div className="flex items-center gap-2 text-xs font-mono text-[#2E7D5B] tracking-wider uppercase mb-3">
+            <div className="flex items-center gap-2 text-xs font-mono text-[#2E7D5B] tracking-wider uppercase mb-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#2E7D5B]" />
               <span>02. Spesifikasi Divisi // Tiga Pilar Rekayasa</span>
             </div>
@@ -190,45 +190,71 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
             return (
               <article
                 key={pillar.id}
-                className={`group flex flex-col justify-between p-6 sm:p-8 lg:p-10 border-b lg:border-b-0 ${
+                className={`group flex flex-col justify-between p-5 sm:p-6 lg:p-7 border-b lg:border-b-0 ${
                   !isLast ? 'lg:border-r border-[#D8D6CE]' : ''
                 } bg-[#FAF9F6] hover:bg-[#F4F3EF] transition-colors duration-300`}
               >
                 <div>
                   {/* Card Index & Tag */}
-                  <div className="flex items-center justify-between gap-4 pb-4 border-b border-[#D8D6CE] font-mono text-xs">
+                  <div className="flex items-center justify-between gap-4 pb-3 border-b border-[#D8D6CE] font-mono text-xs">
                     <span className="text-[#121311] font-bold tracking-wider">{pillar.index}</span>
                     <span className="text-[#6B6E66] uppercase text-[11px] tracking-wide">{pillar.tag}</span>
                   </div>
 
                   {/* Title & Subtitle */}
-                  <h3 className="mt-6 font-display text-xl sm:text-2xl font-bold text-[#121311] tracking-tight group-hover:text-[#1B3B2B] transition-colors">
+                  <h3 className="mt-4 font-display text-lg sm:text-xl font-bold text-[#121311] tracking-tight group-hover:text-[#1B3B2B] transition-colors">
                     {pillar.title}
                   </h3>
-                  <p className="mt-1.5 text-xs text-[#6B6E66] font-mono leading-relaxed">
+                  <p className="mt-1 text-xs text-[#6B6E66] font-mono leading-relaxed">
                     {pillar.subtitle}
                   </p>
 
-                  {/* Image Frame with subtle hover scale */}
-                  <div className="mt-6 aspect-[16/10] w-full overflow-hidden rounded-xl border border-[#D8D6CE] bg-[#E2E0D8]">
+                  {/* Interactive Clickable Image Frame with Hover Overlay */}
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => handlePillarClick(pillar.id)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handlePillarClick(pillar.id);
+                      }
+                    }}
+                    aria-label={`Buka Bedah Spesifikasi untuk ${pillar.title}`}
+                    className="mt-4 relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-[#D8D6CE] bg-[#E2E0D8] group/img cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B3B2B] shadow-2xs"
+                  >
                     <EditorialImage
                       src={pillar.imageSrc}
                       alt={pillar.imageAlt}
-                      className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                      className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover/img:scale-[1.04]"
                       fallbackTitle={pillar.title}
                       fallbackSubtitle={pillar.tag}
                     />
+
+                    {/* Dark translucent glass overlay on hover with clear affordance */}
+                    <div className="absolute inset-0 bg-[#121311]/55 backdrop-blur-[2px] opacity-0 group-hover/img:opacity-100 transition-all duration-300 flex items-center justify-center p-3 z-10 pointer-events-none">
+                      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#FAF9F6] text-[#121311] font-mono text-xs font-bold tracking-tight shadow-lg transform translate-y-1 group-hover/img:translate-y-0 transition-transform duration-300">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#2E7D5B] animate-pulse" />
+                        <span>+ Bedah Spesifikasi</span>
+                        <ArrowUpRight className="w-3.5 h-3.5 text-[#1B3B2B]" />
+                      </div>
+                    </div>
+
+                    {/* Subtle micro tag for instant affordance */}
+                    <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-[#121311]/70 backdrop-blur-xs font-mono text-[10px] text-[#F4F3EF] opacity-80 group-hover/img:opacity-0 transition-opacity pointer-events-none">
+                      <span>Klik Spesifikasi ↗</span>
+                    </div>
                   </div>
 
                   {/* Honest Summary */}
-                  <p className="mt-6 text-sm text-[#353732] leading-relaxed">
+                  <p className="mt-3.5 text-[13px] sm:text-sm text-[#353732] leading-[1.6]">
                     {pillar.summary}
                   </p>
 
-                  {/* Deliverable Highlights */}
-                  <ul className="mt-6 pt-5 border-t border-[#D8D6CE]/80 space-y-2 text-xs text-[#4A4D46]">
+                  {/* Deliverable Highlights (Enhanced contrast, line-height, and vertical gap) */}
+                  <ul className="mt-4 pt-3.5 border-t border-[#D8D6CE]/80 space-y-2.5 text-xs text-[#242622]">
                     {pillar.deliverables.slice(0, 3).map((item, itemIdx) => (
-                      <li key={itemIdx} className="flex items-start gap-2">
+                      <li key={itemIdx} className="flex items-start gap-2.5 font-medium leading-[1.5]">
                         <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0 mt-0.5" />
                         <span>{item}</span>
                       </li>
@@ -236,15 +262,18 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
                   </ul>
                 </div>
 
-                {/* Bottom Action: Open Architectural Detail Sheet */}
-                <div className="mt-8 pt-5 border-t border-[#D8D6CE]">
+                {/* Bottom Action: Clickable Button with Broad Hit Area & Glowing Indicator */}
+                <div className="mt-5 pt-3.5 border-t border-[#D8D6CE]">
                   <button
                     type="button"
                     onClick={() => handlePillarClick(pillar.id)}
-                    className="w-full inline-flex items-center justify-between px-4 py-3 rounded-xl border border-[#D8D6CE] bg-[#F4F3EF] hover:bg-[#1B3B2B] text-[#121311] hover:text-[#F4F3EF] text-xs font-mono font-medium transition-all duration-200 cursor-pointer group/btn shadow-2xs hover:shadow-sm active:scale-[0.98]"
+                    className="w-full inline-flex items-center justify-between px-4 py-3 sm:py-3.5 rounded-xl border border-[#C8C6BC] bg-[#F4F3EF] hover:bg-[#1B3B2B] hover:border-[#1B3B2B] text-[#121311] hover:text-[#FFFFFF] text-xs font-mono font-semibold transition-all duration-200 cursor-pointer group/btn shadow-2xs hover:shadow-sm active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B3B2B]"
                   >
-                    <span>[+ Bedah Spesifikasi]</span>
-                    <ArrowUpRight className="w-4 h-4 text-[#6B6E66] group-hover/btn:text-[#74C69D] transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+                    <div className="flex items-center gap-2.5">
+                      <span className="w-2 h-2 rounded-full bg-[#2E7D5B] group-hover/btn:bg-[#74C69D] group-hover/btn:scale-125 transition-all duration-200" />
+                      <span>[+ Bedah Spesifikasi]</span>
+                    </div>
+                    <ArrowUpRight className="w-4 h-4 text-[#4A4D46] group-hover/btn:text-[#74C69D] transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
                   </button>
                 </div>
               </article>
