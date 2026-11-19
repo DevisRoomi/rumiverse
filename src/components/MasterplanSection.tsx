@@ -203,6 +203,7 @@ const ZONES: MasterplanZone[] = [
 export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps) {
   const [viewMode, setViewMode] = useState<ViewModeKey>('circular');
   const [selectedZoneId, setSelectedZoneId] = useState<string>('smart-coop');
+  const [detailTab, setDetailTab] = useState<'hardware' | 'synergy'>('hardware');
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const currentMode = VIEW_MODES[viewMode];
@@ -365,8 +366,8 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Kolom Kiri (~62-65%): Map Visualizer + 5 Tombol Zona Ringkas di Luar Gambar */}
-            <div className="lg:col-span-7 xl:col-span-8 space-y-4">
+            {/* Kolom Kiri (~62-65%): Map Visualizer + 5 Tombol Zona Ringkas di Luar Gambar (Sticky pada Desktop) */}
+            <div className="lg:col-span-7 xl:col-span-8 lg:sticky lg:top-24 self-start space-y-4">
               {/* Map Container */}
               <div className="relative aspect-[16/9] max-h-[480px] w-full rounded-2xl overflow-hidden border border-[#D8D6CE] bg-[#0E1210] shadow-md group">
                 <EditorialImage
@@ -549,76 +550,107 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
                     {selectedZone.role}
                   </p>
 
-                  {/* Sinergi 3 Pilar pada Zona Ini */}
-                  <div className="p-4 rounded-xl bg-[#FAF9F6] border border-[#D8D6CE] space-y-2.5">
-                    <span className="font-mono text-[10px] text-[#1B3B2B] font-bold uppercase tracking-wider block">
-                      Sinergi 3 Pilar di Zona Ini:
-                    </span>
-                    <div className="space-y-2 text-xs">
-                      <div className="flex items-start gap-2">
-                        <span className="font-mono text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#121311] text-[#F4F3EF] shrink-0 mt-0.5">
-                          P1 WEB/APP
-                        </span>
-                        <span className="text-[11px] text-[#4A4D46] leading-relaxed">
-                          {selectedZone.pilarIntegration.p1}
-                        </span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <span className="font-mono text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#1B3B2B] text-[#74C69D] shrink-0 mt-0.5">
-                          P2 AI AGENT
-                        </span>
-                        <span className="text-[11px] text-[#4A4D46] leading-relaxed">
-                          {selectedZone.pilarIntegration.p2}
-                        </span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <span className="font-mono text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#2E7D5B] text-white shrink-0 mt-0.5">
-                          P3 IOT/CPS
-                        </span>
-                        <span className="text-[11px] text-[#4A4D46] leading-relaxed">
-                          {selectedZone.pilarIntegration.p3}
-                        </span>
-                      </div>
+                  {/* Tab Selector: Perangkat & Sensor vs Sinergi 3 Pilar */}
+                  <div className="space-y-2.5">
+                    <div className="flex items-center p-1 rounded-xl bg-[#EAE8E1] border border-[#D8D6CE]">
+                      <button
+                        type="button"
+                        onClick={() => setDetailTab('hardware')}
+                        className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-mono font-semibold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                          detailTab === 'hardware'
+                            ? 'bg-[#1B3B2B] text-[#74C69D] shadow-xs'
+                            : 'text-[#4A4D46] hover:text-[#121311]'
+                        }`}
+                      >
+                        <Radio className="w-3.5 h-3.5" />
+                        <span>Perangkat &amp; Sensor</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setDetailTab('synergy')}
+                        className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-mono font-semibold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                          detailTab === 'synergy'
+                            ? 'bg-[#1B3B2B] text-[#74C69D] shadow-xs'
+                            : 'text-[#4A4D46] hover:text-[#121311]'
+                        }`}
+                      >
+                        <Layers className="w-3.5 h-3.5" />
+                        <span>Sinergi 3 Pilar</span>
+                      </button>
+                    </div>
+
+                    {/* Tab Content Box */}
+                    <div className="p-4 rounded-xl bg-[#FAF9F6] border border-[#D8D6CE] min-h-[142px] flex flex-col justify-center">
+                      {detailTab === 'hardware' ? (
+                        <div className="space-y-2">
+                          <span className="font-mono text-[10px] text-[#2E7D5B] font-bold uppercase tracking-wider block">
+                            Instrumentasi &amp; Sensor Fisik Terpasang:
+                          </span>
+                          <ul className="space-y-1.5 text-xs text-[#2D2F2A]">
+                            {selectedZone.hardware.map((item, idx) => (
+                              <li key={idx} className="flex items-start gap-2">
+                                <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0 mt-0.5" />
+                                <span className="leading-snug">{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ) : (
+                        <div className="space-y-2">
+                          <span className="font-mono text-[10px] text-[#1B3B2B] font-bold uppercase tracking-wider block">
+                            Konvergensi Digital-Fisik 3 Pilar:
+                          </span>
+                          <div className="space-y-2 text-xs">
+                            <div className="flex items-start gap-2">
+                              <span className="font-mono text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#121311] text-[#F4F3EF] shrink-0 mt-0.5">
+                                P1 WEB
+                              </span>
+                              <span className="text-[11px] text-[#4A4D46] leading-snug">
+                                {selectedZone.pilarIntegration.p1}
+                              </span>
+                            </div>
+                            <div className="flex items-start gap-2">
+                              <span className="font-mono text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#1B3B2B] text-[#74C69D] shrink-0 mt-0.5">
+                                P2 AI
+                              </span>
+                              <span className="text-[11px] text-[#4A4D46] leading-snug">
+                                {selectedZone.pilarIntegration.p2}
+                              </span>
+                            </div>
+                            <div className="flex items-start gap-2">
+                              <span className="font-mono text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#2E7D5B] text-white shrink-0 mt-0.5">
+                                P3 IOT
+                              </span>
+                              <span className="text-[11px] text-[#4A4D46] leading-snug">
+                                {selectedZone.pilarIntegration.p3}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 
-                  {/* Instrumentasi Terpasang */}
-                  <div className="p-4 rounded-xl bg-[#FAF9F6] border border-[#D8D6CE] space-y-2.5">
-                    <span className="font-mono text-[11px] text-[#2E7D5B] font-bold uppercase tracking-wider block">
-                      Instrumentasi &amp; Sensor Terpasang:
-                    </span>
-                    <ul className="space-y-1.5 text-xs text-[#2D2F2A]">
-                      {selectedZone.hardware.map((item, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0 mt-0.5" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Aliran Siklus Sirkular */}
-                  <div className="p-4 rounded-xl bg-[#1B3B2B] text-[#F4F3EF] space-y-1.5 shadow-2xs">
-                    <div className="flex items-center gap-1.5 text-[#74C69D] font-mono text-[11px] font-semibold">
-                      <RefreshCw className="w-3.5 h-3.5" />
-                      <span>ALIRAN SIKLUS BIO-EKOSISTEM</span>
+                  {/* Aliran Siklus Bio-Ekosistem & Metrik Terpadu (Single Compact Card) */}
+                  <div className="p-4 rounded-xl bg-[#1B3B2B] text-[#F4F3EF] border border-[#1B3B2B] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs">
+                    <div className="space-y-1 sm:max-w-[62%]">
+                      <div className="flex items-center gap-1.5 text-[#74C69D] font-mono text-[10px] font-semibold tracking-wider uppercase">
+                        <RefreshCw className="w-3.5 h-3.5 shrink-0" />
+                        <span>ALIRAN SIKLUS BIO-EKOSISTEM</span>
+                      </div>
+                      <p className="text-xs text-[#E2E5E0] leading-snug">
+                        {selectedZone.circularOutput}
+                      </p>
                     </div>
-                    <p className="text-xs text-[#E2E5E0] leading-relaxed">
-                      {selectedZone.circularOutput}
-                    </p>
-                  </div>
 
-                  {/* Metrik Kunci */}
-                  <div className="p-4 rounded-xl bg-[#FAF9F6] border border-[#D8D6CE] flex items-center justify-between gap-3">
-                    <div>
-                      <span className="text-2xl sm:text-3xl font-mono font-bold text-[#1B3B2B] tabular-nums block">
+                    <div className="sm:border-l sm:border-[#74C69D]/25 sm:pl-4 sm:text-right shrink-0">
+                      <span className="text-2xl sm:text-3xl font-mono font-bold text-[#74C69D] tabular-nums block leading-tight">
                         {selectedZone.metric.value}
                       </span>
-                      <span className="text-[11px] font-mono text-[#6B6E66] mt-0.5 block">
+                      <span className="text-[10px] font-mono text-[#D8D6CE] uppercase tracking-wide block mt-0.5">
                         {selectedZone.metric.label}
                       </span>
                     </div>
-                    <Compass className="w-7 h-7 text-[#2E7D5B]/30" />
                   </div>
 
                   {/* Tombol Konsultasi Replikasi */}
