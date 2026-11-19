@@ -2,13 +2,16 @@ import { useEffect, useRef, useState } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
+  BarChart3,
   Bot,
   CheckCircle2,
   ChevronRight,
   Cpu,
+  FileSearch,
   FileText,
   MessageSquare,
   Radio,
+  Search,
   ShieldCheck,
   Terminal,
   Zap,
@@ -33,35 +36,35 @@ type TerminalLogTab = 'ingestion' | 'deliberation' | 'dispatch';
 
 const TERMINAL_LOGS: Record<TerminalLogTab, { label: string; agent: string; lines: string[] }> = {
   ingestion: {
-    label: '01. Ingesti & Parsing',
+    label: '01. Pembacaan Data',
     agent: 'AGENT-OCR-INGEST',
     lines: [
-      '[07:00:01] INGEST_WATCHER: Menerima 14 file laporan (.pdf & .xlsx) dari sistem ERP.',
+      '[07:00:01] INGEST_WATCHER: Menerima 14 file laporan (.pdf & .xlsx) dari sistem bisnis.',
       '[07:00:02] PARSER_WORKER: Mengekstraksi 1,842 baris transaksi operasional harian.',
-      '[07:00:03] EMBEDDING_ENGINE: Menghasilkan 256 vektor konteks ke pgvector (latensi: 110ms).',
-      '[07:00:04] VALIDATION_CHECK: 100% payload terverifikasi valid tanpa korupsi berkas.',
-      '[07:00:04] STATUS: Ingesti selesai. Meneruskan kendali ke Swarm Kognitif.',
+      '[07:00:03] EMBEDDING_ENGINE: Menghasilkan 256 vektor konteks ke database terenkripsi.',
+      '[07:00:04] VALIDATION_CHECK: 100% data transaksi terverifikasi valid tanpa korupsi berkas.',
+      '[07:00:04] STATUS: Pembacaan data selesai. Meneruskan kendali ke Agen Verifikasi.',
     ],
   },
   deliberation: {
-    label: '02. Musyawarah Swarm',
-    agent: 'AGENT-SWARM-SYNTHESIS',
+    label: '02. Verifikasi Berlapis',
+    agent: 'AGENT-MULTI-VERIFICATION',
     lines: [
-      '[07:00:05] PLANNER: Mengidentifikasi 3 anomali stok di gudang Lumajang Timur.',
-      '[07:00:06] CRITIC_AGENT: Membandingkan tren konsumsi vs data historis 30 hari terakhir.',
-      '[07:00:07] SYNTHESIS: Rekomendasi restock 450 unit sebelum Jumat untuk mencegah kehabisan stok.',
-      '[07:00:08] CONFIDENCE_SCORE: 96.4% (melebihi ambang batas mandiri 85%).',
-      '[07:00:08] STATUS: Konsensus tercapai. Menghasilkan ringkasan eksekutif 1 halaman.',
+      '[07:00:05] PLANNER_AGENT: Mengidentifikasi 3 anomali selisih stok di gudang cabang.',
+      '[07:00:06] CRITIC_AGENT: Menguji silang vs histori transaksi 30 hari & mengecek validitas hitungan.',
+      '[07:00:07] SYNTHESIS: Rekomendasi restock 450 unit sebelum akhir pekan untuk cegah kehabisan barang.',
+      '[07:00:08] CONFIDENCE_SCORE: 96.4% (akurasi tinggi, hitungan tervalidasi ganda).',
+      '[07:00:08] STATUS: Verifikasi selesai. Menghasilkan ringkasan eksekutif siap-tindak.',
     ],
   },
   dispatch: {
-    label: '03. Eksekusi & Dispatch',
+    label: '03. Pengiriman Laporan',
     agent: 'AGENT-DISPATCH-GATEWAY',
     lines: [
-      '[07:00:09] PDF_ENGINE: Merender lembar ringkasan eksekutif (A4 - 300DPI).',
-      '[07:00:10] WA_GATEWAY: Mengirim pesan terformat + lampiran PDF ke nomor pimpinan.',
+      '[07:00:09] PDF_ENGINE: Merender lembar ringkasan eksekutif 1 halaman (A4).',
+      '[07:00:10] WA_GATEWAY: Mengirim poin keputusan + PDF ringkasan ke nomor WhatsApp pimpinan.',
       '[07:00:11] SMTP_CLIENT: Mengirim salinan audit terenkripsi ke manajer operasional.',
-      '[07:00:11] DB_COMMIT: Mencatat log audit eksekusi ke PostgreSQL (Status: DELIVERED).',
+      '[07:00:11] DB_COMMIT: Mencatat log eksekusi ke database (Status: DELIVERED).',
       '[07:00:12] SYSTEM: Seluruh siklus selesai dalam 11.2 detik. Siaga untuk jadwal berikutnya.',
     ],
   },
@@ -216,7 +219,7 @@ export function Pillar2JournalModal({
               className="max-w-[700px] mx-auto space-y-12 sm:space-y-14"
             >
               {/* Article Header & Title */}
-              <header className="space-y-5 pb-8 border-b border-[#D8D6CE]">
+              <header className="space-y-4 pb-6 border-b border-[#D8D6CE]">
                 <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-[#2E7D5B] tracking-wider uppercase">
                   <span>Dokumentasi Sistem</span>
                   <span aria-hidden="true" className="text-[#A1A39B]">·</span>
@@ -225,27 +228,29 @@ export function Pillar2JournalModal({
                   <span>5 Menit Baca</span>
                 </div>
 
-                <h1 className="font-display font-bold text-3xl sm:text-4xl lg:text-[46px] tracking-tight text-[#121311] leading-[1.15]">
+                <h1 className="font-display font-bold text-2xl sm:text-3xl lg:text-[34px] tracking-tight text-[#121311] leading-[1.25]">
                   Orkestrasi Agen AI Mandiri: Mengubah Tugas Rutin Menjadi Alur Kerja Otonom 24/7
                 </h1>
 
-                <div className="flex flex-wrap items-center justify-between gap-3 pt-2 text-xs font-mono text-[#6B6E66]">
+                <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-mono text-[#6B6E66]">
                   <span>Penulis: Abu Devis J.R. — Systems Architect</span>
                   <span>RUMIVERSE / PILAR 02</span>
                 </div>
 
                 {/* Quick Jump Table of Contents (Pills) */}
-                <div className="pt-3 border-t border-[#D8D6CE]/80">
+                <div className="pt-2.5 border-t border-[#D8D6CE]/80">
                   <span className="font-mono text-[11px] text-[#6B6E66] uppercase tracking-wider block mb-2">
                     Lompat Cepat ke Bab:
                   </span>
                   <div className="flex flex-wrap gap-2">
                     {[
-                      { id: 'p2-bab-1', label: '§ I. Swarm Kognitif' },
-                      { id: 'p2-bab-2', label: '§ II. Konsol Eksekusi' },
-                      { id: 'p2-bab-3', label: '§ III. Dispatch Otomatis' },
-                      { id: 'p2-bab-4', label: '§ IV. Routing Model' },
-                      { id: 'p2-bab-5', label: '§ V. Human-in-Loop' },
+                      { id: 'p2-use-cases', label: '§ Kasus Nyata Bisnis' },
+                      { id: 'p2-bab-1', label: '§ I. Verifikasi Berlapis' },
+                      { id: 'p2-bab-2', label: '§ II. Konsol Pemantauan' },
+                      { id: 'p2-bab-3', label: '§ III. Laporan Otomatis' },
+                      { id: 'p2-bab-4', label: '§ IV. Efisiensi Model' },
+                      { id: 'p2-bab-5', label: '§ V. Batas Kendali' },
+                      { id: 'p2-skema-layanan', label: '§ Skema Layanan' },
                       { id: 'p2-bab-cta', label: '§ Konsultasi' },
                     ].map((item) => (
                       <button
@@ -261,9 +266,9 @@ export function Pillar2JournalModal({
                 </div>
               </header>
 
-              {/* Abstract Blockquote */}
-              <blockquote className="my-6 p-6 sm:p-7 rounded-2xl bg-[#F4F3EF] border-l-4 border-[#1B3B2B] font-display text-base sm:text-lg text-[#2D2F2A] leading-relaxed italic shadow-2xs">
-                &ldquo;AI yang bernilai nyata bagi bisnis bukanlah antarmuka chatbot yang banyak bicara namun minim eksekusi. Di RUMIVERSE, kami merancang gugus agen mandiri (*multi-agent swarm*) yang bekerja seperti unit operasi terlatih: membaca data mentah, memvalidasi anomali, merumuskan sintesis keputusan, dan mendistribusikan laporan siap-tindak langsung ke WhatsApp atau email pemilik usaha.&rdquo;
+              {/* Abstract Blockquote (compact padding, fully visible above fold) */}
+              <blockquote className="my-5 p-5 sm:p-6 rounded-2xl bg-[#F4F3EF] border-l-4 border-[#1B3B2B] font-display text-base sm:text-lg text-[#2D2F2A] leading-relaxed italic shadow-2xs">
+                &ldquo;AI yang bernilai nyata bagi bisnis bukanlah antarmuka chatbot yang banyak bicara namun minim eksekusi. Di RUMIVERSE, kami merancang agen pekerja mandiri yang menangani pekerjaan rutin Anda: membaca rekapan data harian, memvalidasi kejanggalan angka secara berlapis, dan mengirimkan ringkasan siap-tindak langsung ke WhatsApp pemilik usaha.&rdquo;
               </blockquote>
 
               {/* FIG 01: Studio AI Foundry Workstation */}
@@ -278,20 +283,153 @@ export function Pillar2JournalModal({
                   />
                 </div>
                 <figcaption className="font-mono text-xs text-[#6B6E66] px-1">
-                  <strong className="text-[#121311]">FIG. 01</strong> — Ruang uji orkestrasi model kognitif di studio RUMIVERSE Lumajang: workstation multi-layar untuk pemantauan throughput token, evaluasi prompt chain, dan debugging alur worker otonom.
+                  <strong className="text-[#121311]">FIG. 01</strong> — Ruang uji orkestrasi model di studio RUMIVERSE Lumajang: workstation multi-layar untuk pemantauan throughput token, evaluasi alur agen, dan pengujian keandalan sistem otomasi.
                 </figcaption>
               </figure>
 
-              {/* Bab I: Cetak Biru Swarm Kognitif */}
-              <section id="p2-bab-1" className="space-y-5 scroll-mt-20">
+              {/* Bagian Solusi Bisnis: Kasus Penggunaan Nyata */}
+              <section id="p2-use-cases" className="space-y-6 pt-6 border-t border-[#D8D6CE] scroll-mt-20">
+                <div className="flex items-center gap-2 font-mono text-xs text-[#2E7D5B] tracking-wider uppercase">
+                  <span>Solusi Nyata Bisnis</span>
+                  <span aria-hidden="true">/</span>
+                  <span>Masalah yang Diselesaikan</span>
+                </div>
+
+                <div className="space-y-3">
+                  <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#121311] tracking-tight">
+                    Apa yang Sebenarnya Dikerjakan oleh Agen AI?
+                  </h2>
+                  <p className="text-base text-[#353732] leading-relaxed">
+                    Banyak orang mengira AI hanya sekadar chatbot untuk tanya-jawab umum. Di RUMIVERSE, kami membangun pekerja digital mandiri yang menangani pekerjaan repetitif, rekapitulasi data, dan audit operasional bisnis Anda secara otomatis:
+                  </p>
+                </div>
+
+                {/* Grid 4 Kasus Nyata Bisnis */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                  {/* Use Case 1 */}
+                  <div className="p-5 sm:p-6 rounded-2xl bg-[#F4F3EF] border border-[#D8D6CE] flex flex-col justify-between space-y-4 hover:border-[#1B3B2B]/40 transition-colors shadow-2xs">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-[#FAF9F6] border border-[#D8D6CE] text-[#1B3B2B]">
+                          01 · AUDIT &amp; LAPORAN RUTIN
+                        </span>
+                        <BarChart3 className="w-4 h-4 text-[#2E7D5B]" />
+                      </div>
+                      <h3 className="font-display font-bold text-lg text-[#121311]">
+                        Asisten Laporan Harian &amp; Audit Stok
+                      </h3>
+                      <p className="text-sm text-[#4A4D46] leading-relaxed">
+                        Secara otomatis membaca rekapan penjualan dan stok gudang dari spreadsheet atau database setiap tengah malam, mendeteksi selisih barang, lalu mengirimkan ringkasan eksekutif beserta peringatan stok menipis ke WhatsApp pimpinan tepat jam 07.00 pagi.
+                      </p>
+                    </div>
+                    <ul className="pt-3 border-t border-[#D8D6CE]/70 space-y-1.5 text-xs text-[#2D2F2A]">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0" />
+                        <span>Deteksi anomali selisih angka &amp; tren omzet</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0" />
+                        <span>Pengiriman ringkasan terjadwal langsung ke WhatsApp &amp; PDF</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Use Case 2 */}
+                  <div className="p-5 sm:p-6 rounded-2xl bg-[#F4F3EF] border border-[#D8D6CE] flex flex-col justify-between space-y-4 hover:border-[#1B3B2B]/40 transition-colors shadow-2xs">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-[#FAF9F6] border border-[#D8D6CE] text-[#1B3B2B]">
+                          02 · ADMINISTRASI &amp; OCR
+                        </span>
+                        <FileText className="w-4 h-4 text-[#2E7D5B]" />
+                      </div>
+                      <h3 className="font-display font-bold text-lg text-[#121311]">
+                        Otomasi Input Faktur &amp; Dokumen
+                      </h3>
+                      <p className="text-sm text-[#4A4D46] leading-relaxed">
+                        Mengubah tumpukan foto nota fisik, berkas invoice PDF dari supplier, atau formulir masuk menjadi data terstruktur di spreadsheet maupun sistem ERP perusahaan tanpa perlu diketik manual oleh staf satu per satu.
+                      </p>
+                    </div>
+                    <ul className="pt-3 border-t border-[#D8D6CE]/70 space-y-1.5 text-xs text-[#2D2F2A]">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0" />
+                        <span>Ekstraksi nomor invoice, nominal, tanggal, dan nama item</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0" />
+                        <span>Hemat puluhan jam kerja staf administrasi tiap bulan</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Use Case 3 */}
+                  <div className="p-5 sm:p-6 rounded-2xl bg-[#F4F3EF] border border-[#D8D6CE] flex flex-col justify-between space-y-4 hover:border-[#1B3B2B]/40 transition-colors shadow-2xs">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-[#FAF9F6] border border-[#D8D6CE] text-[#1B3B2B]">
+                          03 · INTELIJEN PASAR
+                        </span>
+                        <Search className="w-4 h-4 text-[#2E7D5B]" />
+                      </div>
+                      <h3 className="font-display font-bold text-lg text-[#121311]">
+                        Riset &amp; Pemantauan Kompetitor
+                      </h3>
+                      <p className="text-sm text-[#4A4D46] leading-relaxed">
+                        Mengumpulkan pergerakan harga kompetitor, berita tren industri terkait, hingga ulasan pelanggan di berbagai platform secara periodik, kemudian menyaring poin-poin krusial menjadi laporan wawasan mingguan untuk strategi bisnis Anda.
+                      </p>
+                    </div>
+                    <ul className="pt-3 border-t border-[#D8D6CE]/70 space-y-1.5 text-xs text-[#2D2F2A]">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0" />
+                        <span>Pemantauan harga produk &amp; perubahan katalog pasar</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0" />
+                        <span>Sintesis ringkas dari ratusan artikel &amp; ulasan publik</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Use Case 4 */}
+                  <div className="p-5 sm:p-6 rounded-2xl bg-[#F4F3EF] border border-[#D8D6CE] flex flex-col justify-between space-y-4 hover:border-[#1B3B2B]/40 transition-colors shadow-2xs">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-[#FAF9F6] border border-[#D8D6CE] text-[#1B3B2B]">
+                          04 · LAYANAN KLIEN CERDAS
+                        </span>
+                        <MessageSquare className="w-4 h-4 text-[#2E7D5B]" />
+                      </div>
+                      <h3 className="font-display font-bold text-lg text-[#121311]">
+                        Asisten FAQ &amp; Layanan Pelanggan Berbasis Dokumen
+                      </h3>
+                      <p className="text-sm text-[#4A4D46] leading-relaxed">
+                        Menjawab pertanyaan teknis atau prosedural dari pelanggan maupun tim internal berdasarkan dokumen SOP perusahaan, panduan produk, dan histori kebijakan resmi tanpa mengarang bebas atau halusinasi data.
+                      </p>
+                    </div>
+                    <ul className="pt-3 border-t border-[#D8D6CE]/70 space-y-1.5 text-xs text-[#2D2F2A]">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0" />
+                        <span>Jawaban terikat 100% pada dokumen resmi perusahaan</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0" />
+                        <span>Eskalasi otomatis ke tim manusia jika butuh persetujuan khusus</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </section>
+
+              {/* Bab I: Verifikasi Berlapis (Multi-Agent Check) */}
+              <section id="p2-bab-1" className="space-y-5 pt-8 border-t border-[#D8D6CE] scroll-mt-20">
                 <div className="flex items-center gap-2 font-mono text-xs text-[#2E7D5B] tracking-wider uppercase">
                   <span>Bagian 01</span>
                   <span aria-hidden="true">/</span>
-                  <span>Arsitektur Sistem</span>
+                  <span>Metodologi Kerja</span>
                 </div>
 
                 <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#121311] tracking-tight">
-                  I. Cetak Biru Swarm Kognitif: Dari Ingesti Mentah ke Tindakan
+                  I. Cara Kerja Agen Mandiri: Verifikasi Berlapis (Multi-Agent Check)
                 </h2>
 
                 <p className="text-base text-[#353732] leading-[1.8]">
@@ -299,37 +437,37 @@ export function Pillar2JournalModal({
                 </p>
 
                 <p className="text-base text-[#353732] leading-[1.8]">
-                  Arsitektur kami memecah pemecahan masalah ke dalam <strong>tiga lapisan independen</strong> yang saling memverifikasi:
+                  Arsitektur kami memecah penyelesaian tugas ke dalam <strong>tiga tahapan kerja independen</strong> yang saling memverifikasi:
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 pt-2">
                   <div className="p-4 rounded-xl bg-[#F4F3EF] border border-[#D8D6CE] space-y-1.5">
                     <span className="font-mono text-[11px] text-[#2E7D5B] font-bold uppercase block">
-                      Fase 01 · Ingesti
+                      Fase 01 · Pembacaan
                     </span>
                     <h4 className="font-display font-bold text-sm text-[#121311]">Input Multi-Kanal</h4>
                     <p className="text-xs text-[#4A4D46] leading-relaxed">
-                      Membaca berkas PDF, spreadsheet, aliran basis data, atau webhook API secara instan tanpa konversi manual.
+                      Membaca berkas PDF faktur, spreadsheet laporan, aliran basis data, atau webhook API secara instan tanpa konversi manual.
                     </p>
                   </div>
 
                   <div className="p-4 rounded-xl bg-[#F4F3EF] border border-[#D8D6CE] space-y-1.5">
                     <span className="font-mono text-[11px] text-[#2E7D5B] font-bold uppercase block">
-                      Fase 02 · Orkestrasi
+                      Fase 02 · Verifikasi
                     </span>
-                    <h4 className="font-display font-bold text-sm text-[#121311]">Musyawarah Swarm</h4>
+                    <h4 className="font-display font-bold text-sm text-[#121311]">Verifikasi Berlapis</h4>
                     <p className="text-xs text-[#4A4D46] leading-relaxed">
-                      Planner Agent merancang langkah kerja, Specialist Agent menganalisis fakta, dan Critic Agent memeriksa keabsahan logika.
+                      Satu agen memproses data (*Worker Agent*), lalu agen kedua menguji ulang validitas fakta &amp; hitungan (*Critic Agent*) sebelum disetujui.
                     </p>
                   </div>
 
                   <div className="p-4 rounded-xl bg-[#F4F3EF] border border-[#D8D6CE] space-y-1.5">
                     <span className="font-mono text-[11px] text-[#2E7D5B] font-bold uppercase block">
-                      Fase 03 · Dispatch
+                      Fase 03 · Pengiriman
                     </span>
                     <h4 className="font-display font-bold text-sm text-[#121311]">Eksekusi Nyata</h4>
                     <p className="text-xs text-[#4A4D46] leading-relaxed">
-                      Menerbitkan lembar laporan PDF, menyalakan alarm peringatan, atau mengirim ringkasan via WhatsApp dalam hitungan detik.
+                      Menerbitkan lembar laporan PDF, menyalakan peringatan jika ada selisih, atau mengirim ringkasan via WhatsApp dalam hitungan detik.
                     </p>
                   </div>
                 </div>
@@ -342,25 +480,25 @@ export function Pillar2JournalModal({
                       alt="Cetak biru whiteboard arsitektur Autonomous AI Agent Swarm Engine RUMIVERSE"
                       className="w-full h-full object-contain bg-[#FAF9F6]"
                       fallbackTitle="Autonomous AI Swarm Engine Pipeline"
-                      fallbackSubtitle="Arsitektur Ingesti, Orkestrasi Kognitif, dan Integrasi Eksekusi."
+                      fallbackSubtitle="Arsitektur Pembacaan Data, Verifikasi Berlapis, dan Pengiriman Laporan."
                     />
                   </div>
                   <figcaption className="font-mono text-xs text-[#6B6E66] px-1">
-                    <strong className="text-[#121311]">FIG. 02</strong> — Cetak biru papan kerja studio: pemetaan alur dari Ingestion (kiri), Orkestrasi Kognitif Multi-Agen (tengah), hingga Dispatch ke WhatsApp, Surel, dan Basis Data (kanan).
+                    <strong className="text-[#121311]">FIG. 02</strong> — Cetak biru papan kerja studio: pemetaan alur dari Pembacaan Data (kiri), Verifikasi Berlapis Multi-Agen (tengah), hingga Pengiriman Otomatis ke WhatsApp, Surel, dan Basis Data (kanan).
                   </figcaption>
                 </figure>
               </section>
 
-              {/* Bab II: Konsol Eksekusi & Telemetri Waktu-Nyata */}
+              {/* Bab II: Konsol Pemantauan */}
               <section id="p2-bab-2" className="space-y-5 pt-8 border-t border-[#D8D6CE] scroll-mt-20">
                 <div className="flex items-center gap-2 font-mono text-xs text-[#2E7D5B] tracking-wider uppercase">
                   <span>Bagian 02</span>
                   <span aria-hidden="true">/</span>
-                  <span>Telemetri & Pengawasan</span>
+                  <span>Telemetri &amp; Pengawasan</span>
                 </div>
 
                 <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#121311] tracking-tight">
-                  II. Konsol Eksekusi: Pemantauan Tanpa Kotak Hitam (*No Black Box*)
+                  II. Konsol Pemantauan: Pengawasan Terbuka Tanpa Kotak Hitam (*No Black Box*)
                 </h2>
 
                 <p className="text-base text-[#353732] leading-[1.8]">
@@ -379,7 +517,7 @@ export function Pillar2JournalModal({
                     />
                   </div>
                   <figcaption className="font-mono text-xs text-[#6B6E66] px-1">
-                    <strong className="text-[#121311]">FIG. 03</strong> — Dasbor pemantauan pilar kognitif: terminal log eksekusi langsung, pelacak latensi sub-2.5 detik, dan metrik rasio keberhasilan tugas 80%+ tanpa intervensi manual.
+                    <strong className="text-[#121311]">FIG. 03</strong> — Dasbor pemantauan kinerja agen otonom: terminal log eksekusi langsung, pelacak latensi sub-2.5 detik, dan metrik rasio keberhasilan tugas tanpa intervensi manual.
                   </figcaption>
                 </figure>
 
@@ -552,6 +690,88 @@ export function Pillar2JournalModal({
                       <p className="text-sm text-[#4A4D46] leading-relaxed">
                         Jika agen mendeteksi selisih angka transaksi di atas batas aman atau nilai keyakinan model berada di bawah 85%, sistem tidak akan mengambil tindakan sendiri. Sistem akan langsung mengirimkan prompt persetujuan singkat: <em>&ldquo;Ditemukan selisih data sebesar 12%. Butuh konfirmasi pimpinan untuk melanjutkan.&rdquo;</em>
                       </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* Skema Layanan & Model Kerja Sama */}
+              <section id="p2-skema-layanan" className="space-y-6 pt-10 border-t border-[#D8D6CE] scroll-mt-20">
+                <div className="flex items-center gap-2 font-mono text-xs text-[#2E7D5B] tracking-wider uppercase">
+                  <span>Skema Layanan</span>
+                  <span aria-hidden="true">/</span>
+                  <span>Model Kepemilikan &amp; Kerja Sama</span>
+                </div>
+
+                <div className="space-y-3">
+                  <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#121311] tracking-tight">
+                    Skema Layanan: Bagaimana Solusi Ini Diterapkan di Bisnis Anda?
+                  </h2>
+                  <p className="text-base text-[#353732] leading-relaxed">
+                    Setiap perusahaan memiliki skala kebutuhan, regulasi privasi data, dan kesiapan infrastruktur yang berbeda. Kami menyediakan dua pilihan skema kerja sama yang transparan:
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                  {/* Skema 1: Custom AI Workflow (Turnkey) */}
+                  <div className="p-6 rounded-2xl bg-[#F4F3EF] border border-[#D8D6CE] flex flex-col justify-between space-y-5 shadow-2xs hover:border-[#1B3B2B]/40 transition-colors">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-[11px] font-bold px-2.5 py-0.5 rounded bg-[#1B3B2B] text-[#74C69D]">
+                          OPSI 01 · SEKALI BANGUN (TURNKEY)
+                        </span>
+                        <Cpu className="w-4 h-4 text-[#2E7D5B]" />
+                      </div>
+                      <h3 className="font-display font-bold text-xl text-[#121311]">
+                        Custom AI Workflow (Turnkey System)
+                      </h3>
+                      <p className="text-sm text-[#4A4D46] leading-relaxed">
+                        Dibangun khusus sesuai alur kerja spesifik, format dokumen faktur, dan sistem database perusahaan Anda. Setelah selesai diuji dan diluncurkan, sistem sepenuhnya menjadi aset milik perusahaan Anda.
+                      </p>
+                      <ul className="space-y-2 text-xs text-[#2D2F2A] pt-2">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0 mt-0.5" />
+                          <span><strong>Privasi Penuh:</strong> Dapat dipasang di cloud perusahaan atau server lokal (*on-premise*) tanpa data keluar ke pihak luar.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0 mt-0.5" />
+                          <span><strong>Investasi Sekali di Awal:</strong> Biaya proyek transparan disertai panduan operasional dan serah terima penuh kode sumber.</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="pt-3 border-t border-[#D8D6CE]/80 font-mono text-[11px] text-[#2E7D5B] font-medium">
+                      ✓ Cocok untuk: Perusahaan dengan server mandiri &amp; alur kerja yang sudah ajeg
+                    </div>
+                  </div>
+
+                  {/* Skema 2: Managed AI Agent */}
+                  <div className="p-6 rounded-2xl bg-[#F4F3EF] border border-[#D8D6CE] flex flex-col justify-between space-y-5 shadow-2xs hover:border-[#1B3B2B]/40 transition-colors">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-[11px] font-bold px-2.5 py-0.5 rounded bg-[#1B3B2B] text-[#74C69D]">
+                          OPSI 02 · BERLANGGANAN &amp; PEMELIHARAAN
+                        </span>
+                        <ShieldCheck className="w-4 h-4 text-[#2E7D5B]" />
+                      </div>
+                      <h3 className="font-display font-bold text-xl text-[#121311]">
+                        Managed AI Agent (Layanan Terkelola)
+                      </h3>
+                      <p className="text-sm text-[#4A4D46] leading-relaxed">
+                        Sistem agen AI yang dipantau, dirawat, dan dioptimalkan secara berkelanjutan oleh tim engineer RUMIVERSE setiap bulan. Anda cukup menerima hasil laporan dan efisiensi kerja tanpa pusing urusan server.
+                      </p>
+                      <ul className="space-y-2 text-xs text-[#2D2F2A] pt-2">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0 mt-0.5" />
+                          <span><strong>Pemantauan 24/7:</strong> Pengecekan latensi harian, audit akurasi verifikasi, dan penanganan otomatis jika API pihak ketiga bermasalah.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0 mt-0.5" />
+                          <span><strong>Pembaruan Berkala:</strong> Penyesuaian alur kerja baru dan optimasi pemakaian token model agar biaya operasional bulanan tetap hemat.</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="pt-3 border-t border-[#D8D6CE]/80 font-mono text-[11px] text-[#2E7D5B] font-medium">
+                      ✓ Cocok untuk: Pemilik bisnis yang ingin sistem terima beres tanpa tim IT khusus
                     </div>
                   </div>
                 </div>
