@@ -21,8 +21,8 @@ export function ExecutiveProfileSection() {
               <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden border border-[#D8D6CE] bg-[#1B3B2B] group">
                 <img
                   src={founderPhoto}
-                  alt="Potret Ahmad Devis Jalaluddin Rumi — Rekayasawan & Pendiri RUMIVERSE"
-                  className="w-full h-full object-cover contrast-[1.04] transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                  alt="Potret Abu Devis Jalaluddin Rumi — Rekayasawan & Pendiri RUMIVERSE"
+                  className="w-full h-full object-cover object-[center_18%] contrast-[1.04] transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                 />
 
                 {/* Subtle Technical Vignette & Overlays */}
@@ -37,7 +37,7 @@ export function ExecutiveProfileSection() {
                 <div className="absolute bottom-3 left-3 right-3 bg-[#121311]/85 backdrop-blur-md p-3 rounded-xl border border-white/15 flex items-center justify-between shadow-md">
                   <div className="space-y-0.5">
                     <span className="font-mono text-[11px] text-[#F4F3EF] block font-bold tracking-tight">
-                      AHMAD DEVIS J. RUMI
+                      ABU DEVIS J. RUMI
                     </span>
                     <span className="font-mono text-[10px] text-[#74C69D] block">
                       Systems Architect &amp; Software Engineer
@@ -71,7 +71,7 @@ export function ExecutiveProfileSection() {
                 as="h2"
                 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-[#121311] tracking-tight leading-snug"
               >
-                Ahmad Devis Jalaluddin Rumi
+                Abu Devis Jalaluddin Rumi
               </MaskedHeading>
               <p className="font-mono text-xs text-[#6B6E66]">
                 Founder &amp; Principal Systems Architect // RUMIVERSE
@@ -80,10 +80,10 @@ export function ExecutiveProfileSection() {
 
             <div className="space-y-4 text-[#2D2F2A] leading-relaxed">
               <p className="text-base sm:text-lg text-[#121311] leading-[1.7]">
-                Berakar dari kecintaan mendalam pada rekayasa perangkat lunak dan otomasi fisik, saya mendirikan <strong>RUMIVERSE</strong> untuk menjembatani kode di layar komputer dengan kerja nyata di lapangan—mulai dari studio riset di Bogor hingga Living Lab peternakan terpadu di Lumajang.
+                Saya mendirikan <strong>RUMIVERSE</strong> untuk menghubungkan kode di layar komputer dengan kebutuhan kerja nyata di lapangan—mulai dari pengembangan aplikasi di Bogor hingga uji coba sistem peternakan terpadu di Lumajang.
               </p>
               <p className="text-sm sm:text-base text-[#4A4D46] leading-[1.7]">
-                Prinsip kerja saya sederhana: <em>arsitektur sistem yang andal tidak lahir dari teori di atas kertas, melainkan dibuktikan langsung di tanah berlumpur, di dalam kandang tertutup, dan di samping aliran air kolam</em>. Saya turun tangan langsung merancang antarmuka web, merakit mikrokontroler sensor dari nol, hingga melatih agen AI untuk membaca anomali operasional—memastikan setiap modul bekerja presisi dan siap diandalkan oleh pemilik usaha.
+                Bagi saya, arsitektur sistem yang baik tidak dinilai dari rumitnya teori di atas kertas, melainkan dari kemampuannya bekerja stabil saat diuji langsung di tanah berlumpur, di dalam kandang, dan di samping aliran air kolam. Saya turun tangan langsung dari merancang antarmuka web, merakit sensor fisik dari nol, hingga melatih model AI operasional agar setiap solusi benar-benar siap meringankan beban kerja Anda.
               </p>
             </div>
 

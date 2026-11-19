@@ -33,7 +33,7 @@ export function SecurityReliabilityBar() {
       aria-label="Standar Keamanan & Keandalan Sistem"
       className="bg-[#121311] text-[#F4F3EF] border-b border-[#2D2F2A]"
     >
-      <div className="max-w-[1440px] mx-auto px-6 py-10 sm:px-10 lg:px-12">
+      <div className="max-w-[1440px] mx-auto px-6 pt-16 pb-12 sm:px-10 sm:pt-20 sm:pb-14 lg:px-12 lg:pt-20 lg:pb-16">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-6 border-b border-[#2D2F2A]">
           <span className="font-mono text-xs text-[#74C69D] tracking-wide uppercase font-semibold">
             06. STANDAR KEAMANAN &amp; KEANDALAN SISTEM

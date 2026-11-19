@@ -43,14 +43,14 @@ test('authentic contact details match required principal architect and phone', (
   assert.equal(STUDIO_CONTACT.architectName, 'Abu Devis J.R.');
   assert.equal(STUDIO_CONTACT.email, 'abudevis5@gmail.com');
   assert.equal(STUDIO_CONTACT.phone, '+62 851-2279-7969');
-  assert.equal(STUDIO_CONTACT.monogram, 'ADR // PRINCIPAL ARCHITECT');
+  assert.equal(STUDIO_CONTACT.monogram, 'ADR // RUMIVERSE ARCHITECT');
 });
 
-test('hero telemetry HUD defines all 3 precision facility nodes', () => {
-  assert.equal(HERO_TELEMETRY_NODES.length, 3);
+test('hero telemetry HUD defines precision facility nodes', () => {
+  assert.equal(HERO_TELEMETRY_NODES.length, 4);
   assert.deepEqual(
     HERO_TELEMETRY_NODES.map((n) => n.code),
-    ['NODE-01', 'NODE-02', 'LOOP-03']
+    ['WING-01', 'WING-02', 'WING-03', 'WING-04']
   );
 });
 

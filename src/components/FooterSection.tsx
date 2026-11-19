@@ -44,8 +44,8 @@ export function FooterSection({ onOpenConsultation }: FooterSectionProps) {
         <rect width="100" height="100" fill="url(#footerGrid)" />
       </svg>
 
-      <div className="relative max-w-[1440px] mx-auto px-6 py-20 sm:px-10 sm:py-24 lg:px-12 lg:py-28">
-        <div className="max-w-4xl space-y-10">
+      <div className="relative max-w-[1440px] mx-auto px-6 py-12 sm:px-10 sm:py-14 lg:px-12 lg:py-16">
+        <div className="max-w-4xl space-y-6 sm:space-y-7">
           {/* Section Number & Tag */}
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[#74C69D] animate-pulse" />
@@ -56,21 +56,21 @@ export function FooterSection({ onOpenConsultation }: FooterSectionProps) {
 
           <MaskedHeading
             as="h2"
-            className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F4F3EF] tracking-tight leading-[1.12]"
+            className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-[#F4F3EF] tracking-tight leading-[1.15]"
           >
-            Mari bangun sistem presisi yang bekerja mandiri untuk bisnis Anda.
+            Punya rencana membangun aplikasi, otomasi AI, atau sistem lapangan? Mari diskusikan.
           </MaskedHeading>
 
-          <p className="text-base sm:text-lg text-[#D0D6CF] leading-relaxed max-w-2xl">
-            Dari audit masalah lapangan, integrasi kecerdasan buatan, hingga instalasi instrumen IoT fisik—kami siap mendengarkan rencana dan kebutuhan operasional Anda.
+          <p className="text-sm sm:text-base text-[#D0D6CF] leading-relaxed max-w-2xl">
+            Baik untuk pembuatan aplikasi web, otomasi alur kerja, maupun pemasangan sensor di lapangan, Anda bisa langsung menghubungi saya untuk diskusi awal.
           </p>
 
           {/* Large Interactive Email Card */}
-          <div className="p-6 sm:p-8 rounded-2xl bg-[#1B3B2B]/70 border border-[#74C69D]/20 shadow-md space-y-6">
+          <div className="p-5 sm:p-6 rounded-2xl bg-[#1B3B2B]/70 border border-[#74C69D]/20 shadow-md space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <a
                 href={`mailto:${STUDIO_CONTACT.email}`}
-                className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-[#F4F3EF] tracking-tight hover:text-[#74C69D] transition-colors break-all"
+                className="font-display text-xl sm:text-2xl lg:text-3xl font-bold text-[#F4F3EF] tracking-tight hover:text-[#74C69D] transition-colors break-all"
               >
                 {STUDIO_CONTACT.email}
               </a>
@@ -79,7 +79,7 @@ export function FooterSection({ onOpenConsultation }: FooterSectionProps) {
                 type="button"
                 onClick={handleCopyEmail}
                 aria-label="Salin alamat email"
-                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-mono rounded-xl border border-[#74C69D]/30 bg-[#121311]/60 text-[#F4F3EF] hover:bg-[#121311] transition-all cursor-pointer shadow-xs"
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-mono rounded-xl border border-[#74C69D]/30 bg-[#121311]/60 text-[#F4F3EF] hover:bg-[#121311] transition-all cursor-pointer shadow-xs"
               >
                 {copied ? (
                   <>
@@ -96,13 +96,13 @@ export function FooterSection({ onOpenConsultation }: FooterSectionProps) {
             </div>
 
             {/* Direct Quick Action Buttons (WhatsApp & Consultation) */}
-            <div className="pt-4 border-t border-[#74C69D]/15 flex flex-wrap items-center gap-4">
+            <div className="pt-3 border-t border-[#74C69D]/15 flex flex-wrap items-center gap-3">
               {/* Chat WhatsApp Direct Button */}
               <a
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2.5 px-5 py-3 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-[#121311] font-semibold text-xs tracking-tight transition-all cursor-pointer shadow-md hover:scale-[1.01]"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-[#121311] font-semibold text-xs tracking-tight transition-all cursor-pointer shadow-md hover:scale-[1.01]"
               >
                 <MessageCircle className="w-4 h-4 fill-current" />
                 <span>Chat WhatsApp Langsung (+62 851-2279-7969)</span>
@@ -113,9 +113,9 @@ export function FooterSection({ onOpenConsultation }: FooterSectionProps) {
               <button
                 type="button"
                 onClick={onOpenConsultation}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#FAF9F6] hover:bg-white text-[#121311] font-semibold text-xs tracking-tight transition-all cursor-pointer shadow-md hover:scale-[1.01]"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#FAF9F6] hover:bg-white text-[#121311] font-semibold text-xs tracking-tight transition-all cursor-pointer shadow-md hover:scale-[1.01]"
               >
-                <span>Ajukan Pertemuan / Jadwal Diskusi</span>
+                <span>Ajukan Jadwal Diskusi</span>
                 <ArrowUpRight className="w-4 h-4 text-[#1B3B2B]" />
               </button>
             </div>
@@ -123,7 +123,7 @@ export function FooterSection({ onOpenConsultation }: FooterSectionProps) {
         </div>
 
         {/* Quiet Bottom Footer Line with Studio Locations, Copyright & Back to Top */}
-        <div className="mt-20 pt-8 border-t border-[#233C2E] flex flex-col sm:flex-row sm:items-center justify-between gap-6 text-xs text-[#A1A39B] font-mono">
+        <div className="mt-10 sm:mt-12 pt-6 border-t border-[#233C2E] flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-[#A1A39B] font-mono">
           <div className="space-y-1 sm:space-y-0 sm:flex sm:items-center sm:gap-4">
             <span className="text-[#F4F3EF] font-medium">
               Studio &amp; Living Lab: Lumajang (Jawa Timur) &amp; Bogor (Jawa Barat) · Indonesia
@@ -132,12 +132,12 @@ export function FooterSection({ onOpenConsultation }: FooterSectionProps) {
             <span>Sesi daring &amp; kunjungan lapangan tersedia</span>
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4 sm:gap-6">
             <span>© 2026 RUMIVERSE · Arsitektur Sistem Presisi</span>
             <button
               type="button"
               onClick={scrollToTop}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#74C69D]/30 text-[#74C69D] hover:bg-[#74C69D]/10 hover:text-white transition-all cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-[#74C69D]/30 text-[#74C69D] hover:bg-[#74C69D]/10 hover:text-white transition-all cursor-pointer whitespace-nowrap shrink-0 text-xs font-mono font-medium"
             >
               <span>Kembali ke Atas</span>
               <ArrowUp className="w-3.5 h-3.5" />
