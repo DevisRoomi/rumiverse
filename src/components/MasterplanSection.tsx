@@ -1,17 +1,15 @@
 import { useState } from 'react';
 import {
   ArrowRight,
+  Camera,
   CheckCircle2,
-  ChevronRight,
   Compass,
   Droplets,
   Feather,
-  Info,
   Layers,
+  Leaf,
   Maximize2,
   RefreshCw,
-  Sun,
-  Wind,
   X,
   Zap,
 } from 'lucide-react';
@@ -19,12 +17,14 @@ import { motion, AnimatePresence } from 'motion/react';
 import { MaskedHeading } from './MaskedHeading';
 import { EditorialImage } from './EditorialImage';
 import type { ConsultationFormValues } from '../utils/ecosystemData';
-
-const MASTERPLAN_IMAGE_SRC = '/src/assets/images/masterplan/masterplan.jpg';
+import masterplanDroneWebp from '../assets/images/masterplan/masterplan.webp';
+import masterplanBlueprintJpg from '../assets/images/masterplan/masterplan.jpg';
 
 interface MasterplanSectionProps {
   onOpenConsultation?: (focus: ConsultationFormValues['focus']) => void;
 }
+
+type ViewModeKey = 'circular' | 'blueprint';
 
 interface MasterplanZone {
   id: string;
@@ -32,12 +32,55 @@ interface MasterplanZone {
   name: string;
   shortName: string;
   tag: string;
-  pin: { x: number; y: number }; // Percentage position on image
   role: string;
   hardware: string[];
   circularOutput: string;
   metric: { value: string; label: string };
+  icon: typeof Feather;
 }
+
+interface ViewModeConfig {
+  id: ViewModeKey;
+  label: string;
+  badge: string;
+  image: string;
+  alt: string;
+  aspectClass: string;
+  pins: Record<string, { x: number; y: number }>;
+}
+
+const VIEW_MODES: Record<ViewModeKey, ViewModeConfig> = {
+  circular: {
+    id: 'circular',
+    label: 'Foto Udara Drone (16:9)',
+    badge: 'FOTO UDARA REALISTIS 16:9',
+    image: masterplanDroneWebp,
+    alt: 'Foto udara arsitektural drone kawasan Smart Integrated Eco-Farm Lumajang 16:9 tanpa label teks',
+    aspectClass: 'aspect-[16/9]',
+    pins: {
+      'smart-coop': { x: 23, y: 28 }, // Kandang Ayam
+      'maggot-bsf': { x: 51, y: 22 }, // Maggot BSF
+      'aquaculture-walet': { x: 78, y: 46 }, // Kolam & Walet
+      'hydroponics-padi': { x: 34, y: 68 }, // Hidroponik & Padi
+      'microgrid-energy': { x: 72, y: 72 }, // Mikrogrid Energi
+    },
+  },
+  blueprint: {
+    id: 'blueprint',
+    label: 'Cetak Biru Isometrik 3D',
+    badge: 'BLUEPRINT TEKNIS 3D',
+    image: masterplanBlueprintJpg,
+    alt: 'Cetak biru arsitektur 3D isometrik Smart Integrated Eco-Farm RUMIVERSE Lumajang',
+    aspectClass: 'aspect-[16/10]',
+    pins: {
+      'smart-coop': { x: 19, y: 22 },
+      'maggot-bsf': { x: 33, y: 44 },
+      'aquaculture-walet': { x: 50, y: 30 },
+      'hydroponics-padi': { x: 82, y: 26 },
+      'microgrid-energy': { x: 14, y: 76 },
+    },
+  },
+};
 
 const ZONES: MasterplanZone[] = [
   {
@@ -46,7 +89,6 @@ const ZONES: MasterplanZone[] = [
     name: 'Kandang Ayam Smart Coop & Ruminansia',
     shortName: 'Kandang Ayam',
     tag: 'FASILITAS PETERNAKAN TERTUTUP',
-    pin: { x: 19, y: 22 },
     role: 'Kandang ayam petelur dan pedaging dengan ventilasi otomatis, atap surya, pemantauan kadar amonia (NH3), dan dispenser pakan otomatis berbasis jadwal.',
     hardware: [
       'Sensor Gas Amonia (NH3) & Kelembaban Udara',
@@ -56,6 +98,7 @@ const ZONES: MasterplanZone[] = [
     ],
     circularOutput: 'Limbah kotoran segar dialirkan langsung tanpa jeda ke unit biokonversi maggot BSF.',
     metric: { value: '100%', label: 'Kotoran dialirkan ke maggot' },
+    icon: Feather,
   },
   {
     id: 'maggot-bsf',
@@ -63,7 +106,6 @@ const ZONES: MasterplanZone[] = [
     name: 'Biokonversi Maggot BSF (Black Soldier Fly)',
     shortName: 'Maggot BSF',
     tag: 'UNIT REKAYASA BIOMASSA PROTEIN',
-    pin: { x: 33, y: 44 },
     role: 'Pusat pengurai limbah biologis: larva lalat tentara hitam mengonversi kotoran ternak dan sisa organik menjadi biomassa kaya protein kasar (42%) dalam 12–14 hari.',
     hardware: [
       'Bioreaktor Larva dengan Kendali Kelembaban Substrat',
@@ -72,6 +114,7 @@ const ZONES: MasterplanZone[] = [
     ],
     circularOutput: 'Larva segar bernutrisi tinggi dijadikan pakan utama mandiri untuk ayam dan kolam ikan.',
     metric: { value: '42%', label: 'Kandungan Protein Alami Kasar' },
+    icon: RefreshCw,
   },
   {
     id: 'aquaculture-walet',
@@ -79,7 +122,6 @@ const ZONES: MasterplanZone[] = [
     name: 'Kolam Akuakultur & Rumah Walet Terpadu',
     shortName: 'Kolam & Walet',
     tag: 'SENTRAL BIOFILTER AIR TAWAR',
-    pin: { x: 50, y: 30 },
     role: 'Kolam ikan nila dan gurame beraerasi surya di bawah rumah walet 3 lantai berarsitektur modern. Air kaya feses ikan dialirkan secara kontinu sebagai sumber nitrat bagi tanaman.',
     hardware: [
       'Probe Kualitas Air (pH, Dissolved Oxygen, Turbiditas)',
@@ -88,6 +130,7 @@ const ZONES: MasterplanZone[] = [
     ],
     circularOutput: 'Air buangan kolam dipompa ke rak hidroponik dan sawah mina padi untuk penyerapan nutrisi.',
     metric: { value: '14.2 L/m', label: 'Debit Sirkulasi Biofilter' },
+    icon: Droplets,
   },
   {
     id: 'hydroponics-padi',
@@ -95,7 +138,6 @@ const ZONES: MasterplanZone[] = [
     name: 'Hidroponik Bertingkat & Sawah Mina Padi',
     shortName: 'Hidroponik & Padi',
     tag: 'AGROTEKNOLOGI TANAMAN & PANGAN',
-    pin: { x: 82, y: 26 },
     role: 'Talang sayuran bertingkat dan petak sawah terintegrasi dengan ikan kecil dan bebek. Akar tanaman menyerap nitrat dan fosfat, menghasilkan panen sayur serta memurnikan kembali air.',
     hardware: [
       'Manifold Irigasi Tetes Baja Tahan Karat',
@@ -104,6 +146,7 @@ const ZONES: MasterplanZone[] = [
     ],
     circularOutput: 'Air bersih terfiltrasi dialirkan kembali ke kolam ternak dan instalasi minum.',
     metric: { value: '4x', label: 'Densitas Lahan Vertikal' },
+    icon: Leaf,
   },
   {
     id: 'microgrid-energy',
@@ -111,7 +154,6 @@ const ZONES: MasterplanZone[] = [
     name: 'Mikrogrid Energi Mandiri (Surya, Angin & BioDAS)',
     shortName: 'Mikrogrid Energi',
     tag: 'SUMBER DAYA TERBARUKAN 24/7',
-    pin: { x: 14, y: 76 },
     role: 'Pembangkit listrik mikrogrid terpadu: panel surya atap, kincir angin mini, dan turbin piko-hidro BioDAS pada arus sungai buatan memastikan 100% instrumen lapangan beroperasi tanpa ketergantungan PLN.',
     hardware: [
       'Generator Mikrohidro Aliran Arus Deras (BioDAS)',
@@ -121,14 +163,18 @@ const ZONES: MasterplanZone[] = [
     ],
     circularOutput: 'Menyuplai daya mandiri untuk seluruh pompa, katup solenoid, dan pemancar sensor LoRa/WiFi.',
     metric: { value: '0 g/kWh', label: 'Emisi Karbon Operasional' },
+    icon: Zap,
   },
 ];
 
 export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps) {
+  const [viewMode, setViewMode] = useState<ViewModeKey>('circular');
   const [selectedZoneId, setSelectedZoneId] = useState<string>('smart-coop');
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
+  const currentMode = VIEW_MODES[viewMode];
   const selectedZone = ZONES.find((z) => z.id === selectedZoneId) ?? ZONES[0];
+  const ZoneIcon = selectedZone.icon;
 
   return (
     <section id="masterplan" className="border-b border-[#D8D6CE] bg-[#F4F3EF]">
@@ -173,67 +219,111 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
           </div>
         </div>
 
-        {/* Split Layout: Blueprint Map (Left 65%) + Zone Detail Inspector (Right 35%) */}
+        {/* Split Layout: Masterplan Visualizer (Left 65%) + Zone Detail Inspector (Right 35%) */}
         <div className="p-6 sm:p-10 lg:p-12 border-b border-[#D8D6CE] bg-[#FAF9F6]">
-          {/* Top Metadata Blueprint Bar */}
+          {/* Top Metadata Blueprint Bar with Mode Switcher */}
           <div className="flex flex-wrap items-center justify-between gap-4 pb-4 mb-6 border-b border-[#D8D6CE] font-mono text-xs text-[#4A4D46]">
             <div className="flex items-center gap-3">
               <span className="px-2.5 py-0.5 rounded-md bg-[#1B3B2B] text-[#74C69D] text-[11px] font-bold tracking-wider">
-                FIG. 04 · BLUEPRINT TEKNIS
+                {currentMode.badge}
               </span>
               <span className="hidden sm:inline">
-                RUMIVERSE LIVING LAB // MASTERPLAN ISOMETRIK 3D
+                RUMIVERSE LIVING LAB // MASTERPLAN 5 ZONA SIRKULAR
               </span>
             </div>
 
-            <div className="flex items-center gap-4">
-              <span className="text-[11px] text-[#6B6E66]">
-                SKALA SPASIAL: 1:500 · TATA LETAK 5 ZONA SIRKULAR
-              </span>
+            {/* View Mode Switcher Pill */}
+            <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[#EAE8E1] border border-[#D8D6CE]">
+              <button
+                type="button"
+                onClick={() => setViewMode('circular')}
+                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-mono font-semibold transition-all cursor-pointer ${
+                  viewMode === 'circular'
+                    ? 'bg-[#1B3B2B] text-[#74C69D] shadow-xs'
+                    : 'text-[#4A4D46] hover:text-[#121311] hover:bg-[#FAF9F6]/60'
+                }`}
+              >
+                <Camera className="w-3.5 h-3.5" />
+                <span>Foto Udara Drone (16:9)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode('blueprint')}
+                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-mono font-semibold transition-all cursor-pointer ${
+                  viewMode === 'blueprint'
+                    ? 'bg-[#1B3B2B] text-[#74C69D] shadow-xs'
+                    : 'text-[#4A4D46] hover:text-[#121311] hover:bg-[#FAF9F6]/60'
+                }`}
+              >
+                <Layers className="w-3.5 h-3.5" />
+                <span>Cetak Biru 3D</span>
+              </button>
             </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Kolom Kiri (~62-65%): Map + 5 Tombol Zona di Luar Gambar */}
+            {/* Kolom Kiri (~62-65%): Map Visualizer + 5 Tombol Zona Ringkas di Luar Gambar */}
             <div className="lg:col-span-7 xl:col-span-8 space-y-4">
-              {/* Blueprint Visualizer Container (Height Controlled to fit within viewport) */}
-              <div className="relative aspect-[16/10] max-h-[460px] w-full rounded-2xl overflow-hidden border border-[#D8D6CE] bg-[#0E1210] shadow-md group">
+              {/* Map Container */}
+              <div className="relative aspect-[16/9] max-h-[480px] w-full rounded-2xl overflow-hidden border border-[#D8D6CE] bg-[#0E1210] shadow-md group">
                 <EditorialImage
-                  src={MASTERPLAN_IMAGE_SRC}
-                  alt="Cetak biru arsitektur 3D isometrik Smart Integrated Eco-Farm RUMIVERSE Lumajang"
+                  key={currentMode.id}
+                  src={currentMode.image}
+                  alt={currentMode.alt}
                   className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.01]"
                   fallbackTitle="Smart Integrated Eco-Farm Masterplan"
                   fallbackSubtitle="Visualisasi tata letak arsitektur terpadu Living Lab Lumajang."
                 />
 
-                {/* Blueprint Aesthetic Technical Overlay */}
-                <div className="absolute inset-0 bg-[#0E1210]/15 pointer-events-none mix-blend-multiply" />
-                <div className="absolute inset-0 bg-radial-[circle_at_center,transparent_20%,rgba(14,18,16,0.35)_100%] pointer-events-none" />
+                {/* Aesthetic Technical Lighting & Vignette Overlay */}
+                <div className="absolute inset-0 bg-[#0E1210]/10 pointer-events-none mix-blend-multiply" />
+                <div className="absolute inset-0 bg-radial-[circle_at_center,transparent_30%,rgba(14,18,16,0.3)_100%] pointer-events-none" />
 
-                {/* Blueprint Framing Corner Marks */}
-                <div className="absolute top-2.5 left-3 font-mono text-[9px] text-white/50 tracking-widest pointer-events-none select-none">
-                  ┌ [NW: 8°08&apos;S]
-                </div>
-                <div className="absolute top-2.5 right-3 font-mono text-[9px] text-white/50 tracking-widest pointer-events-none select-none">
-                  [NE: 113°13&apos;E] ┐
-                </div>
-                <div className="absolute bottom-2.5 left-3 font-mono text-[9px] text-white/50 tracking-widest pointer-events-none select-none">
-                  └ [SW: ZONE-05]
-                </div>
-                <div className="absolute bottom-2.5 right-3 font-mono text-[9px] text-white/50 tracking-widest pointer-events-none select-none">
-                  [SE: SCALE 1:500] ┘
-                </div>
+                {/* Technical Framing HUD Corner Marks */}
+                {viewMode === 'circular' ? (
+                  <>
+                    <div className="absolute top-2.5 left-3 font-mono text-[9px] text-white/80 tracking-widest pointer-events-none select-none bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10">
+                      ┌ [DRONE ALT: 120M]
+                    </div>
+                    <div className="absolute top-2.5 right-3 font-mono text-[9px] text-white/80 tracking-widest pointer-events-none select-none bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10">
+                      [GPS: 8°08&apos;S 113°13&apos;E] ┐
+                    </div>
+                    <div className="absolute bottom-2.5 left-3 font-mono text-[9px] text-white/80 tracking-widest pointer-events-none select-none bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10">
+                      └ [HEADING: 320° NW]
+                    </div>
+                    <div className="absolute bottom-2.5 right-3 font-mono text-[9px] text-white/80 tracking-widest pointer-events-none select-none bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10">
+                      [LUMAJANG LIVING LAB] ┘
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="absolute top-2.5 left-3 font-mono text-[9px] text-white/80 tracking-widest pointer-events-none select-none bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10">
+                      ┌ [NW: 8°08&apos;S]
+                    </div>
+                    <div className="absolute top-2.5 right-3 font-mono text-[9px] text-white/80 tracking-widest pointer-events-none select-none bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10">
+                      [NE: 113°13&apos;E] ┐
+                    </div>
+                    <div className="absolute bottom-2.5 left-3 font-mono text-[9px] text-white/80 tracking-widest pointer-events-none select-none bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10">
+                      └ [SW: ZONE-05]
+                    </div>
+                    <div className="absolute bottom-2.5 right-3 font-mono text-[9px] text-white/80 tracking-widest pointer-events-none select-none bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10">
+                      [SE: SCALE 1:500] ┘
+                    </div>
+                  </>
+                )}
 
-                {/* Interactive Pins on the Map (Shifted away from text labels) */}
+                {/* Adaptive Animated Pins on the Map */}
                 {ZONES.map((zone) => {
                   const isActive = zone.id === selectedZoneId;
+                  const pinPos = currentMode.pins[zone.id] ?? { x: 50, y: 50 };
+
                   return (
                     <button
                       key={zone.id}
                       type="button"
                       onClick={() => setSelectedZoneId(zone.id)}
-                      style={{ left: `${zone.pin.x}%`, top: `${zone.pin.y}%` }}
-                      className="absolute -translate-x-1/2 -translate-y-1/2 z-20 group/pin cursor-pointer focus:outline-none"
+                      style={{ left: `${pinPos.x}%`, top: `${pinPos.y}%` }}
+                      className="absolute -translate-x-1/2 -translate-y-1/2 z-20 group/pin cursor-pointer focus:outline-none transition-all duration-500 ease-out"
                       aria-label={`Pilih ${zone.name}`}
                     >
                       <span className="relative flex items-center justify-center">
@@ -241,7 +331,7 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
                         <span
                           className={`absolute w-7 h-7 sm:w-8 sm:h-8 rounded-full transition-all duration-300 ${
                             isActive
-                              ? 'bg-[#74C69D]/50 scale-125 animate-ping'
+                              ? 'bg-[#74C69D]/60 scale-125 animate-ping'
                               : 'bg-white/25 group-hover/pin:scale-110'
                           }`}
                         />
@@ -258,7 +348,7 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
                       </span>
 
                       {/* Tooltip on Hover */}
-                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover/pin:block px-2 py-0.5 rounded bg-[#121311]/95 text-white font-mono text-[10px] tracking-wide whitespace-nowrap shadow-lg pointer-events-none z-30 border border-white/20">
+                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover/pin:block px-2.5 py-1 rounded bg-[#121311]/95 text-white font-mono text-[10px] tracking-wide whitespace-nowrap shadow-xl pointer-events-none z-30 border border-white/20">
                         {zone.number} · {zone.shortName}
                       </span>
                     </button>
@@ -266,22 +356,25 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
                 })}
               </div>
 
-              {/* Grid 5 Tombol Zona Ringkas di Luar Gambar (Tidak Terpotong) */}
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-                {ZONES.map((zone) => {
+              {/* Grid 5 Tombol Zona Ringkas di Luar Gambar (Tidak Terpotong, Height Uniform) */}
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+                {ZONES.map((zone, idx) => {
                   const isSelected = zone.id === selectedZoneId;
+                  const isLastOdd = idx === 4; // 5th item spans 2 cols on mobile
                   return (
                     <button
                       key={zone.id}
                       type="button"
                       onClick={() => setSelectedZoneId(zone.id)}
-                      className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                      className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between min-h-[72px] ${
+                        isLastOdd ? 'col-span-2 sm:col-span-1' : ''
+                      } ${
                         isSelected
                           ? 'bg-[#1B3B2B] text-[#F4F3EF] border-[#1B3B2B] shadow-xs scale-[1.01]'
                           : 'bg-[#F4F3EF] hover:bg-[#EAE8E1] text-[#242622] border-[#D8D6CE]'
                       }`}
                     >
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between w-full">
                         <span
                           className={`font-mono text-[10px] font-bold px-1.5 py-0.5 rounded ${
                             isSelected
@@ -291,9 +384,11 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
                         >
                           ZONA {zone.number}
                         </span>
-                        {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-[#74C69D]" />}
+                        {isSelected && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#74C69D] animate-pulse" />
+                        )}
                       </div>
-                      <span className="font-display font-semibold text-xs truncate block mt-2">
+                      <span className="font-display font-semibold text-[11px] sm:text-xs leading-snug break-words block mt-2">
                         {zone.shortName}
                       </span>
                     </button>
@@ -303,7 +398,10 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
 
               <figcaption className="font-mono text-[11px] text-[#6B6E66] px-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1">
                 <span>
-                  <strong className="text-[#121311]">FIG. 04</strong> — Model isometrik spasial Smart Integrated Eco-Farm RUMIVERSE Lumajang.
+                  <strong className="text-[#121311]">FIG. 04</strong> —{' '}
+                  {viewMode === 'circular'
+                    ? 'Foto udara arsitektural drone kawasan Living Lab Lumajang (16:9).'
+                    : 'Model isometrik spasial Smart Integrated Eco-Farm RUMIVERSE Lumajang.'}
                 </span>
                 <span className="text-[#2E7D5B] font-semibold shrink-0">
                   ● Klik Pin / Tombol untuk Membedah Zona
@@ -320,25 +418,31 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.28, ease: 'easeOut' }}
-                  className="p-6 rounded-2xl bg-[#F4F3EF] border border-[#D8D6CE] space-y-5 shadow-sm"
+                  className="p-6 sm:p-7 rounded-2xl bg-[#F4F3EF] border border-[#D8D6CE] space-y-5 shadow-sm"
                 >
-                  {/* Header Zona */}
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="px-2.5 py-0.5 rounded bg-[#1B3B2B] text-[#74C69D] font-mono text-[11px] font-bold">
-                        ZONA {selectedZone.number}
-                      </span>
-                      <span className="font-mono text-[10px] text-[#2E7D5B] uppercase tracking-wider font-semibold">
-                        {selectedZone.tag}
-                      </span>
+                  {/* Header Zona & Ikon Khusus */}
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="space-y-1.5">
+                      <div className="flex items-center gap-2">
+                        <span className="px-2.5 py-0.5 rounded bg-[#1B3B2B] text-[#74C69D] font-mono text-[11px] font-bold">
+                          ZONA {selectedZone.number}
+                        </span>
+                        <span className="font-mono text-[10px] text-[#2E7D5B] uppercase tracking-wider font-semibold">
+                          {selectedZone.tag}
+                        </span>
+                      </div>
+                      <h3 className="font-display font-bold text-xl sm:text-2xl text-[#121311] leading-snug">
+                        {selectedZone.name}
+                      </h3>
                     </div>
-                    <h3 className="font-display font-bold text-xl sm:text-2xl text-[#121311] leading-snug">
-                      {selectedZone.name}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-[#4A4D46] leading-relaxed">
-                      {selectedZone.role}
-                    </p>
+                    <div className="p-2.5 rounded-xl bg-[#FAF9F6] border border-[#D8D6CE] text-[#2E7D5B] shrink-0">
+                      <ZoneIcon className="w-5 h-5" />
+                    </div>
                   </div>
+
+                  <p className="text-xs sm:text-sm text-[#4A4D46] leading-relaxed">
+                    {selectedZone.role}
+                  </p>
 
                   {/* Instrumentasi Terpasang */}
                   <div className="p-4 rounded-xl bg-[#FAF9F6] border border-[#D8D6CE] space-y-2.5">
@@ -453,24 +557,55 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
             <div className="flex items-center justify-between pb-4 border-b border-white/20 text-white font-mono text-xs">
               <div className="flex items-center gap-3">
                 <span className="px-2.5 py-0.5 rounded bg-[#1B3B2B] text-[#74C69D] font-bold">
-                  MASTERPLAN 3D
+                  {currentMode.badge}
                 </span>
-                <span>SMART INTEGRATED ECO-FARM // LUMAJANG LIVING LAB</span>
+                <span className="hidden sm:inline">
+                  SMART INTEGRATED ECO-FARM // LUMAJANG LIVING LAB
+                </span>
               </div>
-              <button
-                type="button"
-                onClick={() => setLightboxOpen(false)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/30 text-white hover:bg-white/10 transition-all cursor-pointer"
-              >
-                <span>Tutup</span>
-                <X className="w-4 h-4" />
-              </button>
+
+              {/* Mode Switcher in Lightbox */}
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-1 p-0.5 rounded-lg bg-white/10 border border-white/15">
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('circular')}
+                    className={`px-2.5 py-1 rounded text-[11px] font-mono transition-all cursor-pointer ${
+                      viewMode === 'circular'
+                        ? 'bg-[#1B3B2B] text-[#74C69D]'
+                        : 'text-white/70 hover:text-white'
+                    }`}
+                  >
+                    Foto Drone
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('blueprint')}
+                    className={`px-2.5 py-1 rounded text-[11px] font-mono transition-all cursor-pointer ${
+                      viewMode === 'blueprint'
+                        ? 'bg-[#1B3B2B] text-[#74C69D]'
+                        : 'text-white/70 hover:text-white'
+                    }`}
+                  >
+                    Cetak Biru 3D
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setLightboxOpen(false)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/30 text-white hover:bg-white/10 transition-all cursor-pointer"
+                >
+                  <span>Tutup</span>
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
             </div>
 
             <div className="flex-1 flex items-center justify-center overflow-auto p-4">
               <img
-                src={MASTERPLAN_IMAGE_SRC}
-                alt="Masterplan Isometrik Smart Integrated Eco-Farm RUMIVERSE"
+                src={currentMode.image}
+                alt={currentMode.alt}
                 className="max-h-[85vh] max-w-full object-contain rounded-xl shadow-2xl border border-white/10"
               />
             </div>
