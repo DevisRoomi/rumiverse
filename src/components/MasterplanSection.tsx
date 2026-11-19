@@ -712,6 +712,45 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
               </div>
             ))}
           </div>
+
+          {/* Ajakan Diskusi Ringan di Akhir Masterplan */}
+          <div className="mt-12 p-6 sm:p-8 rounded-2xl bg-[#EAE8E1]/80 border border-[#D8D6CE] flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-2xs">
+            <div className="space-y-1.5 max-w-2xl">
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#2E7D5B]" />
+                <span className="font-mono text-[11px] font-bold text-[#2E7D5B] uppercase tracking-wider">
+                  DARI CETAK BIRU MENUJU LAPANGAN
+                </span>
+              </div>
+              <h4 className="font-display font-bold text-lg sm:text-xl text-[#121311] leading-snug">
+                Punya lahan, fasilitas peternakan, atau sistem operasional yang ingin diotomatisasi?
+              </h4>
+              <p className="text-xs sm:text-sm text-[#4A4D46] leading-relaxed">
+                Anda tidak harus langsung membangun seluruh kawasan terpadu. Kami dapat membantu mengaudit kebutuhan Anda dan mengintegrasikan modul prioritas yang paling mendesak hari ini.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3 shrink-0">
+              <a
+                href="#roadmap"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-[#D8D6CE] hover:border-[#121311] bg-[#FAF9F6] text-xs font-mono font-semibold text-[#121311] hover:bg-white transition-all shadow-2xs cursor-pointer"
+              >
+                <span>Lihat Alur Kerja Sama Kami ↓</span>
+              </a>
+              <button
+                type="button"
+                onClick={() => {
+                  if (onOpenConsultation) {
+                    onOpenConsultation('integrated');
+                  }
+                }}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1B3B2B] hover:bg-[#121311] text-[#F4F3EF] text-xs font-semibold tracking-tight transition-all cursor-pointer shadow-xs hover:scale-[1.01]"
+              >
+                <span>Diskusi Ringan &amp; Konsultasi</span>
+                <ArrowRight className="w-3.5 h-3.5 text-[#74C69D]" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 

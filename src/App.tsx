@@ -5,8 +5,7 @@ import { HeroSection } from './components/HeroSection';
 import { AboutSection } from './components/AboutSection';
 import { PillarsSection } from './components/PillarsSection';
 import { MasterplanSection } from './components/MasterplanSection';
-import { CaseStudySection } from './components/CaseStudySection';
-import { IndustryVerticalsSection } from './components/IndustryVerticalsSection';
+import { SectorSimulationSection } from './components/SectorSimulationSection';
 import { EngagementRoadmapSection } from './components/EngagementRoadmapSection';
 import { ExecutiveProfileSection } from './components/ExecutiveProfileSection';
 import { SecurityReliabilityBar } from './components/SecurityReliabilityBar';
@@ -36,8 +35,7 @@ export default function App() {
         <AboutSection />
         <PillarsSection onOpenConsultation={openWithFocus} />
         <MasterplanSection onOpenConsultation={openWithFocus} />
-        <CaseStudySection />
-        <IndustryVerticalsSection onConsultSector={openWithFocus} />
+        <SectorSimulationSection onConsultSector={openWithFocus} />
         <EngagementRoadmapSection />
         <ExecutiveProfileSection />
         <SecurityReliabilityBar />
