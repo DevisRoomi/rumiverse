@@ -8,11 +8,11 @@ export function SecurityReliabilityBar() {
     >
       <div className="max-w-[1440px] mx-auto px-6 py-10 sm:px-10 lg:px-12">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-6 border-b border-[#2D2F2A]">
-          <span className="font-mono text-xs text-[#74C69D] tracking-wide">
-            INFRASTRUCTURE SECURITY &amp; RELIABILITY SPECIFICATIONS
+          <span className="font-mono text-xs text-[#74C69D] tracking-wide uppercase font-semibold">
+            07. INFRASTRUCTURE SECURITY &amp; RELIABILITY SPECIFICATIONS
           </span>
           <span className="font-mono text-xs text-[#A1A39B]">
-            STANDAR REKAYASA ENTERPRISE
+            STANDAR KEAMANAN &amp; KEANDALAN ENTERPRISE
           </span>
         </div>
 
