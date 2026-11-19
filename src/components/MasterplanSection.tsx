@@ -4,11 +4,14 @@ import {
   Camera,
   CheckCircle2,
   Compass,
+  Cpu,
   Droplets,
   Feather,
   Layers,
+  LayoutDashboard,
   Leaf,
   Maximize2,
+  Radio,
   RefreshCw,
   X,
   Zap,
@@ -37,6 +40,11 @@ interface MasterplanZone {
   circularOutput: string;
   metric: { value: string; label: string };
   icon: typeof Feather;
+  pilarIntegration: {
+    p1: string;
+    p2: string;
+    p3: string;
+  };
 }
 
 interface ViewModeConfig {
@@ -99,6 +107,11 @@ const ZONES: MasterplanZone[] = [
     circularOutput: 'Limbah kotoran segar dialirkan langsung tanpa jeda ke unit biokonversi maggot BSF.',
     metric: { value: '100%', label: 'Kotoran dialirkan ke maggot' },
     icon: Feather,
+    pilarIntegration: {
+      p1: 'Dasbor pemantauan real-time status suhu, amonia, dan tombol dispensasi darurat di ponsel.',
+      p2: 'AI Agent memprediksi lonjakan gas amonia & menghitung ransum pakan otomatis berbasis bobot ternak harian.',
+      p3: 'Sensor gas amonia (NH3), blower ventilasi otomatis, timbangan digital talang pakan, dan solar PV atap.',
+    },
   },
   {
     id: 'maggot-bsf',
@@ -115,6 +128,11 @@ const ZONES: MasterplanZone[] = [
     circularOutput: 'Larva segar bernutrisi tinggi dijadikan pakan utama mandiri untuk ayam dan kolam ikan.',
     metric: { value: '42%', label: 'Kandungan Protein Alami Kasar' },
     icon: RefreshCw,
+    pilarIntegration: {
+      p1: 'Pencatatan batch biokonversi, estimasi tanggal panen pupa, dan inventaris kasgot di web app.',
+      p2: 'Model AI memprediksi laju konsumsi limbah dan menjadwalkan aktivasi sistem separator pupa secara optimal.',
+      p3: 'Bioreaktor kendali kelembaban substrat, filter karbon aktif otomatis, dan sensor suhu biomassa.',
+    },
   },
   {
     id: 'aquaculture-walet',
@@ -131,6 +149,11 @@ const ZONES: MasterplanZone[] = [
     circularOutput: 'Air buangan kolam dipompa ke rak hidroponik dan sawah mina padi untuk penyerapan nutrisi.',
     metric: { value: '14.2 L/m', label: 'Debit Sirkulasi Biofilter' },
     icon: Droplets,
+    pilarIntegration: {
+      p1: 'Visualisasi grafis DO (dissolved oxygen), tren pH air, dan kontrol audio pemanggil walet dari web/mobile.',
+      p2: 'AI Agent mendeteksi anomali oksigen air terlarut dan otomatis memicu aerasi surya sebelum membahayakan ikan.',
+      p3: 'Probe multiparameter air, aerator venturi bertenaga surya, dan pelembab ultrasonik rumah walet.',
+    },
   },
   {
     id: 'hydroponics-padi',
@@ -147,6 +170,11 @@ const ZONES: MasterplanZone[] = [
     circularOutput: 'Air bersih terfiltrasi dialirkan kembali ke kolam ternak dan instalasi minum.',
     metric: { value: '4x', label: 'Densitas Lahan Vertikal' },
     icon: Leaf,
+    pilarIntegration: {
+      p1: 'Manajemen zona irigasi per blok bedengan dan pelacakan jadwal panen sayuran premium di dashboard web.',
+      p2: 'AI menganalisis pola cuaca & tren sensor EC harian untuk menyesuaikan durasi penyiraman otomatis.',
+      p3: 'Katup solenoid otomatis LoRa, manifold baja tahan karat, dan sensor konduktivitas listrik (EC/TDS).',
+    },
   },
   {
     id: 'microgrid-energy',
@@ -164,6 +192,11 @@ const ZONES: MasterplanZone[] = [
     circularOutput: 'Menyuplai daya mandiri untuk seluruh pompa, katup solenoid, dan pemancar sensor LoRa/WiFi.',
     metric: { value: '0 g/kWh', label: 'Emisi Karbon Operasional' },
     icon: Zap,
+    pilarIntegration: {
+      p1: 'Dasbor neraca daya: produksi surya, putaran kincir angin, debit BioDAS, dan kapasitas sisa baterai.',
+      p2: 'Smart Grid AI mendistribusikan beban prioritas saat cuaca mendung agar pompa vital tidak pernah padam.',
+      p3: 'Turbin piko-hidro arus deras BioDAS, inverter surya fotovoltaik, sensor arus Hall, dan baterai LiFePO4.',
+    },
   },
 ];
 
@@ -179,7 +212,7 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
   return (
     <section id="masterplan" className="border-b border-[#D8D6CE] bg-[#F4F3EF]">
       <div className="max-w-[1440px] mx-auto">
-        {/* Section Header with Honest Credibility Status Badge & Target R&D Scope */}
+        {/* Section Header with Long-Term Horizon Status & Modular Readiness */}
         <div className="px-6 py-8 sm:px-10 lg:px-12 border-b border-[#D8D6CE] flex flex-col lg:flex-row lg:items-end justify-between gap-6">
           <div className="max-w-3xl space-y-3">
             <div className="flex flex-wrap items-center gap-2.5">
@@ -188,7 +221,7 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
               </span>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#1B3B2B] text-[#74C69D] border border-[#74C69D]/30 font-mono text-[10px] font-bold tracking-wider">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#74C69D] animate-pulse" />
-                STATUS: CETAK BIRU ARSITEKTUR &amp; TARGET R&amp;D 2026–2027
+                STATUS: CETAK BIRU ARSITEKTUR &amp; VISI JANGKA PANJANG (HORIZON 2030–2035)
               </span>
             </div>
 
@@ -200,8 +233,18 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
             </MaskedHeading>
 
             <p className="text-sm sm:text-base text-[#4A4D46] leading-relaxed">
-              Masterplan kawasan terpadu ini dirancang sebagai cetak biru arsitektur dan model percontohan (<em>reference architecture</em>) target 2026–2027. Tujuannya adalah menguji coba sistem pertanian-peternakan sirkular tertutup (<em>zero-waste</em>) di Lumajang agar biaya pakan dan energi mandiri dapat ditekan hingga 70%, sekaligus siap direplikasi di lahan milik klien maupun mitra investor.
+              Masterplan kawasan terpadu ini dirancang sebagai cetak biru arsitektur dan peta jalan strategis jangka panjang (<strong>Horizon 2030–2035</strong>). Kawasan ini menguji coba sistem pertanian-peternakan sirkular tertutup (<em>zero-waste</em>) di Lumajang guna menekan 70% biaya pakan dan energi secara mandiri.
             </p>
+
+            {/* Modular Readiness Callout */}
+            <div className="p-3.5 sm:p-4 rounded-xl bg-[#EAE8E1]/90 border border-[#D8D6CE] text-xs sm:text-sm text-[#2D2F2A] space-y-1">
+              <span className="font-mono text-[11px] font-bold text-[#1B3B2B] uppercase tracking-wider block">
+                ● Adopsi Bertahap &amp; Siap Bangun Hari Ini:
+              </span>
+              <p className="text-xs text-[#4A4D46] leading-relaxed">
+                Meskipun integrasi seluruh kawasan merupakan visi jangka panjang, setiap modul teknologinya—seperti kandang ayam pintar, bioreaktor maggot BSF, irigasi presisi hidroponik, hingga pemantauan mikrogrid mandiri—sudah berarsitektur modular dan siap diadopsi serta dibangun di lahan Anda secara terpisah sekarang.
+              </p>
+            </div>
           </div>
 
           <div className="flex items-center gap-4 shrink-0">
@@ -216,6 +259,66 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
               <Maximize2 className="w-3.5 h-3.5 text-[#2E7D5B]" />
               <span>Perbesar Peta</span>
             </button>
+          </div>
+        </div>
+
+        {/* Titik Temu Tiga Pilar Rekayasa RUMIVERSE Banner */}
+        <div className="px-6 py-5 sm:px-10 lg:px-12 border-b border-[#D8D6CE] bg-[#FAF9F6]">
+          <div className="flex items-center justify-between mb-3">
+            <span className="font-mono text-xs text-[#2E7D5B] font-bold tracking-wider uppercase flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2E7D5B]" />
+              Titik Temu Tiga Pilar Rekayasa RUMIVERSE
+            </span>
+            <span className="hidden md:inline font-mono text-[10px] text-[#6B6E66]">
+              SATU EKOSISTEM DIGITAL-FISIK TERPADU
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="p-3.5 rounded-xl bg-[#F4F3EF] border border-[#D8D6CE] space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-[#121311] text-[#F4F3EF]">
+                  PILAR 01
+                </span>
+                <span className="font-display font-semibold text-xs text-[#121311] flex items-center gap-1.5">
+                  <LayoutDashboard className="w-3.5 h-3.5 text-[#2E7D5B]" />
+                  Web &amp; Mobile Dashboard
+                </span>
+              </div>
+              <p className="text-[11px] text-[#4A4D46] leading-relaxed">
+                Menjadi dasbor kendali pusat real-time dan aplikasi pemantauan harian bagi operator lapangan di genggaman.
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-[#F4F3EF] border border-[#D8D6CE] space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-[#1B3B2B] text-[#74C69D]">
+                  PILAR 02
+                </span>
+                <span className="font-display font-semibold text-xs text-[#121311] flex items-center gap-1.5">
+                  <Cpu className="w-3.5 h-3.5 text-[#74C69D]" />
+                  Autonomous AI Workforce
+                </span>
+              </div>
+              <p className="text-[11px] text-[#4A4D46] leading-relaxed">
+                Menganalisis pola pakan, memprediksi lonjakan amonia, dan mengirim ringkasan operasional otomatis ke WhatsApp pengelola.
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-[#F4F3EF] border border-[#D8D6CE] space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-[#2E7D5B] text-white">
+                  PILAR 03
+                </span>
+                <span className="font-display font-semibold text-xs text-[#121311] flex items-center gap-1.5">
+                  <Radio className="w-3.5 h-3.5 text-[#2E7D5B]" />
+                  Precision IoT &amp; Cyber-Physical
+                </span>
+              </div>
+              <p className="text-[11px] text-[#4A4D46] leading-relaxed">
+                Perangkat sensor mikroklimat, katup solenoid otomatis, dan turbin pembangkit fisik di kelima zona kawasan.
+              </p>
+            </div>
           </div>
         </div>
 
@@ -279,40 +382,40 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
                 <div className="absolute inset-0 bg-[#0E1210]/10 pointer-events-none mix-blend-multiply" />
                 <div className="absolute inset-0 bg-radial-[circle_at_center,transparent_30%,rgba(14,18,16,0.3)_100%] pointer-events-none" />
 
-                {/* Technical Framing HUD Corner Marks */}
+                {/* Technical Framing HUD Corner Marks (Lifted to avoid container rounded clipping) */}
                 {viewMode === 'circular' ? (
                   <>
-                    <div className="absolute top-2.5 left-3 font-mono text-[9px] text-white/80 tracking-widest pointer-events-none select-none bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10">
+                    <div className="absolute top-3.5 sm:top-4 left-4 sm:left-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/50 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10 shadow-sm">
                       ┌ [DRONE ALT: 120M]
                     </div>
-                    <div className="absolute top-2.5 right-3 font-mono text-[9px] text-white/80 tracking-widest pointer-events-none select-none bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10">
+                    <div className="absolute top-3.5 sm:top-4 right-4 sm:right-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/50 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10 shadow-sm">
                       [GPS: 8°08&apos;S 113°13&apos;E] ┐
                     </div>
-                    <div className="absolute bottom-2.5 left-3 font-mono text-[9px] text-white/80 tracking-widest pointer-events-none select-none bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10">
+                    <div className="absolute bottom-4 sm:bottom-4.5 left-4 sm:left-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/50 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10 shadow-sm">
                       └ [HEADING: 320° NW]
                     </div>
-                    <div className="absolute bottom-2.5 right-3 font-mono text-[9px] text-white/80 tracking-widest pointer-events-none select-none bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10">
+                    <div className="absolute bottom-4 sm:bottom-4.5 right-4 sm:right-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/50 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10 shadow-sm">
                       [LUMAJANG LIVING LAB] ┘
                     </div>
                   </>
                 ) : (
                   <>
-                    <div className="absolute top-2.5 left-3 font-mono text-[9px] text-white/80 tracking-widest pointer-events-none select-none bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10">
+                    <div className="absolute top-3.5 sm:top-4 left-4 sm:left-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/50 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10 shadow-sm">
                       ┌ [NW: 8°08&apos;S]
                     </div>
-                    <div className="absolute top-2.5 right-3 font-mono text-[9px] text-white/80 tracking-widest pointer-events-none select-none bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10">
+                    <div className="absolute top-3.5 sm:top-4 right-4 sm:right-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/50 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10 shadow-sm">
                       [NE: 113°13&apos;E] ┐
                     </div>
-                    <div className="absolute bottom-2.5 left-3 font-mono text-[9px] text-white/80 tracking-widest pointer-events-none select-none bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10">
+                    <div className="absolute bottom-4 sm:bottom-4.5 left-4 sm:left-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/50 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10 shadow-sm">
                       └ [SW: ZONE-05]
                     </div>
-                    <div className="absolute bottom-2.5 right-3 font-mono text-[9px] text-white/80 tracking-widest pointer-events-none select-none bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10">
+                    <div className="absolute bottom-4 sm:bottom-4.5 right-4 sm:right-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/50 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10 shadow-sm">
                       [SE: SCALE 1:500] ┘
                     </div>
                   </>
                 )}
 
-                {/* Adaptive Animated Pins on the Map */}
+                {/* Adaptive Animated Pins on the Map with Subtle Pulse ONLY on Active Pin */}
                 {ZONES.map((zone) => {
                   const isActive = zone.id === selectedZoneId;
                   const pinPos = currentMode.pins[zone.id] ?? { x: 50, y: 50 };
@@ -327,20 +430,22 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
                       aria-label={`Pilih ${zone.name}`}
                     >
                       <span className="relative flex items-center justify-center">
-                        {/* Pulsing Aura */}
+                        {/* Subtle Pulse Aura ONLY on Active Pin */}
+                        {isActive && (
+                          <>
+                            {/* Outer soft breathing halo */}
+                            <span className="absolute -inset-2 sm:-inset-2.5 rounded-full bg-[#74C69D]/30 animate-pulse pointer-events-none" />
+                            {/* Gentle ping ripple */}
+                            <span className="absolute -inset-1 rounded-full bg-[#74C69D]/50 animate-ping opacity-60 pointer-events-none" />
+                          </>
+                        )}
+
+                        {/* High-Contrast Pin Badge */}
                         <span
-                          className={`absolute w-7 h-7 sm:w-8 sm:h-8 rounded-full transition-all duration-300 ${
+                          className={`relative flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 text-[10px] sm:text-[11px] font-mono font-bold transition-all ${
                             isActive
-                              ? 'bg-[#74C69D]/60 scale-125 animate-ping'
-                              : 'bg-white/25 group-hover/pin:scale-110'
-                          }`}
-                        />
-                        {/* Badge */}
-                        <span
-                          className={`relative flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 text-[10px] sm:text-[11px] font-mono font-bold transition-all shadow-md ${
-                            isActive
-                              ? 'bg-[#1B3B2B] border-[#74C69D] text-[#74C69D] scale-110 ring-2 ring-[#74C69D]/40'
-                              : 'bg-[#121311]/90 border-white/80 text-white hover:border-[#74C69D] hover:text-[#74C69D]'
+                              ? 'bg-[#1B3B2B] border-[#74C69D] text-[#74C69D] scale-110 shadow-[0_0_16px_rgba(116,198,157,0.7)] ring-2 ring-[#74C69D]/50'
+                              : 'bg-[#121311]/90 border-white text-white hover:border-[#74C69D] hover:text-[#74C69D] hover:scale-105 shadow-md'
                           }`}
                         >
                           {zone.number}
@@ -348,7 +453,7 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
                       </span>
 
                       {/* Tooltip on Hover */}
-                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover/pin:block px-2.5 py-1 rounded bg-[#121311]/95 text-white font-mono text-[10px] tracking-wide whitespace-nowrap shadow-xl pointer-events-none z-30 border border-white/20">
+                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/pin:block px-2.5 py-1 rounded bg-[#121311]/95 text-white font-mono text-[10px] tracking-wide whitespace-nowrap shadow-xl pointer-events-none z-30 border border-white/20">
                         {zone.number} · {zone.shortName}
                       </span>
                     </button>
@@ -443,6 +548,39 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
                   <p className="text-xs sm:text-sm text-[#4A4D46] leading-relaxed">
                     {selectedZone.role}
                   </p>
+
+                  {/* Sinergi 3 Pilar pada Zona Ini */}
+                  <div className="p-4 rounded-xl bg-[#FAF9F6] border border-[#D8D6CE] space-y-2.5">
+                    <span className="font-mono text-[10px] text-[#1B3B2B] font-bold uppercase tracking-wider block">
+                      Sinergi 3 Pilar di Zona Ini:
+                    </span>
+                    <div className="space-y-2 text-xs">
+                      <div className="flex items-start gap-2">
+                        <span className="font-mono text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#121311] text-[#F4F3EF] shrink-0 mt-0.5">
+                          P1 WEB/APP
+                        </span>
+                        <span className="text-[11px] text-[#4A4D46] leading-relaxed">
+                          {selectedZone.pilarIntegration.p1}
+                        </span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="font-mono text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#1B3B2B] text-[#74C69D] shrink-0 mt-0.5">
+                          P2 AI AGENT
+                        </span>
+                        <span className="text-[11px] text-[#4A4D46] leading-relaxed">
+                          {selectedZone.pilarIntegration.p2}
+                        </span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="font-mono text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#2E7D5B] text-white shrink-0 mt-0.5">
+                          P3 IOT/CPS
+                        </span>
+                        <span className="text-[11px] text-[#4A4D46] leading-relaxed">
+                          {selectedZone.pilarIntegration.p3}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
 
                   {/* Instrumentasi Terpasang */}
                   <div className="p-4 rounded-xl bg-[#FAF9F6] border border-[#D8D6CE] space-y-2.5">
