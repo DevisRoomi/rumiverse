@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import {
+  ArrowLeft,
   ArrowRight,
   Bot,
   CheckCircle2,
@@ -75,6 +76,33 @@ export function Pillar2JournalModal({
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const [readingProgress, setReadingProgress] = useState(0);
 
+  // Sync with browser History API so Back button & mobile swipe gesture close modal cleanly
+  useEffect(() => {
+    if (!open) return;
+
+    const modalHash = '#jurnal-pilar-02';
+    if (window.location.hash !== modalHash) {
+      window.history.pushState({ modal: 'jurnal-pilar-02' }, '', modalHash);
+    }
+
+    const handlePopState = () => {
+      onClose();
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [open, onClose]);
+
+  // Clean close action that pops history entry if still present
+  const handleClose = () => {
+    if (window.location.hash === '#jurnal-pilar-02') {
+      window.history.back();
+    }
+    onClose();
+  };
+
   // Track reading scroll progress
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -97,47 +125,71 @@ export function Pillar2JournalModal({
     if (!open) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        onClose();
+        handleClose();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [open, onClose]);
+  }, [open]);
+
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <AnimatePresence>
       {open && (
         <motion.div
           key="pillar2-journal-reader"
-          initial={{ opacity: 0, y: 40, scale: 0.985 }}
+          initial={{ opacity: 0, y: 35, scale: 0.985 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 30, scale: 0.99 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          exit={{ opacity: 0, y: 25, scale: 0.99 }}
+          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
           className="fixed inset-0 z-50 flex flex-col bg-[#FAF9F6] text-[#121311] overflow-hidden select-text shadow-2xl"
         >
           {/* Sticky Editorial Header */}
-          <header className="sticky top-0 z-40 bg-[#FAF9F6]/95 backdrop-blur-md border-b border-[#D8D6CE]">
-            <div className="max-w-[1440px] mx-auto px-6 lg:px-12 h-14 flex items-center justify-between gap-6">
-              <div className="flex items-center gap-3">
-                <span className="px-2.5 py-0.5 rounded-md bg-[#1B3B2B] text-[#74C69D] font-mono text-[11px] font-bold tracking-wider uppercase">
+          <header className="sticky top-0 z-40 bg-[#FAF9F6] border-b border-[#D8D6CE] shadow-2xs">
+            <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 h-14 flex items-center justify-between gap-3 sm:gap-6">
+              {/* Left Return Button & Pillar Tag */}
+              <div className="flex items-center gap-2.5 sm:gap-3">
+                <button
+                  type="button"
+                  onClick={handleClose}
+                  className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-lg bg-[#121311] hover:bg-[#1B3B2B] text-[#FAF9F6] text-xs font-mono font-semibold transition-all shadow-xs cursor-pointer active:scale-[0.98]"
+                  aria-label="Kembali ke Pilar"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <span>Kembali ke Pilar</span>
+                </button>
+
+                <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-md bg-[#1B3B2B] text-[#74C69D] font-mono text-[11px] font-bold tracking-wider uppercase">
                   PILAR 02
                 </span>
-                <span className="font-mono text-xs text-[#4A4D46] hidden sm:inline">
+                <span className="font-mono text-xs text-[#4A4D46] hidden lg:inline">
                   RUMIVERSE ENGINEERING JOURNAL // AUTONOMOUS AI WORKFORCE
                 </span>
               </div>
 
-              <div className="flex items-center gap-4">
+              {/* Right Reading Progress & High-Contrast Close Button */}
+              <div className="flex items-center gap-3 sm:gap-4">
                 <span className="hidden md:inline font-mono text-[11px] text-[#6B6E66] tabular-nums">
                   {Math.round(readingProgress)}% DIBACA
                 </span>
+
                 <button
                   type="button"
-                  onClick={onClose}
-                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#D8D6CE] hover:border-[#121311] text-xs font-mono text-[#121311] hover:bg-[#EAE8E1] transition-all cursor-pointer"
+                  onClick={handleClose}
+                  className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-lg bg-[#18181B] hover:bg-[#1B3B2B] text-white text-xs font-mono font-semibold shadow-xs transition-all cursor-pointer active:scale-[0.98] border border-black/20"
+                  aria-label="Tutup Jurnal (Esc)"
                 >
-                  <span>Tutup Jurnal</span>
-                  <X className="w-3.5 h-3.5" />
+                  <span>Tutup</span>
+                  <kbd className="hidden sm:inline-block px-1.5 py-0.5 rounded bg-white/20 text-[10px] text-white font-mono leading-none">
+                    Esc
+                  </kbd>
+                  <X className="w-3.5 h-3.5 text-white/80" />
                 </button>
               </div>
             </div>
@@ -151,19 +203,20 @@ export function Pillar2JournalModal({
             </div>
           </header>
 
-          {/* Scrollable Journal Article Body */}
+          {/* Scrollable Journal Article Body (Spacious bottom padding) */}
           <div
             ref={scrollContainerRef}
-            className="flex-1 overflow-y-auto px-6 py-12 sm:px-10 sm:py-16 lg:py-20"
+            className="flex-1 overflow-y-auto px-5 py-10 sm:px-10 sm:py-14 lg:py-16 pb-28 sm:pb-36"
           >
+            {/* Optimal reading measure: max 700px (65ch-70ch) */}
             <motion.article
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-              className="max-w-3xl mx-auto space-y-16"
+              transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="max-w-[700px] mx-auto space-y-12 sm:space-y-14"
             >
               {/* Article Header & Title */}
-              <header className="space-y-6 pb-10 border-b border-[#D8D6CE]">
+              <header className="space-y-5 pb-8 border-b border-[#D8D6CE]">
                 <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-[#2E7D5B] tracking-wider uppercase">
                   <span>Dokumentasi Sistem</span>
                   <span aria-hidden="true" className="text-[#A1A39B]">·</span>
@@ -172,18 +225,44 @@ export function Pillar2JournalModal({
                   <span>5 Menit Baca</span>
                 </div>
 
-                <h1 className="font-display font-bold text-3xl sm:text-5xl lg:text-[52px] tracking-tight text-[#121311] leading-[1.12]">
+                <h1 className="font-display font-bold text-3xl sm:text-4xl lg:text-[46px] tracking-tight text-[#121311] leading-[1.15]">
                   Orkestrasi Agen AI Mandiri: Mengubah Tugas Rutin Menjadi Alur Kerja Otonom 24/7
                 </h1>
 
-                <div className="flex items-center justify-between gap-4 pt-4 text-xs font-mono text-[#6B6E66]">
+                <div className="flex flex-wrap items-center justify-between gap-3 pt-2 text-xs font-mono text-[#6B6E66]">
                   <span>Penulis: Abu Devis J.R. — Systems Architect</span>
                   <span>RUMIVERSE / PILAR 02</span>
+                </div>
+
+                {/* Quick Jump Table of Contents (Pills) */}
+                <div className="pt-3 border-t border-[#D8D6CE]/80">
+                  <span className="font-mono text-[11px] text-[#6B6E66] uppercase tracking-wider block mb-2">
+                    Lompat Cepat ke Bab:
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      { id: 'p2-bab-1', label: '§ I. Swarm Kognitif' },
+                      { id: 'p2-bab-2', label: '§ II. Konsol Eksekusi' },
+                      { id: 'p2-bab-3', label: '§ III. Dispatch Otomatis' },
+                      { id: 'p2-bab-4', label: '§ IV. Routing Model' },
+                      { id: 'p2-bab-5', label: '§ V. Human-in-Loop' },
+                      { id: 'p2-bab-cta', label: '§ Konsultasi' },
+                    ].map((item) => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => scrollToSection(item.id)}
+                        className="px-2.5 py-1 rounded-md border border-[#D8D6CE] bg-[#F4F3EF] hover:bg-[#1B3B2B] text-[#242622] hover:text-[#F4F3EF] hover:border-[#1B3B2B] font-mono text-[11px] transition-all cursor-pointer shadow-2xs"
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </header>
 
               {/* Abstract Blockquote */}
-              <blockquote className="p-6 sm:p-8 rounded-2xl bg-[#F4F3EF] border-l-4 border-[#1B3B2B] font-display text-lg sm:text-xl text-[#2D2F2A] leading-relaxed italic">
+              <blockquote className="my-6 p-6 sm:p-7 rounded-2xl bg-[#F4F3EF] border-l-4 border-[#1B3B2B] font-display text-base sm:text-lg text-[#2D2F2A] leading-relaxed italic shadow-2xs">
                 &ldquo;AI yang bernilai nyata bagi bisnis bukanlah antarmuka chatbot yang banyak bicara namun minim eksekusi. Di RUMIVERSE, kami merancang gugus agen mandiri (*multi-agent swarm*) yang bekerja seperti unit operasi terlatih: membaca data mentah, memvalidasi anomali, merumuskan sintesis keputusan, dan mendistribusikan laporan siap-tindak langsung ke WhatsApp atau email pemilik usaha.&rdquo;
               </blockquote>
 
@@ -204,7 +283,7 @@ export function Pillar2JournalModal({
               </figure>
 
               {/* Bab I: Cetak Biru Swarm Kognitif */}
-              <section className="space-y-6">
+              <section id="p2-bab-1" className="space-y-5 scroll-mt-20">
                 <div className="flex items-center gap-2 font-mono text-xs text-[#2E7D5B] tracking-wider uppercase">
                   <span>Bagian 01</span>
                   <span aria-hidden="true">/</span>
@@ -215,16 +294,16 @@ export function Pillar2JournalModal({
                   I. Cetak Biru Swarm Kognitif: Dari Ingesti Mentah ke Tindakan
                 </h2>
 
-                <p className="text-base sm:text-lg text-[#353732] leading-[1.8]">
+                <p className="text-base text-[#353732] leading-[1.8]">
                   Sebagian besar kegagalan adopsi AI di dunia industri berakar dari satu hal: menyerahkan seluruh pekerjaan ke satu prompt raksasa (*monolithic prompt*). Hasilnya tidak konsisten, boros token, dan rentan halusinasi data.
                 </p>
 
-                <p className="text-base sm:text-lg text-[#353732] leading-[1.8]">
+                <p className="text-base text-[#353732] leading-[1.8]">
                   Arsitektur kami memecah pemecahan masalah ke dalam <strong>tiga lapisan independen</strong> yang saling memverifikasi:
                 </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-                  <div className="p-4 rounded-xl bg-[#F4F3EF] border border-[#D8D6CE] space-y-2">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 pt-2">
+                  <div className="p-4 rounded-xl bg-[#F4F3EF] border border-[#D8D6CE] space-y-1.5">
                     <span className="font-mono text-[11px] text-[#2E7D5B] font-bold uppercase block">
                       Fase 01 · Ingesti
                     </span>
@@ -234,7 +313,7 @@ export function Pillar2JournalModal({
                     </p>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-[#F4F3EF] border border-[#D8D6CE] space-y-2">
+                  <div className="p-4 rounded-xl bg-[#F4F3EF] border border-[#D8D6CE] space-y-1.5">
                     <span className="font-mono text-[11px] text-[#2E7D5B] font-bold uppercase block">
                       Fase 02 · Orkestrasi
                     </span>
@@ -244,7 +323,7 @@ export function Pillar2JournalModal({
                     </p>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-[#F4F3EF] border border-[#D8D6CE] space-y-2">
+                  <div className="p-4 rounded-xl bg-[#F4F3EF] border border-[#D8D6CE] space-y-1.5">
                     <span className="font-mono text-[11px] text-[#2E7D5B] font-bold uppercase block">
                       Fase 03 · Dispatch
                     </span>
@@ -256,7 +335,7 @@ export function Pillar2JournalModal({
                 </div>
 
                 {/* FIG 02: Architectural Whiteboard Diagram */}
-                <figure className="pt-4 space-y-3">
+                <figure className="pt-3 space-y-3">
                   <div className="aspect-[16/9] w-full rounded-2xl overflow-hidden border border-[#D8D6CE] bg-[#FAF9F6] shadow-sm">
                     <EditorialImage
                       src={PIPELINE_WHITEBOARD_IMG}
@@ -273,7 +352,7 @@ export function Pillar2JournalModal({
               </section>
 
               {/* Bab II: Konsol Eksekusi & Telemetri Waktu-Nyata */}
-              <section className="space-y-6 pt-10 border-t border-[#D8D6CE]">
+              <section id="p2-bab-2" className="space-y-5 pt-8 border-t border-[#D8D6CE] scroll-mt-20">
                 <div className="flex items-center gap-2 font-mono text-xs text-[#2E7D5B] tracking-wider uppercase">
                   <span>Bagian 02</span>
                   <span aria-hidden="true">/</span>
@@ -284,7 +363,7 @@ export function Pillar2JournalModal({
                   II. Konsol Eksekusi: Pemantauan Tanpa Kotak Hitam (*No Black Box*)
                 </h2>
 
-                <p className="text-base sm:text-lg text-[#353732] leading-[1.8]">
+                <p className="text-base text-[#353732] leading-[1.8]">
                   Dalam ranah operasional bisnis, kepercayaan dibangun dari transparansi. Pemilik usaha tidak boleh menebak-nebak apa yang sedang diproses oleh AI. Setiap keputusan, alasan pemilihan jalur data, hingga waktu eksekusi milidetik terekam dalam konsol audit terpadu.
                 </p>
 
@@ -305,7 +384,7 @@ export function Pillar2JournalModal({
                 </figure>
 
                 {/* Interactive Simulated Terminal Box */}
-                <div className="mt-8 rounded-2xl border border-[#2D332B] bg-[#0E110F] text-[#E0E2DC] overflow-hidden shadow-xl">
+                <div className="mt-6 rounded-2xl border border-[#2D332B] bg-[#0E110F] text-[#E0E2DC] overflow-hidden shadow-xl">
                   {/* Terminal Window Header */}
                   <div className="px-4 py-3 bg-[#151916] border-b border-[#252B24] flex flex-wrap items-center justify-between gap-3 font-mono text-xs">
                     <div className="flex items-center gap-2">
@@ -360,7 +439,7 @@ export function Pillar2JournalModal({
               </section>
 
               {/* Bab III: Dari Kode ke Lapangan: Integrasi Laporan Otomatis */}
-              <section className="space-y-6 pt-10 border-t border-[#D8D6CE]">
+              <section id="p2-bab-3" className="space-y-5 pt-8 border-t border-[#D8D6CE] scroll-mt-20">
                 <div className="flex items-center gap-2 font-mono text-xs text-[#2E7D5B] tracking-wider uppercase">
                   <span>Bagian 03</span>
                   <span aria-hidden="true">/</span>
@@ -371,11 +450,11 @@ export function Pillar2JournalModal({
                   III. Dari Kode ke Lapangan: Otomasi Laporan WhatsApp &amp; PDF
                 </h2>
 
-                <p className="text-base sm:text-lg text-[#353732] leading-[1.8]">
+                <p className="text-base text-[#353732] leading-[1.8]">
                   Nilai guna agen AI diukur dari seberapa cepat informasinya sampai ke tangan pengambil keputusan. Kebanyakan pemilik bisnis tidak memiliki waktu membuka 10 tab software setiap pagi.
                 </p>
 
-                <p className="text-base sm:text-lg text-[#353732] leading-[1.8]">
+                <p className="text-base text-[#353732] leading-[1.8]">
                   Sistem kami menerjemahkan hasil komputasi menjadi format yang siap dinikmati manusia: <strong>Pesan ringkas WhatsApp</strong> dengan poin-poin krusial pada pukul 07:00 pagi, disertai dokumen <strong>PDF ringkasan eksekutif 1 halaman</strong> untuk arsip resmi dan rapat tim.
                 </p>
 
@@ -397,7 +476,7 @@ export function Pillar2JournalModal({
               </section>
 
               {/* Bab IV: Pilihan Model Cerdas (Routing Tanpa Hype) */}
-              <section className="space-y-6 pt-10 border-t border-[#D8D6CE]">
+              <section id="p2-bab-4" className="space-y-5 pt-8 border-t border-[#D8D6CE] scroll-mt-20">
                 <div className="flex items-center gap-2 font-mono text-xs text-[#2E7D5B] tracking-wider uppercase">
                   <span>Bagian 04</span>
                   <span aria-hidden="true">/</span>
@@ -448,7 +527,7 @@ export function Pillar2JournalModal({
               </section>
 
               {/* Bab V: Batas Kendali Manusia (Human-in-the-Loop) */}
-              <section className="space-y-6 pt-10 border-t border-[#D8D6CE]">
+              <section id="p2-bab-5" className="space-y-5 pt-8 border-t border-[#D8D6CE] scroll-mt-20">
                 <div className="flex items-center gap-2 font-mono text-xs text-[#2E7D5B] tracking-wider uppercase">
                   <span>Bagian 05</span>
                   <span aria-hidden="true">/</span>
@@ -459,11 +538,11 @@ export function Pillar2JournalModal({
                   V. Prinsip Batas Kendali (*Human-in-the-Loop*)
                 </h2>
 
-                <p className="text-base sm:text-lg text-[#353732] leading-[1.8]">
+                <p className="text-base text-[#353732] leading-[1.8]">
                   Otonomi bukan berarti melepaskan kendali secara membabi buta. Arsitektur kami menyematkan **ambang batas keyakinan (confidence threshold)**:
                 </p>
 
-                <div className="p-6 rounded-2xl bg-[#FAF9F6] border border-[#D8D6CE] space-y-4">
+                <div className="p-5 rounded-2xl bg-[#FAF9F6] border border-[#D8D6CE] space-y-3">
                   <div className="flex items-start gap-3">
                     <ShieldCheck className="w-5 h-5 text-[#2E7D5B] shrink-0 mt-0.5" />
                     <div className="space-y-1">
@@ -479,7 +558,7 @@ export function Pillar2JournalModal({
               </section>
 
               {/* Bottom Call to Action Box */}
-              <footer className="mt-16 p-8 sm:p-10 rounded-3xl bg-[#1B3B2B] text-[#F4F3EF] space-y-6 shadow-xl">
+              <footer id="p2-bab-cta" className="mt-14 p-7 sm:p-9 rounded-3xl bg-[#1B3B2B] text-[#F4F3EF] space-y-6 shadow-xl scroll-mt-20">
                 <div className="space-y-2">
                   <span className="font-mono text-xs text-[#74C69D] tracking-wider uppercase">
                     Langkah Berikutnya
@@ -499,7 +578,7 @@ export function Pillar2JournalModal({
                   <button
                     type="button"
                     onClick={() => {
-                      onClose();
+                      handleClose();
                       if (onOpenConsultation) {
                         onOpenConsultation('software-ai');
                       }

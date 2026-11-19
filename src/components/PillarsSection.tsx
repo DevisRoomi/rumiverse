@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowUpRight, CheckCircle2, ChevronRight, Layers, Cpu, Radio, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { EditorialImage } from './EditorialImage';
@@ -140,6 +140,24 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
   const [pilar3JournalOpen, setPilar3JournalOpen] = useState(false);
 
   const selectedPillar = PILLARS_LIST.find((p) => p.id === selectedPillarId) ?? null;
+
+  // Listen to URL hash so direct links like #jurnal-pilar-01 open the modal automatically
+  useEffect(() => {
+    const handleCheckHash = () => {
+      const hash = window.location.hash;
+      if (hash === '#jurnal-pilar-01') {
+        setPilar1JournalOpen(true);
+      } else if (hash === '#jurnal-pilar-02') {
+        setPilar2JournalOpen(true);
+      } else if (hash === '#jurnal-pilar-03') {
+        setPilar3JournalOpen(true);
+      }
+    };
+
+    handleCheckHash();
+    window.addEventListener('hashchange', handleCheckHash);
+    return () => window.removeEventListener('hashchange', handleCheckHash);
+  }, []);
 
   const handlePillarClick = (pillarId: PillarData['id']) => {
     if (pillarId === 'web-mobile') {
