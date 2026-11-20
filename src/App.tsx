@@ -18,7 +18,12 @@ const AppointmentModal = lazy(() =>
 );
 
 export default function App() {
-  const [preloaderActive, setPreloaderActive] = useState(true);
+  const [preloaderActive, setPreloaderActive] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    if (window.location.hash || sessionStorage.getItem('rmv_preloader_seen')) return false;
+    if (navigator.webdriver) return false;
+    return true;
+  });
   const [consultationOpen, setConsultationOpen] = useState(false);
   const [hasOpenedConsultation, setHasOpenedConsultation] = useState(false);
   const [consultationFocus, setConsultationFocus] =

@@ -15,6 +15,17 @@ const Pillar3JournalModal = lazy(() =>
   import('./Pillar3JournalModal').then((m) => ({ default: m.Pillar3JournalModal }))
 );
 
+// Eager preload if current URL is directly requesting the modal
+if (typeof window !== 'undefined') {
+  if (window.location.hash === '#jurnal-pilar-01') {
+    import('./Pillar1JournalModal');
+  } else if (window.location.hash === '#jurnal-pilar-02') {
+    import('./Pillar2JournalModal');
+  } else if (window.location.hash === '#jurnal-pilar-03') {
+    import('./Pillar3JournalModal');
+  }
+}
+
 import SOFTWARE_IMAGE_SRC from '../assets/images/pillar_software_hardware.webp';
 import AI_IMAGE_SRC from '../assets/images/pilar-2-ai-workforce/cover.webp';
 import IOT_IMAGE_SRC from '../assets/images/pilar-3-cyber-physical/cover.webp';
