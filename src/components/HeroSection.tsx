@@ -20,10 +20,18 @@ const WING_HIGHLIGHTS = [
 ];
 
 const ROOM_CAMERA_FOCUS: Record<string, { origin: string; scale: number }> = {
-  'node-ai-foundry': { origin: '82% 26%', scale: 1.24 },
-  'node-web-studio': { origin: '54% 34%', scale: 1.24 },
-  'node-field-iot': { origin: '84% 68%', scale: 1.24 },
-  'node-command-ops': { origin: '44% 62%', scale: 1.24 },
+  'node-ai-foundry': { origin: '78% 30%', scale: 1.25 },
+  'node-web-studio': { origin: '52% 38%', scale: 1.25 },
+  'node-field-iot': { origin: '83% 74%', scale: 1.25 },
+  'node-command-ops': { origin: '40% 64%', scale: 1.25 },
+};
+
+// Optimized coordinates positioned directly on workstations (avoiding wall signage)
+const PIN_COORDINATES: Record<string, { top: number; left: number }> = {
+  'node-ai-foundry': { top: 34, left: 77 },
+  'node-web-studio': { top: 42, left: 51 },
+  'node-field-iot': { top: 76, left: 83 },
+  'node-command-ops': { top: 64, left: 38 },
 };
 
 export function HeroSection() {
@@ -32,7 +40,8 @@ export function HeroSection() {
 
   const [activeNodeId, setActiveNodeId] = useState<string>(HERO_TELEMETRY_NODES[0].id);
   const [tickerIndex, setTickerIndex] = useState(0);
-  const [isZoomedIn, setIsZoomedIn] = useState(true);
+  // Default to Full Overview (Scale 1.0) so entire 4-room layout is visible initially
+  const [isZoomedIn, setIsZoomedIn] = useState(false);
   const [isCtaHovered, setIsCtaHovered] = useState(false);
 
   // 1. Rotating ticker every 2.4 seconds
@@ -49,18 +58,18 @@ export function HeroSection() {
     offset: ['start start', 'end start'],
   });
 
-  const leftColY = useTransform(scrollYProgress, [0, 1], [0, -40]);
+  const leftColY = useTransform(scrollYProgress, [0, 1], [0, -35]);
   const rightColScale = useTransform(scrollYProgress, [0, 1], [1, 0.96]);
-  const rightColOpacity = useTransform(scrollYProgress, [0, 0.8, 1], [1, 0.98, 0.88]);
-  const rightColY = useTransform(scrollYProgress, [0, 1], [0, 24]);
+  const rightColOpacity = useTransform(scrollYProgress, [0, 0.8, 1], [1, 0.98, 0.9]);
+  const rightColY = useTransform(scrollYProgress, [0, 1], [0, 20]);
 
   // 3. 3D Tilt Parallax (Spring Physics on Cursor Movement)
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
   const springConfig = { damping: 24, stiffness: 180, mass: 0.6 };
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [5, -5]), springConfig);
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-5, 5]), springConfig);
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [4, -4]), springConfig);
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-4, 4]), springConfig);
 
   const handleCardMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (
@@ -92,8 +101,9 @@ export function HeroSection() {
   const activeNode =
     HERO_TELEMETRY_NODES.find((n) => n.id === activeNodeId) ?? HERO_TELEMETRY_NODES[0];
 
+  // Camera settings: Initial scale 1.0 (Full Overview). Zoom in only when a room is active/selected.
   const currentCamera = isZoomedIn
-    ? (ROOM_CAMERA_FOCUS[activeNode.id] ?? { origin: '50% 50%', scale: 1.2 })
+    ? (ROOM_CAMERA_FOCUS[activeNode.id] ?? { origin: '50% 50%', scale: 1.25 })
     : { origin: '50% 50%', scale: 1.0 };
 
   const selectNode = (id: string) => {
@@ -107,154 +117,123 @@ export function HeroSection() {
       ref={sectionRef}
       className="border-b border-[#D8D6CE] bg-[#F4F3EF] overflow-hidden relative"
     >
-      <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 items-stretch min-h-[calc(100vh-4rem)]">
-        {/* Left column: Editorial Typography with Masked Line Reveal & Interactive Keyword Highlight */}
+      <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 items-center lg:min-h-[calc(100vh-4.25rem)]">
+        {/* Left column: Compact Editorial Typography with 3-Line Masked Reveal & Interactive Keywords */}
         <motion.div
           style={{ y: leftColY }}
-          initial={{ opacity: 0, y: 18 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="lg:col-span-5 px-6 py-12 sm:px-10 sm:py-16 lg:px-12 lg:py-20 flex flex-col justify-between lg:border-r border-b lg:border-b-0 border-[#D8D6CE] z-10"
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="lg:col-span-5 px-6 py-6 sm:px-8 sm:py-8 lg:px-10 lg:py-7 flex flex-col justify-center space-y-5 sm:space-y-6 lg:border-r border-b lg:border-b-0 border-[#D8D6CE] z-10"
         >
-          <div className="space-y-8">
-            {/* Eyebrow with soft pill styling */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EAE8E1] border border-[#D8D6CE] text-xs font-mono text-[#353732] tracking-wider uppercase">
+          {/* Eyebrow badge */}
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EAE8E1] border border-[#D8D6CE] text-[11px] font-mono text-[#353732] tracking-wider uppercase">
               <span className="w-1.5 h-1.5 rounded-full bg-[#2E7D5B] animate-pulse" />
               <span>Lumajang, Jawa Timur</span>
               <span aria-hidden="true" className="text-[#A1A39B]">/</span>
               <span className="text-[#2E7D5B] font-semibold">Boutique Systems Studio</span>
             </div>
-
-            {/* Masked Line Reveal Headline (staggered 80ms per baris dengan cubic-bezier tajam) */}
-            <div
-              className="font-display font-bold text-[#121311] tracking-tight leading-[1.14] max-w-xl"
-              style={{ fontSize: 'clamp(2.2rem, 3.35vw, 3.45rem)' }}
-            >
-              {/* Line 1: Membangun [Software] */}
-              <div className="overflow-hidden py-0.5">
-                <motion.div
-                  initial={{ y: '100%', opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-                  className="flex items-center flex-wrap gap-x-2"
-                >
-                  <span>Membangun</span>
-                  <button
-                    type="button"
-                    onClick={() => selectNode('node-web-studio')}
-                    onMouseEnter={() => selectNode('node-web-studio')}
-                    className="inline-flex items-center p-[2.5px] rounded-lg bg-[#E2E0D8] border border-[#C8C5BA] shadow-2xs hover:border-[#1B3B2B] transition-all cursor-pointer group/kw align-baseline"
-                    aria-label="Sorot divisi Web & Mobile Studio"
-                  >
-                    <span
-                      className={`px-3 py-0.5 rounded-md font-black tracking-tight leading-none transition-all duration-300 ${
-                        activeNodeId === 'node-web-studio'
-                          ? 'bg-[#1B3B2B] text-[#74C69D] shadow-[0_0_12px_rgba(46,125,91,0.4)]'
-                          : 'bg-[#1B3B2B] text-[#FFFFFF] group-hover/kw:bg-[#121311]'
-                      }`}
-                    >
-                      Software
-                    </span>
-                  </button>
-                </motion.div>
-              </div>
-
-              {/* Line 2: Presisi, [Agen AI] */}
-              <div className="overflow-hidden py-0.5">
-                <motion.div
-                  initial={{ y: '100%', opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
-                  className="flex items-center flex-wrap gap-x-2"
-                >
-                  <span>Presisi,</span>
-                  <span
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => selectNode('node-ai-foundry')}
-                    onMouseEnter={() => selectNode('node-ai-foundry')}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') selectNode('node-ai-foundry');
-                    }}
-                    className={`cursor-pointer transition-all duration-300 underline decoration-2 rounded-sm ${
-                      activeNodeId === 'node-ai-foundry'
-                        ? 'text-[#1B3B2B] decoration-[#2E7D5B] bg-[#2E7D5B]/15 px-2 -mx-1 rounded-md'
-                        : 'decoration-transparent hover:text-[#1B3B2B] hover:decoration-[#2E7D5B]'
-                    }`}
-                    title="Arahkan kursor atau klik untuk menyorot Autonomous AI Foundry"
-                  >
-                    Agen AI
-                  </span>
-                </motion.div>
-              </div>
-
-              {/* Line 3: [Otonom,] dan */}
-              <div className="overflow-hidden py-0.5">
-                <motion.div
-                  initial={{ y: '100%', opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
-                  className="flex items-center flex-wrap gap-x-2"
-                >
-                  <span
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => selectNode('node-ai-foundry')}
-                    onMouseEnter={() => selectNode('node-ai-foundry')}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') selectNode('node-ai-foundry');
-                    }}
-                    className={`cursor-pointer transition-all duration-300 underline decoration-2 rounded-sm ${
-                      activeNodeId === 'node-ai-foundry'
-                        ? 'text-[#1B3B2B] decoration-[#2E7D5B] bg-[#2E7D5B]/15 px-2 -mx-1 rounded-md'
-                        : 'decoration-transparent hover:text-[#1B3B2B] hover:decoration-[#2E7D5B]'
-                    }`}
-                    title="Arahkan kursor atau klik untuk menyorot Autonomous AI Foundry"
-                  >
-                    Otonom,
-                  </span>
-                  <span>dan</span>
-                </motion.div>
-              </div>
-
-              {/* Line 4: [Sistem Lapangan.] */}
-              <div className="overflow-hidden py-0.5">
-                <motion.div
-                  initial={{ y: '100%', opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <span
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => selectNode('node-field-iot')}
-                    onMouseEnter={() => selectNode('node-field-iot')}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') selectNode('node-field-iot');
-                    }}
-                    className={`cursor-pointer transition-all duration-300 underline decoration-2 rounded-sm ${
-                      activeNodeId === 'node-field-iot'
-                        ? 'text-[#1B3B2B] decoration-[#2E7D5B] bg-[#2E7D5B]/15 px-2 -mx-1 rounded-md'
-                        : 'decoration-transparent hover:text-[#1B3B2B] hover:decoration-[#2E7D5B]'
-                    }`}
-                    title="Arahkan kursor atau klik untuk menyorot Applied Field IoT Lab"
-                  >
-                    Sistem Lapangan.
-                  </span>
-                </motion.div>
-              </div>
-            </div>
-
-            <p className="text-base sm:text-[17px] text-[#353732] leading-[1.72] max-w-lg">
-              RUMIVERSE adalah boutique technology studio independen. Kami memadukan antarmuka
-              digital berstandar tinggi, orkestrasi agen AI otonom untuk otomatisasi kerja, dan
-              instrumen IoT yang menghubungkan kode langsung ke dunia fisik.
-            </p>
           </div>
 
-          {/* CTA Area with revolving eye-catching elements */}
-          <div className="pt-10 lg:pt-12 flex flex-col gap-6 border-t border-[#D8D6CE] mt-10">
-            {/* Dynamic Rotating Ticker above button */}
+          {/* Masked Line Reveal Headline (Compact 3 Baris Proporsional) */}
+          <div className="font-display font-bold text-[#121311] tracking-tight leading-[1.12] text-3xl sm:text-4xl lg:text-[2.2rem] xl:text-[2.65rem]">
+            {/* Line 1: Membangun [Software] Presisi, */}
+            <div className="overflow-hidden py-0.5">
+              <motion.div
+                initial={{ y: '100%', opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.75, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
+                className="flex items-center flex-wrap gap-x-2"
+              >
+                <span>Membangun</span>
+                <button
+                  type="button"
+                  onClick={() => selectNode('node-web-studio')}
+                  onMouseEnter={() => selectNode('node-web-studio')}
+                  className="inline-flex items-center p-[2px] rounded-lg bg-[#E2E0D8] border border-[#C8C5BA] shadow-2xs hover:border-[#1B3B2B] transition-all cursor-pointer group/kw align-baseline"
+                  aria-label="Sorot divisi Web & Mobile Studio"
+                >
+                  <span
+                    className={`px-2.5 py-0.5 rounded-md font-black tracking-tight leading-none transition-all duration-300 text-[0.88em] ${
+                      activeNodeId === 'node-web-studio' && isZoomedIn
+                        ? 'bg-[#1B3B2B] text-[#74C69D] shadow-[0_0_12px_rgba(46,125,91,0.4)]'
+                        : 'bg-[#1B3B2B] text-[#FFFFFF] group-hover/kw:bg-[#121311]'
+                    }`}
+                  >
+                    Software
+                  </span>
+                </button>
+                <span>Presisi,</span>
+              </motion.div>
+            </div>
+
+            {/* Line 2: [Agen AI Otonom], dan */}
+            <div className="overflow-hidden py-0.5">
+              <motion.div
+                initial={{ y: '100%', opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.75, delay: 0.14, ease: [0.16, 1, 0.3, 1] }}
+                className="flex items-center flex-wrap gap-x-2"
+              >
+                <span
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => selectNode('node-ai-foundry')}
+                  onMouseEnter={() => selectNode('node-ai-foundry')}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') selectNode('node-ai-foundry');
+                  }}
+                  className={`cursor-pointer transition-all duration-300 underline decoration-2 rounded-sm ${
+                    activeNodeId === 'node-ai-foundry' && isZoomedIn
+                      ? 'text-[#1B3B2B] decoration-[#2E7D5B] bg-[#2E7D5B]/15 px-1.5 -mx-1 rounded'
+                      : 'decoration-transparent hover:text-[#1B3B2B] hover:decoration-[#2E7D5B]'
+                  }`}
+                  title="Klik atau sorot untuk meninjau Autonomous AI Foundry"
+                >
+                  Agen AI Otonom
+                </span>
+                <span>, dan</span>
+              </motion.div>
+            </div>
+
+            {/* Line 3: [Sistem Lapangan.] */}
+            <div className="overflow-hidden py-0.5">
+              <motion.div
+                initial={{ y: '100%', opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.75, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <span
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => selectNode('node-field-iot')}
+                  onMouseEnter={() => selectNode('node-field-iot')}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') selectNode('node-field-iot');
+                  }}
+                  className={`cursor-pointer transition-all duration-300 underline decoration-2 rounded-sm ${
+                    activeNodeId === 'node-field-iot' && isZoomedIn
+                      ? 'text-[#1B3B2B] decoration-[#2E7D5B] bg-[#2E7D5B]/15 px-1.5 -mx-1 rounded'
+                      : 'decoration-transparent hover:text-[#1B3B2B] hover:decoration-[#2E7D5B]'
+                  }`}
+                  title="Klik atau sorot untuk meninjau Applied Field IoT Lab"
+                >
+                  Sistem Lapangan.
+                </span>
+              </motion.div>
+            </div>
+          </div>
+
+          <p className="text-sm sm:text-[15px] text-[#353732] leading-relaxed max-w-lg">
+            RUMIVERSE adalah boutique technology studio independen. Kami memadukan antarmuka
+            digital berstandar tinggi, orkestrasi agen AI otonom untuk otomatisasi kerja, dan
+            instrumen IoT yang menghubungkan kode langsung ke dunia fisik.
+          </p>
+
+          {/* CTA & Ticker Area */}
+          <div className="pt-4 lg:pt-5 border-t border-[#D8D6CE] flex flex-col gap-4">
+            {/* Dynamic Rotating Ticker */}
             <div className="flex items-center gap-2 text-xs font-mono text-[#4A4D46]">
               <span className="text-[11px] font-semibold text-[#1B3B2B] tracking-wider uppercase">[DIVISI]</span>
               <span className="text-[#8A8D86]">→</span>
@@ -265,8 +244,8 @@ export function HeroSection() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
-                    className="font-medium text-[#121311] inline-block tracking-tight"
+                    transition={{ duration: 0.25, ease: 'easeOut' }}
+                    className="font-medium text-[#121311] inline-block tracking-tight text-[11px] sm:text-xs"
                   >
                     {WING_HIGHLIGHTS[tickerIndex]}
                   </motion.span>
@@ -274,7 +253,7 @@ export function HeroSection() {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               {/* Magnetic Button dengan Physics Spring Arrow */}
               <div
                 onMouseEnter={() => setIsCtaHovered(true)}
@@ -285,13 +264,13 @@ export function HeroSection() {
                   href="#tentang"
                   onClick={handleSmoothScroll}
                   strength={10}
-                  className="group relative inline-flex items-center justify-center gap-3.5 px-6 py-4 rounded-2xl text-sm font-semibold bg-[#1B3B2B] text-[#F4F3EF] hover:bg-[#121311] shadow-[0_8px_25px_-5px_rgba(27,59,43,0.35)] hover:shadow-[0_14px_34px_-5px_rgba(46,125,91,0.45)] transition-all duration-300 whitespace-nowrap cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B3B2B]"
+                  className="group relative inline-flex items-center justify-center gap-3 px-5 py-3.5 rounded-2xl text-xs sm:text-sm font-semibold bg-[#1B3B2B] text-[#F4F3EF] hover:bg-[#121311] shadow-[0_6px_20px_-4px_rgba(27,59,43,0.35)] hover:shadow-[0_12px_28px_-4px_rgba(46,125,91,0.45)] transition-all duration-300 whitespace-nowrap cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B3B2B]"
                 >
-                  {/* Left Status Dot (Glows brighter on hover) */}
+                  {/* Left Status Dot */}
                   <span className="w-1.5 h-1.5 rounded-full bg-[#2E7D5B] transition-all duration-300 group-hover:bg-[#74C69D] group-hover:shadow-[0_0_8px_#74C69D]" />
 
                   {/* Rolling Text Flip */}
-                  <span className="relative inline-block h-[20px] overflow-hidden leading-[20px] font-sans font-semibold tracking-wide">
+                  <span className="relative inline-block h-[18px] overflow-hidden leading-[18px] font-sans font-semibold tracking-wide">
                     <span className="block transition-transform duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-full">
                       Jelajahi Sayap Studio
                     </span>
@@ -318,16 +297,16 @@ export function HeroSection() {
               </div>
 
               {/* Status Badges */}
-              <div className="flex flex-wrap items-center gap-2 text-xs text-[#4A4D46] font-mono tabular-nums">
-                <span className="px-2 py-1 rounded-md bg-[#FAF9F6] border border-[#D8D6CE]">01 · Web</span>
-                <span className="px-2 py-1 rounded-md bg-[#FAF9F6] border border-[#D8D6CE]">02 · AI</span>
-                <span className="px-2 py-1 rounded-md bg-[#FAF9F6] border border-[#D8D6CE]">03 · IoT</span>
+              <div className="flex flex-wrap items-center gap-1.5 text-[11px] text-[#4A4D46] font-mono tabular-nums">
+                <span className="px-2 py-0.5 rounded-md bg-[#FAF9F6] border border-[#D8D6CE]">01 · Web</span>
+                <span className="px-2 py-0.5 rounded-md bg-[#FAF9F6] border border-[#D8D6CE]">02 · AI</span>
+                <span className="px-2 py-0.5 rounded-md bg-[#FAF9F6] border border-[#D8D6CE]">03 · IoT</span>
               </div>
             </div>
           </div>
         </motion.div>
 
-        {/* Right column: 3D Tilt Parallax & Camera Pan & Zoom Viewport */}
+        {/* Right column: 3D Tilt Parallax & Clean Architectural Viewport */}
         <motion.div
           style={{
             scale: rightColScale,
@@ -336,8 +315,8 @@ export function HeroSection() {
           }}
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="lg:col-span-7 p-4 sm:p-6 lg:p-8 flex flex-col justify-center bg-[#FAF9F6] perspective-[1000px]"
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="lg:col-span-7 p-3 sm:p-5 lg:p-6 flex flex-col justify-center bg-[#FAF9F6] perspective-[1000px]"
         >
           {/* 3D Tilt Container Wrapper */}
           <motion.div
@@ -349,34 +328,34 @@ export function HeroSection() {
               rotateY,
               transformStyle: 'preserve-3d',
             }}
-            className="rounded-3xl border border-[#D8D6CE] bg-[#F4F3EF] shadow-[0_20px_50px_-20px_rgba(18,19,17,0.12)] overflow-hidden flex flex-col transition-shadow duration-300 hover:shadow-[0_28px_65px_-15px_rgba(18,19,17,0.18)]"
+            className="rounded-3xl border border-[#D8D6CE] bg-[#F4F3EF] shadow-[0_16px_40px_-16px_rgba(18,19,17,0.1)] overflow-hidden flex flex-col transition-shadow duration-300 hover:shadow-[0_24px_55px_-12px_rgba(18,19,17,0.16)]"
           >
-            {/* Viewport Top Header: Clean Monochromatic Editorial Bar */}
-            <div className="px-5 py-3 border-b border-[#D8D6CE] bg-[#FAF9F6] flex items-center justify-between gap-4 text-xs font-mono select-none">
-              <div className="flex items-center gap-2.5 text-[#121311]">
+            {/* Viewport Top Header */}
+            <div className="px-4 py-2.5 border-b border-[#D8D6CE] bg-[#FAF9F6] flex items-center justify-between gap-4 text-xs font-mono select-none">
+              <div className="flex items-center gap-2 text-[#121311]">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#1B3B2B]" />
-                <span className="font-semibold tracking-wider uppercase text-[11px] sm:text-xs text-[#121311]">
+                <span className="font-semibold tracking-wider uppercase text-[11px] text-[#121311]">
                   RUMIVERSE // VIRTUAL STUDIO
                 </span>
               </div>
 
-              <div className="flex items-center gap-3 text-[11px] font-mono text-[#4A4D46]">
-                {/* Camera View Mode Toggle */}
+              <div className="flex items-center gap-2.5 text-[10px] sm:text-[11px] font-mono text-[#4A4D46]">
+                {/* Camera View Mode Toggle: Zoom In Room vs Full Overview */}
                 <button
                   type="button"
                   onClick={() => setIsZoomedIn((prev) => !prev)}
-                  className="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md border border-[#D8D6CE] bg-[#F4F3EF] hover:bg-[#EAE8E1] text-[#121311] transition-all cursor-pointer text-[10px]"
-                  title={isZoomedIn ? 'Zoom out ke tinjauan penuh' : 'Zoom in ke ruangan aktif'}
+                  className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md border border-[#D8D6CE] bg-[#FAF9F6] hover:bg-[#EAE8E1] text-[#121311] transition-all cursor-pointer font-mono"
+                  title={isZoomedIn ? 'Kembali ke tinjauan denah penuh' : 'Zoom in ke ruangan aktif'}
                 >
                   {isZoomedIn ? (
                     <>
                       <Minimize2 className="w-3 h-3 text-[#2E7D5B]" />
-                      <span>Fokus Ruangan</span>
+                      <span>Tinjau Penuh</span>
                     </>
                   ) : (
                     <>
-                      <Maximize2 className="w-3 h-3 text-[#6B6E66]" />
-                      <span>Tinjau Penuh</span>
+                      <Maximize2 className="w-3 h-3 text-[#2E7D5B]" />
+                      <span>Fokus Ruangan</span>
                     </>
                   )}
                 </button>
@@ -385,12 +364,13 @@ export function HeroSection() {
                 <span className="text-[#D8D6CE]">/</span>
 
                 {/* Ambient Living Pulsing Status Indicator */}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#74C69D] opacity-75" />
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-[#2E7D5B]" />
                   </span>
-                  <span className="font-semibold text-[#1B3B2B]">STATUS: OPERATIONAL</span>
+                  <span className="font-semibold text-[#1B3B2B] hidden sm:inline">STATUS: OPERATIONAL</span>
+                  <span className="font-semibold text-[#1B3B2B] sm:hidden">AKTIF</span>
                 </div>
               </div>
             </div>
@@ -411,7 +391,7 @@ export function HeroSection() {
               >
                 <EditorialImage
                   src={heroVirtualStudioImg}
-                  alt="Panel visualisasi kantor virtual 3D RUMIVERSE Studio dengan divisi Web & Mobile Studio, Autonomous AI Foundry, dan Applied Field IoT Workshop"
+                  alt="Panel visualisasi kantor virtual 3D RUMIVERSE Studio dengan denah arsitektural isometrik 4 divisi"
                   className="w-full h-full object-contain pointer-events-none"
                   fallbackTitle="RUMIVERSE Studio Virtual Command Center"
                   fallbackSubtitle="Visualisasi pemantauan agen AI otonom dan ekosistem lab secara real-time."
@@ -439,10 +419,15 @@ export function HeroSection() {
                   aria-hidden="true"
                 />
 
-                {/* Hotspot Room Pins with 3D Parallax translateZ Layer */}
+                {/* Clean Tactile Room Pins (Numbered Circles - No Permanent Text Collisions) */}
                 {HERO_TELEMETRY_NODES.map((node) => {
                   const isSelected = node.id === activeNode.id;
-                  const openLeft = node.align === 'left';
+                  const coords = PIN_COORDINATES[node.id] ?? {
+                    top: node.topPercent,
+                    left: node.leftPercent,
+                  };
+                  const wingNum = node.code.replace('WING-', '');
+
                   return (
                     <button
                       key={node.id}
@@ -450,47 +435,35 @@ export function HeroSection() {
                       onClick={() => selectNode(node.id)}
                       onMouseEnter={() => selectNode(node.id)}
                       style={{
-                        top: `${node.topPercent}%`,
-                        left: `${node.leftPercent}%`,
+                        top: `${coords.top}%`,
+                        left: `${coords.left}%`,
                         transform: 'translateZ(26px)',
                       }}
                       aria-label={`Pilih ${node.label}`}
                       aria-pressed={isSelected}
-                      className={`group absolute -translate-y-1/2 text-left cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4F3EF] transition-all duration-300 ${
-                        openLeft ? '-translate-x-[calc(100%-8px)]' : '-translate-x-2'
-                      } ${isSelected ? 'z-30 scale-110' : 'z-20 hover:scale-105'}`}
+                      className={`group absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4F3EF] transition-all duration-300 ${
+                        isSelected && isZoomedIn ? 'z-30 scale-110' : 'z-20 hover:scale-105'
+                      }`}
                     >
-                      <span
-                        className={`flex items-center gap-2 ${
-                          openLeft ? 'flex-row-reverse' : 'flex-row'
-                        }`}
-                      >
+                      <span className="relative flex items-center justify-center">
+                        {/* Sonar Ping Ring on Active Room Pin */}
+                        {isSelected && isZoomedIn && (
+                          <span className="absolute -inset-2 rounded-full border-2 border-[#74C69D] animate-ping opacity-60 pointer-events-none" />
+                        )}
+
+                        {/* Minimalist Tactile Number Capsule */}
                         <span
-                          className={`relative flex items-center justify-center w-6 h-6 rounded-full border transition-all duration-300 ${
-                            isSelected
-                              ? 'border-[#74C69D] bg-[#1B3B2B] shadow-[0_0_14px_rgba(116,198,157,0.7)]'
-                              : 'border-[#F4F3EF]/80 bg-[#121311]/80 hover:bg-[#1B3B2B] hover:border-[#74C69D]'
+                          className={`flex items-center justify-center w-6 h-6 rounded-full border text-[10px] font-mono font-bold transition-all duration-300 shadow-sm ${
+                            isSelected && isZoomedIn
+                              ? 'border-[#74C69D] bg-[#1B3B2B] text-[#74C69D] shadow-[0_0_12px_rgba(116,198,157,0.7)]'
+                              : 'border-white/50 bg-[#121311]/85 text-[#F4F3EF] hover:bg-[#1B3B2B] hover:border-[#74C69D] hover:text-[#74C69D]'
                           }`}
                         >
-                          {/* Pulsing Sonar Ring for Active Room Pin */}
-                          {isSelected && (
-                            <span className="absolute -inset-2.5 rounded-full border-2 border-[#74C69D] animate-ping opacity-60 pointer-events-none" />
-                          )}
-
-                          <span
-                            className={`w-2 h-2 rounded-full transition-colors ${
-                              isSelected ? 'bg-[#74C69D]' : 'bg-[#F4F3EF]'
-                            }`}
-                          />
+                          {wingNum}
                         </span>
 
-                        <span
-                          className={`hidden md:inline-flex px-2.5 py-1 rounded-md text-[10px] font-mono tracking-wider uppercase border transition-all duration-200 ${
-                            isSelected
-                              ? 'bg-[#121311] text-[#74C69D] border-[#74C69D] shadow-md font-semibold'
-                              : 'bg-[#121311]/85 text-[#D8D6CE] border-[#D8D6CE]/30 opacity-75 group-hover:opacity-100'
-                          }`}
-                        >
+                        {/* Floating Tooltip Only Visible on Hover */}
+                        <span className="pointer-events-none absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-md bg-[#121311]/90 backdrop-blur-xs text-[10px] font-mono text-[#F4F3EF] whitespace-nowrap border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-md">
                           {node.shortLabel}
                         </span>
                       </span>
@@ -500,42 +473,42 @@ export function HeroSection() {
               </motion.div>
             </div>
 
-            {/* Inspector Panel: Active Wing Detail with Smooth Animated Transitions */}
-            <div className="p-5 sm:p-6 bg-[#FAF9F6] border-t border-[#D8D6CE] flex flex-col justify-between">
+            {/* Inspector Panel: Active Wing Detail */}
+            <div className="p-3.5 sm:p-4 bg-[#FAF9F6] border-t border-[#D8D6CE] flex flex-col justify-between">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeNode.id}
-                  initial={{ opacity: 0, y: 6 }}
+                  initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.25, ease: 'easeOut' }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.2, ease: 'easeOut' }}
                 >
-                  <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#D8D6CE]/80">
-                    <div className="flex items-center gap-2.5">
-                      <span className="px-2.5 py-1 rounded-lg bg-[#1B3B2B] text-[#74C69D] font-mono text-[11px] font-bold tracking-wider">
+                  <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-[#D8D6CE]/80">
+                    <div className="flex items-center gap-2">
+                      <span className="px-2 py-0.5 rounded-md bg-[#1B3B2B] text-[#74C69D] font-mono text-[10px] font-bold tracking-wider">
                         {activeNode.code}
                       </span>
-                      <h3 className="font-display text-base sm:text-lg font-bold text-[#121311]">
+                      <h3 className="font-display text-sm sm:text-base font-bold text-[#121311]">
                         {activeNode.label}
                       </h3>
                     </div>
-                    <span className="font-mono text-xs px-2.5 py-1 rounded-full bg-[#EAE8E1] text-[#2E7D5B] font-semibold">
+                    <span className="font-mono text-[11px] px-2 py-0.5 rounded-full bg-[#EAE8E1] text-[#2E7D5B] font-semibold">
                       {activeNode.reading}
                     </span>
                   </div>
 
-                  <p className="mt-3 text-sm text-[#353732] leading-relaxed">
+                  <p className="mt-2 text-xs text-[#353732] leading-relaxed line-clamp-2 sm:line-clamp-none">
                     {activeNode.detail}
                   </p>
                 </motion.div>
               </AnimatePresence>
 
-              {/* Sliding Pill Indicator on "Fokus Divisi" (Physics Spring Shared Element) */}
-              <div className="mt-5 pt-4 border-t border-[#D8D6CE]/80 flex flex-wrap items-center gap-2">
+              {/* Sliding Pill Indicator on "Fokus Divisi" */}
+              <div className="mt-3 pt-2.5 border-t border-[#D8D6CE]/80 flex flex-wrap items-center gap-1.5">
                 <span className="text-[11px] font-mono text-[#6B6E66] mr-1 hidden sm:inline">
                   Fokus Divisi:
                 </span>
-                <div className="inline-flex flex-wrap p-1 rounded-full bg-[#EAE8E1]/80 border border-[#D8D6CE] gap-1">
+                <div className="inline-flex flex-wrap p-0.5 rounded-full bg-[#EAE8E1]/80 border border-[#D8D6CE] gap-0.5">
                   {HERO_TELEMETRY_NODES.map((node) => {
                     const isActive = node.id === activeNode.id;
                     return (
@@ -544,18 +517,18 @@ export function HeroSection() {
                         type="button"
                         onClick={() => selectNode(node.id)}
                         aria-pressed={isActive}
-                        className="relative px-3.5 py-1.5 rounded-full text-xs font-mono font-medium transition-colors cursor-pointer select-none"
+                        className="relative px-3 py-1 rounded-full text-[11px] font-mono font-medium transition-colors cursor-pointer select-none"
                       >
-                        {isActive && (
+                        {isActive && isZoomedIn && (
                           <motion.div
                             layoutId="activeHeroWingPill"
-                            className="absolute inset-0 rounded-full bg-[#1B3B2B] shadow-sm"
+                            className="absolute inset-0 rounded-full bg-[#1B3B2B] shadow-xs"
                             transition={{ type: 'spring', stiffness: 420, damping: 32 }}
                           />
                         )}
                         <span
                           className={`relative z-10 transition-colors duration-200 ${
-                            isActive
+                            isActive && isZoomedIn
                               ? 'text-[#F4F3EF] font-semibold'
                               : 'text-[#4A4D46] hover:text-[#121311]'
                           }`}
