@@ -1,8 +1,7 @@
 import { Github, Linkedin, MapPin } from 'lucide-react';
-import { STUDIO_CONTACT } from '../utils/ecosystemData';
 import { MaskedHeading } from './MaskedHeading';
 import { useReveal } from '../hooks/useReveal';
-import founderPhoto from '../assets/images/founder.jpg';
+import founderPhoto from '../assets/images/founder.webp';
 
 export function ExecutiveProfileSection() {
   const { ref, visible } = useReveal<HTMLElement>(0.15);
@@ -18,23 +17,42 @@ export function ExecutiveProfileSection() {
             }`}
           >
             <div className="p-3 sm:p-4 rounded-3xl bg-[#F4F3EF] border border-[#D8D6CE] shadow-sm">
-              <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden border border-[#D8D6CE] bg-[#1B3B2B] group">
+              <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden border border-[#D8D6CE] bg-gradient-to-b from-[#1A3326] via-[#12231A] to-[#0A140F] group shadow-inner">
+                {/* Subtle Studio Spotlight in Background */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(116,198,157,0.22)_0%,transparent_65%)] pointer-events-none" />
+
+                {/* Subtle Architectural Grid Texture */}
+                <div
+                  className="absolute inset-0 opacity-[0.06] pointer-events-none"
+                  style={{
+                    backgroundImage:
+                      'linear-gradient(#74C69D 1px, transparent 1px), linear-gradient(90deg, #74C69D 1px, transparent 1px)',
+                    backgroundSize: '24px 24px',
+                  }}
+                />
+
+                {/* Founder Cutout Portrait (Black & White Editorial with Interactive Warm Color Hover) */}
                 <img
                   src={founderPhoto}
                   alt="Potret Abu Devis Jalaluddin Rumi — Rekayasawan & Pendiri RUMIVERSE"
-                  className="w-full h-full object-cover object-[center_18%] contrast-[1.04] transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                  className="w-full h-full object-cover object-bottom filter grayscale contrast-[1.12] brightness-[0.98] group-hover:grayscale-0 group-hover:contrast-[1.04] transition-all duration-700 ease-out group-hover:scale-[1.03] drop-shadow-[0_16px_28px_rgba(0,0,0,0.45)] relative z-10"
                 />
 
-                {/* Subtle Technical Vignette & Overlays */}
-                <div className="absolute inset-0 bg-radial-[circle_at_center,transparent_45%,rgba(14,18,16,0.35)_100%] pointer-events-none" />
+                {/* Subtle Edge Vignette */}
+                <div className="absolute inset-0 bg-radial-[circle_at_center,transparent_55%,rgba(10,20,15,0.4)_100%] pointer-events-none z-20" />
 
                 {/* Technical Coordinates Badge */}
-                <div className="absolute top-3 left-3 bg-[#121311]/75 backdrop-blur-xs px-2.5 py-1 rounded-md text-[10px] font-mono text-[#74C69D] border border-white/10 shadow-xs">
+                <div className="absolute top-3 left-3 z-30 bg-[#121311]/80 backdrop-blur-md px-2.5 py-1 rounded-md text-[10px] font-mono text-[#74C69D] border border-white/10 shadow-xs">
                   8°08&apos;S 113°13&apos;E · LUMAJANG STUDIO
                 </div>
 
+                {/* Mode Indicator Pill (Monochrome / Color Cue) */}
+                <div className="absolute top-3 right-3 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[#121311]/80 backdrop-blur-md px-2 py-0.5 rounded-full text-[9px] font-mono text-[#F4F3EF] border border-white/10 shadow-xs">
+                  Natural Tone
+                </div>
+
                 {/* Bottom Identity Card Overlay */}
-                <div className="absolute bottom-3 left-3 right-3 bg-[#121311]/85 backdrop-blur-md p-3 rounded-xl border border-white/15 flex items-center justify-between shadow-md">
+                <div className="absolute bottom-3 left-3 right-3 z-30 bg-[#121311]/85 backdrop-blur-md p-3 rounded-xl border border-white/15 flex items-center justify-between shadow-md">
                   <div className="space-y-0.5">
                     <span className="font-mono text-[11px] text-[#F4F3EF] block font-bold tracking-tight">
                       ABU DEVIS J. RUMI
