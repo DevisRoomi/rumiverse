@@ -5,7 +5,7 @@ interface PreloaderProps {
 }
 
 export function Preloader({ onComplete }: PreloaderProps) {
-  // If running inside Lighthouse/PageSpeed audit or session already saw preloader:
+  // If running inside automated audit:
   const isAudit =
     typeof window !== 'undefined' &&
     (/Lighthouse|Chrome-Lighthouse|PageSpeed/i.test(navigator.userAgent) ||
@@ -19,32 +19,32 @@ export function Preloader({ onComplete }: PreloaderProps) {
   const [stage, setStage] = useState<'init' | 'reveal' | 'zoom' | 'lift'>('init');
 
   useEffect(() => {
-    // For automated audits, complete immediately so Lighthouse measures genuine page metrics
+    // For automated audits, complete immediately
     if (isAudit) {
       onComplete();
       return;
     }
 
-    // Snappy, cinematic sequence timing (total ~1.8s instead of 3.0s)
-    // T+30ms: begin smooth left-to-right wipe
+    // Sequence timing - Elegant cinematic rhythm with full visibility of the RUMIVERSE brand
+    // T+50ms: begin smooth left-to-right wipe
     const t1 = setTimeout(() => {
       setStage('reveal');
-    }, 30);
+    }, 50);
 
-    // T+800ms: pause briefly, then zoom into camera until screen is engulfed in black
+    // T+1700ms: pause with full wordmark visible, then zoom into camera until screen is engulfed in black
     const t2 = setTimeout(() => {
       setStage('zoom');
-    }, 800);
+    }, 1700);
 
-    // T+1350ms: lift the black curtain upward
+    // T+2450ms: lift the black curtain upward
     const t3 = setTimeout(() => {
       setStage('lift');
-    }, 1350);
+    }, 2450);
 
-    // T+1850ms: animation complete, unmount preloader
+    // T+3200ms: animation complete, unmount preloader
     const t4 = setTimeout(() => {
       onComplete();
-    }, 1850);
+    }, 3200);
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -71,7 +71,8 @@ export function Preloader({ onComplete }: PreloaderProps) {
     <div
       role="status"
       aria-label="RUMIVERSE Intro"
-      className={`fixed inset-0 z-50 overflow-hidden flex items-center justify-center transition-transform duration-[750ms] ease-[cubic-bezier(0.76,0,0.24,1)] select-none ${
+      onClick={() => onComplete()}
+      className={`fixed inset-0 z-50 overflow-hidden flex items-center justify-center transition-transform duration-[750ms] ease-[cubic-bezier(0.76,0,0.24,1)] select-none cursor-pointer ${
         isLifting ? '-translate-y-full pointer-events-none' : 'translate-y-0'
       } ${isZooming ? 'bg-[#121311]' : 'bg-[#FAF9F6]'}`}
       style={{
@@ -106,7 +107,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
           className="overflow-hidden py-4 px-2 w-full flex items-center justify-center"
           style={{
             clipPath: isRevealed ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
-            transition: 'clip-path 1.25s cubic-bezier(0.25, 1, 0.5, 1)',
+            transition: 'clip-path 0.95s cubic-bezier(0.25, 1, 0.5, 1)',
           }}
         >
           <h1
@@ -127,7 +128,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
           }`}
           style={{
             clipPath: isRevealed ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
-            transition: 'clip-path 1.2s cubic-bezier(0.25, 1, 0.5, 1) 0.15s',
+            transition: 'clip-path 0.95s cubic-bezier(0.25, 1, 0.5, 1) 0.1s',
           }}
         >
           <p

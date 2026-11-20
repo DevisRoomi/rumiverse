@@ -17,19 +17,7 @@ const AppointmentModal = lazy(() =>
 );
 
 export default function App() {
-  const [preloaderActive, setPreloaderActive] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    // Fast-path: Skip preloader on mobile devices (<768px), if already seen in session, or during audits
-    if (
-      window.innerWidth < 768 ||
-      sessionStorage.getItem('rumiverse_preloader_seen') ||
-      /Lighthouse|Chrome-Lighthouse|PageSpeed/i.test(navigator.userAgent) ||
-      window.location.search.includes('lighthouse')
-    ) {
-      return false;
-    }
-    return true;
-  });
+  const [preloaderActive, setPreloaderActive] = useState(true);
   const [consultationOpen, setConsultationOpen] = useState(false);
   const [consultationFocus, setConsultationFocus] =
     useState<ConsultationFormValues['focus']>('integrated');
@@ -39,19 +27,10 @@ export default function App() {
     setConsultationOpen(true);
   };
 
-  const handlePreloaderComplete = () => {
-    try {
-      sessionStorage.setItem('rumiverse_preloader_seen', 'true');
-    } catch {
-      // ignore
-    }
-    setPreloaderActive(false);
-  };
-
   return (
     <div className="min-h-screen bg-[#F4F3EF] text-[#121311]">
       {preloaderActive && (
-        <Preloader onComplete={handlePreloaderComplete} />
+        <Preloader onComplete={() => setPreloaderActive(false)} />
       )}
       <TopBar onOpenConsultation={() => openWithFocus('integrated')} />
       <main>
