@@ -1,5 +1,6 @@
 import { useState, lazy, Suspense } from 'react';
 import { Preloader } from './components/Preloader';
+import { GlobalSmokeCursorCanvas } from './components/GlobalSmokeCursorCanvas';
 import { TopBar } from './components/TopBar';
 import { HeroSection } from './components/HeroSection';
 import { AboutSection } from './components/AboutSection';
@@ -31,6 +32,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#F4F3EF] text-[#121311]">
+      <GlobalSmokeCursorCanvas />
       {preloaderActive && (
         <Preloader onComplete={() => setPreloaderActive(false)} />
       )}

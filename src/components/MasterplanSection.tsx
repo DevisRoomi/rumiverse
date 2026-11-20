@@ -22,7 +22,6 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { MaskedHeading } from './MaskedHeading';
 import { EditorialImage } from './EditorialImage';
-import { SmokeCursorCanvas } from './SmokeCursorCanvas';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 import type { ConsultationFormValues } from '../utils/ecosystemData';
 import masterplanDroneWebp from '../assets/images/masterplan/masterplan.webp';
@@ -845,9 +844,6 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
             transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
             className="mt-14 rounded-3xl bg-[#121311] text-[#F4F3EF] border border-[#2E7D5B]/30 p-6 sm:p-10 lg:p-12 shadow-2xl relative overflow-hidden group/box"
           >
-            {/* Interactive Aesthetic Smoke Trail Canvas */}
-            <SmokeCursorCanvas />
-
             {/* Ambient Background Gradient */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-[#1B3B2B]/25 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
 
