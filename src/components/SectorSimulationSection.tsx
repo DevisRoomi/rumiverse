@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Activity, ArrowUpRight, Layers, RotateCcw } from 'lucide-react';
 import {
   INDUSTRY_VERTICALS,
+  SECTOR_SIMULATOR_PROFILES,
   calculateSandboxMetrics,
   type ConsultationFormValues,
   type IndustryVertical,
@@ -22,6 +23,7 @@ export function SectorSimulationSection({ onConsultSector }: SectorSimulationSec
 
   const activeVertical =
     INDUSTRY_VERTICALS.find((item) => item.id === selectedId) ?? INDUSTRY_VERTICALS[0];
+  const activeProfile = SECTOR_SIMULATOR_PROFILES[activeVertical.id];
   const metrics = calculateSandboxMetrics(scale, automation);
 
   const handleReset = () => {
@@ -208,10 +210,10 @@ export function SectorSimulationSection({ onConsultSector }: SectorSimulationSec
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label htmlFor="sim-scale" className="font-mono text-xs text-[#E2E5E0]">
-                  Skala Fasilitas / Populasi
+                  {activeProfile.scaleLabel}
                 </label>
                 <span className="font-mono text-xs font-bold text-[#74C69D] tabular-nums">
-                  {scale} unit / ekor
+                  {scale} {activeProfile.scaleUnit}
                 </span>
               </div>
               <input
@@ -225,9 +227,9 @@ export function SectorSimulationSection({ onConsultSector }: SectorSimulationSec
                 className="w-full blueprint-slider cursor-pointer"
               />
               <div className="mt-1.5 flex justify-between font-mono text-[10px] text-[#9EA69D]">
-                <span>10 unit (Rintisan)</span>
-                <span>100 unit (Standar)</span>
-                <span>250 unit (Komersial)</span>
+                <span>{activeProfile.minScaleText}</span>
+                <span>{activeProfile.defaultScaleText}</span>
+                <span>{activeProfile.maxScaleText}</span>
               </div>
             </div>
 
@@ -268,19 +270,19 @@ export function SectorSimulationSection({ onConsultSector }: SectorSimulationSec
                 {metrics.manualReductionPct}%
               </span>
               <p className="text-[11px] text-[#D0D6CF] leading-snug">
-                Pencatatan data, takaran nutrisi, dan jadwal kontrol rutin beralih otomatis ke sistem.
+                {activeProfile.metricCard1Detail}
               </p>
             </div>
 
             <div className="p-4 rounded-xl bg-[#121311]/50 border border-[#F4F3EF]/15 space-y-1">
               <span className="font-mono text-[10px] text-[#74C69D] uppercase tracking-wider block">
-                02 · DAUR ULANG BIO-SUMBER DAYA
+                {activeProfile.metricCard2Title}
               </span>
               <span className="font-mono text-3xl sm:text-4xl font-bold text-[#74C69D] tabular-nums block">
                 {metrics.wasteReductionPct}%
               </span>
               <p className="text-[11px] text-[#D0D6CF] leading-snug">
-                ±{metrics.waterSavedLitersPerDay.toLocaleString('id-ID')} L/hari air &amp; {metrics.biomassConvertedKgPerMonth.toLocaleString('id-ID')} kg/bln biomassa terkonversi.
+                {activeProfile.getMetricCard2Detail(metrics, scale, automation)}
               </p>
             </div>
 
@@ -292,9 +294,20 @@ export function SectorSimulationSection({ onConsultSector }: SectorSimulationSec
                 &lt; {metrics.telemetryLatencySec} dtk
               </span>
               <p className="text-[11px] text-[#D0D6CF] leading-snug">
-                Peringatan anomali (suhu, amonia, atau oksigen) tiba instan di ponsel operator.
+                {activeProfile.metricCard3Detail}
               </p>
             </div>
+          </div>
+
+          {/* Footnote on Transparency & Field Benchmark */}
+          <div className="pt-3 border-t border-[#F4F3EF]/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] font-mono text-[#9EA69D]">
+            <span className="flex items-center gap-1.5 text-[#74C69D]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#74C69D]" />
+              <span>Model Simulasi: Sektor {activeVertical.index} · {activeVertical.title}</span>
+            </span>
+            <span className="text-left sm:text-right">
+              *Estimasi berdasarkan rata-rata benchmark operasional lapangan; hasil aktual menyesuaikan audit lokasi.
+            </span>
           </div>
         </div>
       </div>

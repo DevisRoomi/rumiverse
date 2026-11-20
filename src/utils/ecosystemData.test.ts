@@ -7,6 +7,7 @@ import {
   HERO_TELEMETRY_NODES,
   INDUSTRY_VERTICALS,
   RELIABILITY_SPECS,
+  SECTOR_SIMULATOR_PROFILES,
   STUDIO_CONTACT,
   calculateSandboxMetrics,
   formatCounterValue,
@@ -127,4 +128,30 @@ test('validateConsultationInput accepts valid enterprise inquiry', () => {
   const result = validateConsultationInput(valid);
   assert.equal(result.valid, true);
   assert.deepEqual(result.errors, {});
+});
+
+test('SECTOR_SIMULATOR_PROFILES covers all 3 verticals with appropriate dynamic labels and details', () => {
+  for (const vertical of INDUSTRY_VERTICALS) {
+    const profile = SECTOR_SIMULATOR_PROFILES[vertical.id];
+    assert.ok(profile, `Profile exists for ${vertical.id}`);
+    assert.ok(profile.scaleLabel.length > 0);
+    assert.ok(profile.scaleUnit.length > 0);
+    assert.ok(profile.minScaleText.length > 0);
+    assert.ok(profile.defaultScaleText.length > 0);
+    assert.ok(profile.maxScaleText.length > 0);
+    assert.ok(profile.metricCard2Title.length > 0);
+    assert.ok(profile.metricCard1Detail.length > 0);
+    assert.ok(profile.metricCard3Detail.length > 0);
+
+    const testMetrics = calculateSandboxMetrics(100, 80);
+    const detail = profile.getMetricCard2Detail(testMetrics, 100, 80);
+    assert.ok(detail.length > 0);
+  }
+
+  // Check specific contextual adaptation
+  assert.equal(SECTOR_SIMULATOR_PROFILES['livestock-aquaculture'].scaleUnit, 'unit / ekor');
+  assert.equal(SECTOR_SIMULATOR_PROFILES['enterprise-workflow'].scaleUnit, 'proses / divisi');
+  assert.equal(SECTOR_SIMULATOR_PROFILES['smart-facility'].scaleUnit, 'titik sensor / zona');
+  assert.ok(SECTOR_SIMULATOR_PROFILES['enterprise-workflow'].metricCard2Title.includes('OPERASIONAL'));
+  assert.ok(SECTOR_SIMULATOR_PROFILES['smart-facility'].metricCard2Title.includes('MIKROKLIMAT'));
 });

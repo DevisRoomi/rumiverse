@@ -384,6 +384,63 @@ export function calculateSandboxMetrics(
   };
 }
 
+export interface SectorSimulatorProfile {
+  scaleLabel: string;
+  scaleUnit: string;
+  minScaleText: string;
+  defaultScaleText: string;
+  maxScaleText: string;
+  metricCard2Title: string;
+  getMetricCard2Detail: (metrics: SandboxMetrics, scale: number, automation: number) => string;
+  metricCard1Detail: string;
+  metricCard3Detail: string;
+}
+
+export const SECTOR_SIMULATOR_PROFILES: Record<IndustryVertical['id'], SectorSimulatorProfile> = {
+  'livestock-aquaculture': {
+    scaleLabel: 'Skala Fasilitas / Populasi Ternak',
+    scaleUnit: 'unit / ekor',
+    minScaleText: '10 ekor (Rintisan)',
+    defaultScaleText: '100 ekor (Standar)',
+    maxScaleText: '250 ekor (Komersial)',
+    metricCard2Title: '02 · DAUR ULANG BIO-SUMBER DAYA',
+    getMetricCard2Detail: (metrics) =>
+      `±${metrics.waterSavedLitersPerDay.toLocaleString('id-ID')} L/hari air & ${metrics.biomassConvertedKgPerMonth.toLocaleString('id-ID')} kg/bln biomassa terkonversi.`,
+    metricCard1Detail:
+      'Pencatatan data pakan, takaran nutrisi, dan jadwal kontrol rutin beralih otomatis ke sistem.',
+    metricCard3Detail:
+      'Peringatan anomali (suhu kandang, lonjakan amonia, atau oksigen air) tiba instan di ponsel operator.',
+  },
+  'enterprise-workflow': {
+    scaleLabel: 'Skala Alur Kerja & Proses Dokumen',
+    scaleUnit: 'proses / divisi',
+    minScaleText: '10 proses (Departemen)',
+    defaultScaleText: '100 proses (Perusahaan)',
+    maxScaleText: '250 proses (Grup Multi-Entitas)',
+    metricCard2Title: '02 · EFISIENSI WAKTU & DATA OPERASIONAL',
+    getMetricCard2Detail: (_metrics, scale) =>
+      `±${(scale * 18).toLocaleString('id-ID')} jam kerja/bln terhemat & ${(scale * 45).toLocaleString('id-ID')} berkas terverifikasi otomatis tanpa human-error.`,
+    metricCard1Detail:
+      'Validasi berkas, rekonsiliasi data transaksi, dan laporan eksekutif di-generate otomatis oleh AI pipeline.',
+    metricCard3Detail:
+      'Deteksi kegagalan sinkronisasi, anomali data transaksi, atau celah akses dilaporkan instan via webhook & ponsel.',
+  },
+  'smart-facility': {
+    scaleLabel: 'Cakupan Fasilitas & Titik Pemantauan',
+    scaleUnit: 'titik sensor / zona',
+    minScaleText: '10 titik (Greenhouse / Lab)',
+    defaultScaleText: '100 titik (Gudang / Fasilitas)',
+    maxScaleText: '250 titik (Kawasan Multi-Zona)',
+    metricCard2Title: '02 · EFISIENSI ENERGI & MIKROKLIMAT',
+    getMetricCard2Detail: (_metrics, scale, automation) =>
+      `±${(scale * 24).toLocaleString('id-ID')} kWh/bln efisiensi daya HVAC & ${Math.round(92 + (automation / 100) * 7)}% stabilitas mikroklimat presisi 24/7.`,
+    metricCard1Detail:
+      'Pengaturan kipas exhaust, katup irigasi tetes, dan pencatatan logger lingkungan berjalan otomatis 24/7.',
+    metricCard3Detail:
+      'Pemberitahuan perubahan suhu ekstrem, kelembaban kritis, atau pemadaman listrik darurat dikirim seketika ke tim teknis.',
+  },
+};
+
 export function formatCounterValue(progress: number, target: number): number {
   const clamped = Math.max(0, Math.min(1, progress));
   const eased = 1 - Math.pow(1 - clamped, 3);
