@@ -11,6 +11,8 @@ export function Preloader({ onComplete }: PreloaderProps) {
     (/Lighthouse|Chrome-Lighthouse|PageSpeed/i.test(navigator.userAgent) ||
       window.location.search.includes('lighthouse'));
 
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
   // Stages:
   // 1. 'init' -> mounted with text masked off on the left
   // 2. 'reveal' -> text wipes smoothly from left to right in solid black over warm white
@@ -25,26 +27,31 @@ export function Preloader({ onComplete }: PreloaderProps) {
       return;
     }
 
-    // Sequence timing - Elegant cinematic rhythm with full visibility of the RUMIVERSE brand
-    // T+50ms: begin smooth left-to-right wipe
+    // Sequence timing - snappier on mobile (<768px), grand & cinematic on desktop
+    const revealTime = isMobile ? 30 : 50;
+    const zoomTime = isMobile ? 750 : 1550;
+    const liftTime = isMobile ? 1200 : 2250;
+    const completeTime = isMobile ? 1650 : 2900;
+
+    // T1: begin smooth left-to-right wipe
     const t1 = setTimeout(() => {
       setStage('reveal');
-    }, 50);
+    }, revealTime);
 
-    // T+1700ms: pause with full wordmark visible, then zoom into camera until screen is engulfed in black
+    // T2: pause with full wordmark visible, then zoom into camera until screen is engulfed in black
     const t2 = setTimeout(() => {
       setStage('zoom');
-    }, 1700);
+    }, zoomTime);
 
-    // T+2450ms: lift the black curtain upward
+    // T3: lift the black curtain upward
     const t3 = setTimeout(() => {
       setStage('lift');
-    }, 2450);
+    }, liftTime);
 
-    // T+3200ms: animation complete, unmount preloader
+    // T4: animation complete, unmount preloader
     const t4 = setTimeout(() => {
       onComplete();
-    }, 3200);
+    }, completeTime);
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -61,7 +68,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
       clearTimeout(t4);
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [onComplete, isAudit]);
+  }, [onComplete, isAudit, isMobile]);
 
   const isRevealed = stage === 'reveal' || stage === 'zoom' || stage === 'lift';
   const isZooming = stage === 'zoom' || stage === 'lift';
@@ -107,7 +114,9 @@ export function Preloader({ onComplete }: PreloaderProps) {
           className="overflow-hidden py-4 px-2 w-full flex items-center justify-center"
           style={{
             clipPath: isRevealed ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
-            transition: 'clip-path 0.95s cubic-bezier(0.25, 1, 0.5, 1)',
+            transition: isMobile
+              ? 'clip-path 0.65s cubic-bezier(0.25, 1, 0.5, 1)'
+              : 'clip-path 0.95s cubic-bezier(0.25, 1, 0.5, 1)',
           }}
         >
           <h1
@@ -128,7 +137,9 @@ export function Preloader({ onComplete }: PreloaderProps) {
           }`}
           style={{
             clipPath: isRevealed ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
-            transition: 'clip-path 0.95s cubic-bezier(0.25, 1, 0.5, 1) 0.1s',
+            transition: isMobile
+              ? 'clip-path 0.65s cubic-bezier(0.25, 1, 0.5, 1) 0.08s'
+              : 'clip-path 0.95s cubic-bezier(0.25, 1, 0.5, 1) 0.1s',
           }}
         >
           <p
