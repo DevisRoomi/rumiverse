@@ -24,7 +24,7 @@ import { MaskedHeading } from './MaskedHeading';
 import { EditorialImage } from './EditorialImage';
 import type { ConsultationFormValues } from '../utils/ecosystemData';
 import masterplanDroneWebp from '../assets/images/masterplan/masterplan.webp';
-import masterplanBlueprintJpg from '../assets/images/masterplan/masterplan.jpg';
+import masterplanBlueprintWebp from '../assets/images/masterplan/masterplan_blueprint.webp';
 
 interface MasterplanSectionProps {
   onOpenConsultation?: (focus: ConsultationFormValues['focus']) => void;
@@ -80,7 +80,7 @@ const VIEW_MODES: Record<ViewModeKey, ViewModeConfig> = {
     id: 'blueprint',
     label: 'Cetak Biru Isometrik 3D',
     badge: 'BLUEPRINT TEKNIS 3D',
-    image: masterplanBlueprintJpg,
+    image: masterplanBlueprintWebp,
     alt: 'Cetak biru arsitektur 3D isometrik Smart Integrated Eco-Farm RUMIVERSE Lumajang',
     aspectClass: 'aspect-[16/10]',
     pins: {
