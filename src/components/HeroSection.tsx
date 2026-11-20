@@ -13,7 +13,7 @@ import heroVirtualStudioImg from '../assets/images/rumiverse_virtual_studio_hero
 
 const ROOM_CAMERA_FOCUS: Record<string, { origin: string; scale: number }> = {
   'node-ai-foundry': { origin: '78% 32%', scale: 1.25 },
-  'node-web-studio': { origin: '66% 27%', scale: 1.25 },
+  'node-web-studio': { origin: '58% 28%', scale: 1.25 },
   'node-field-iot': { origin: '83% 76%', scale: 1.25 },
   'node-command-ops': { origin: '38% 64%', scale: 1.25 },
 };
@@ -21,7 +21,7 @@ const ROOM_CAMERA_FOCUS: Record<string, { origin: string; scale: number }> = {
 // Optimized coordinates positioned directly on respective room workstations with generous breathing room
 const PIN_COORDINATES: Record<string, { top: number; left: number }> = {
   'node-ai-foundry': { top: 32, left: 78 },
-  'node-web-studio': { top: 27, left: 66 },
+  'node-web-studio': { top: 28, left: 58 },
   'node-field-iot': { top: 76, left: 83 },
   'node-command-ops': { top: 64, left: 38 },
 };
