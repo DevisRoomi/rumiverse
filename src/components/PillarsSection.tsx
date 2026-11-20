@@ -1,11 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, lazy, Suspense } from 'react';
 import { ArrowUpRight, CheckCircle2, ChevronRight, X } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { EditorialImage } from './EditorialImage';
-import { Pillar1JournalModal } from './Pillar1JournalModal';
-import { Pillar2JournalModal } from './Pillar2JournalModal';
-import { Pillar3JournalModal } from './Pillar3JournalModal';
 import type { ConsultationFormValues } from '../utils/ecosystemData';
+
+const Pillar1JournalModal = lazy(() =>
+  import('./Pillar1JournalModal').then((m) => ({ default: m.Pillar1JournalModal }))
+);
+const Pillar2JournalModal = lazy(() =>
+  import('./Pillar2JournalModal').then((m) => ({ default: m.Pillar2JournalModal }))
+);
+const Pillar3JournalModal = lazy(() =>
+  import('./Pillar3JournalModal').then((m) => ({ default: m.Pillar3JournalModal }))
+);
 
 const SOFTWARE_IMAGE_SRC = '/src/assets/images/pillar_software_hardware_1794974579995.jpg';
 const AI_IMAGE_SRC = '/src/assets/images/pilar-2-ai-workforce/cover.webp';
@@ -542,25 +549,37 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
       </AnimatePresence>
 
       {/* Pilar 01 Interactive Editorial Journal Modal (Kinfolk / Stripe Press Style) */}
-      <Pillar1JournalModal
-        open={pilar1JournalOpen}
-        onClose={() => setPilar1JournalOpen(false)}
-        onOpenConsultation={onOpenConsultation}
-      />
+      {pilar1JournalOpen && (
+        <Suspense fallback={null}>
+          <Pillar1JournalModal
+            open={pilar1JournalOpen}
+            onClose={() => setPilar1JournalOpen(false)}
+            onOpenConsultation={onOpenConsultation}
+          />
+        </Suspense>
+      )}
 
       {/* Pilar 02 Interactive Editorial Journal Modal (Autonomous AI Workforce) */}
-      <Pillar2JournalModal
-        open={pilar2JournalOpen}
-        onClose={() => setPilar2JournalOpen(false)}
-        onOpenConsultation={onOpenConsultation}
-      />
+      {pilar2JournalOpen && (
+        <Suspense fallback={null}>
+          <Pillar2JournalModal
+            open={pilar2JournalOpen}
+            onClose={() => setPilar2JournalOpen(false)}
+            onOpenConsultation={onOpenConsultation}
+          />
+        </Suspense>
+      )}
 
       {/* Pilar 03 Interactive Editorial Journal Modal (Cyber-Physical Systems) */}
-      <Pillar3JournalModal
-        open={pilar3JournalOpen}
-        onClose={() => setPilar3JournalOpen(false)}
-        onOpenConsultation={onOpenConsultation}
-      />
+      {pilar3JournalOpen && (
+        <Suspense fallback={null}>
+          <Pillar3JournalModal
+            open={pilar3JournalOpen}
+            onClose={() => setPilar3JournalOpen(false)}
+            onOpenConsultation={onOpenConsultation}
+          />
+        </Suspense>
+      )}
     </section>
   );
 }

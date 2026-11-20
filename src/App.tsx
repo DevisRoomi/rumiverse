@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { Preloader } from './components/Preloader';
 import { TopBar } from './components/TopBar';
 import { HeroSection } from './components/HeroSection';
@@ -10,8 +10,11 @@ import { EngagementRoadmapSection } from './components/EngagementRoadmapSection'
 import { SecurityReliabilityBar } from './components/SecurityReliabilityBar';
 import { ExecutiveProfileSection } from './components/ExecutiveProfileSection';
 import { FooterSection } from './components/FooterSection';
-import { AppointmentModal } from './components/AppointmentModal';
 import type { ConsultationFormValues } from './utils/ecosystemData';
+
+const AppointmentModal = lazy(() =>
+  import('./components/AppointmentModal').then((m) => ({ default: m.AppointmentModal }))
+);
 
 export default function App() {
   const [preloaderActive, setPreloaderActive] = useState(true);
@@ -41,11 +44,15 @@ export default function App() {
         <ExecutiveProfileSection />
       </main>
       <FooterSection onOpenConsultation={() => openWithFocus('integrated')} />
-      <AppointmentModal
-        open={consultationOpen}
-        defaultFocus={consultationFocus}
-        onClose={() => setConsultationOpen(false)}
-      />
+      {consultationOpen && (
+        <Suspense fallback={null}>
+          <AppointmentModal
+            open={consultationOpen}
+            defaultFocus={consultationFocus}
+            onClose={() => setConsultationOpen(false)}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }

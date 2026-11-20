@@ -7,6 +7,7 @@ interface EditorialImageProps {
   className?: string;
   fallbackTitle: string;
   fallbackSubtitle?: string;
+  priority?: boolean;
 }
 
 export function EditorialImage({
@@ -15,6 +16,7 @@ export function EditorialImage({
   className = '',
   fallbackTitle,
   fallbackSubtitle,
+  priority = false,
 }: EditorialImageProps) {
   const [hasError, setHasError] = useState(false);
 
@@ -38,6 +40,9 @@ export function EditorialImage({
     <img
       src={src}
       alt={alt}
+      loading={priority ? 'eager' : 'lazy'}
+      decoding={priority ? 'sync' : 'async'}
+      fetchPriority={priority ? 'high' : 'auto'}
       referrerPolicy="no-referrer"
       onError={() => setHasError(true)}
       className={className}
