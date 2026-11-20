@@ -57,28 +57,6 @@ export const HERO_TELEMETRY_NODES: TelemetryNode[] = [
   },
 ];
 
-export interface CircularStage {
-  id: 'unggas-ternak' | 'bio-konversi' | 'hidroponik' | 'filtrasi';
-  step: string;
-  label: string;
-  shortLabel: string;
-  input: string;
-  process: string;
-  output: string;
-  sensorControl: string;
-}
-
-export interface ArchitectureLayer {
-  id: 'edge' | 'backend' | 'dashboard';
-  step: string;
-  title: string;
-  subtitle: string;
-  features: string[];
-  infoLine: string;
-  summary: string;
-  specLines: { label: string; value: string }[];
-}
-
 export interface SandboxMetrics {
   manualReductionPct: number;
   wasteReductionPct: number;
@@ -113,110 +91,6 @@ export const STUDIO_CONTACT = {
   monogram: 'ADR // RUMIVERSE ARCHITECT',
 } as const;
 
-export const CIRCULAR_STAGES: CircularStage[] = [
-  {
-    id: 'unggas-ternak',
-    step: '01',
-    label: 'Kandang Ternak',
-    shortLabel: 'Kandang',
-    input: 'Pakan dan air minum ternak',
-    process: 'Sensor membantu memantau suhu, kelembapan, dan kualitas udara di kandang.',
-    output: 'Sisa organik yang bisa diolah.',
-    sensorControl: 'Suhu · kelembapan · kualitas udara',
-  },
-  {
-    id: 'bio-konversi',
-    step: '02',
-    label: 'Pengolahan Sisa Ternak',
-    shortLabel: 'Maggot & Ikan',
-    input: 'Sisa organik dari kandang',
-    process:
-      'Maggot dan ikan membantu mengolah sisa ternak menjadi bahan yang bisa dimanfaatkan kembali.',
-    output: 'Bahan pakan dan air bernutrisi untuk tanaman.',
-    sensorControl: 'Kadar oksigen air · aliran pompa',
-  },
-  {
-    id: 'hidroponik',
-    step: '03',
-    label: 'Tanaman Pakan',
-    shortLabel: 'Tanaman Pakan',
-    input: 'Air bernutrisi dari kolam ikan',
-    process: 'Tanaman menyerap nutrisi dari air dan membantu membersihkannya.',
-    output: 'Tanaman pakan dan air yang lebih bersih.',
-    sensorControl: 'Kondisi air · aliran air',
-  },
-  {
-    id: 'filtrasi',
-    step: '04',
-    label: 'Penyaringan Air & Kompos',
-    shortLabel: 'Air & Kompos',
-    input: 'Air sisa tanaman dan sisa padat dari pengolahan',
-    process: 'Air disaring sebelum digunakan kembali. Sisa padatnya dapat diolah menjadi kompos.',
-    output: 'Air untuk digunakan kembali dan kompos.',
-    sensorControl: 'Kejernihan air · pemberitahuan gangguan',
-  },
-];
-
-export const ARCHITECTURE_LAYERS: ArchitectureLayer[] = [
-  {
-    id: 'edge',
-    step: 'Bagian 01',
-    title: 'Perangkat di Lapangan',
-    subtitle: 'Sensor membaca kondisi kandang dan air',
-    features: [
-      'Sensor suhu dan kualitas udara',
-      'Jaringan sensor jarak jauh',
-      'Terhubung dengan pompa dan katup',
-    ],
-    infoLine: 'Data dicatat tiap 5 detik · tetap tersimpan saat koneksi putus',
-    summary:
-      'Perangkat di kandang membaca suhu, kualitas udara, kondisi air, dan alirannya. Jika koneksi internet terputus, data disimpan sementara dan dikirim saat koneksi kembali.',
-    specLines: [
-      { label: 'Jaringan', value: 'Kabel industri dan jaringan sensor' },
-      { label: 'Pelindung alat', value: 'Tahan debu dan semburan air (IP65)' },
-      { label: 'Kontrol lokal', value: 'Pompa dan katup pakan' },
-    ],
-  },
-  {
-    id: 'backend',
-    step: 'Bagian 02',
-    title: 'Pengolah Data & Otomasi',
-    subtitle: 'Mengatur data, laporan, dan peringatan',
-    features: [
-      'Data sensor tersusun menurut waktu',
-      'AI membantu mendeteksi perubahan',
-      'Laporan dan jadwal bisa diotomatisasi',
-    ],
-    infoLine: 'Data dilindungi saat dikirim dan disimpan',
-    summary:
-      'Bagian ini mengolah data dari sensor, membantu menemukan perubahan kondisi, dan menyiapkan laporan operasional secara otomatis.',
-    specLines: [
-      { label: 'Riwayat data', value: 'Data sensor tersimpan dan bisa ditelusuri' },
-      { label: 'Otomasi', value: 'Laporan dan jadwal pakan' },
-      { label: 'Keamanan', value: 'Akses dibatasi sesuai pengguna' },
-    ],
-  },
-  {
-    id: 'dashboard',
-    step: 'Bagian 03',
-    title: 'Aplikasi Pemantauan',
-    subtitle: 'Lihat kondisi sistem dan terima pemberitahuan',
-    features: [
-      'Dasbor untuk web dan ponsel',
-      'Pemberitahuan saat ada gangguan',
-      'Akses sesuai tugas pengguna',
-    ],
-    infoLine: 'Pemberitahuan dikirim ke ponsel',
-    summary:
-      'Dasbor web dan aplikasi ponsel menampilkan kondisi fasilitas. Pengguna dapat menjalankan kontrol manual sesuai aksesnya.',
-    specLines: [
-      { label: 'Tampilan', value: 'Dasbor web dan pemberitahuan ponsel' },
-      { label: 'Akses', value: 'Akses sesuai peran pengguna' },
-      { label: 'Laporan', value: 'Ringkasan kerja otomatis' },
-    ],
-  },
-];
-
 export interface IndustryVertical {
   id: 'custom-web-mobile' | 'agentic-ai-workforce' | 'field-iot-cps';
   index: string;
@@ -236,12 +110,6 @@ export interface RoadmapPhase {
   duration: string;
   summary: string;
   deliverable: string;
-}
-
-export interface ReliabilitySpec {
-  code: string;
-  title: string;
-  detail: string;
 }
 
 export const INDUSTRY_VERTICALS: IndustryVertical[] = [
@@ -322,29 +190,6 @@ export const ENGAGEMENT_ROADMAP: RoadmapPhase[] = [
     summary:
       'Pemantauan kesehatan sistem 24/7, pembaruan model otomasi, serta inspeksi berkala untuk memastikan reliabilitas jangka panjang.',
     deliverable: 'SLA Pemeliharaan & Dukungan Teknis Aktif',
-  },
-];
-
-export const RELIABILITY_SPECS: ReliabilitySpec[] = [
-  {
-    code: 'SEC-01',
-    title: 'End-to-End Encrypted Telemetry',
-    detail: 'Transport TLS 1.3 & enkripsi payload AES-256 dari simpul sensor hingga basis data.',
-  },
-  {
-    code: 'ARC-02',
-    title: 'Modular API Architecture',
-    detail: 'Layanan terisolasi dengan kontrak antarmuka bersih untuk integrasi ERP maupun pihak ketiga.',
-  },
-  {
-    code: 'EDG-03',
-    title: 'Edge-Fallback Offline Sync',
-    detail: 'Penyangga memori lokal pada unit lapangan memastikan nol kehilangan data saat koneksi terputus.',
-  },
-  {
-    code: 'SLA-04',
-    title: '99.9% Uptime Design',
-    detail: 'Arsitektur redundansi aktif dengan pemulihan otomatis dan pengawasan kesehatan sistem kontinu.',
   },
 ];
 
@@ -460,12 +305,6 @@ export const SECTOR_SIMULATOR_PROFILES: Record<IndustryVertical['id'], SectorSim
       'Peringatan perubahan suhu ekstrem, kebocoran pipa, atau lonjakan parameter kritis tiba seketika di ponsel tim teknis.',
   },
 };
-
-export function formatCounterValue(progress: number, target: number): number {
-  const clamped = Math.max(0, Math.min(1, progress));
-  const eased = 1 - Math.pow(1 - clamped, 3);
-  return Math.round(eased * target);
-}
 
 export function validateConsultationInput(
   values: ConsultationFormValues

@@ -1,6 +1,6 @@
 {
-  "name": "Devis Systems — Arsitektur Sistem Presisi",
-  "description": "Studio rekayasa perangkat lunak, otomasi AI, dan ekosistem sirkular IoT untuk ketahanan pangan yang berpusat di Sentul, Jawa Barat.",
+  "name": "RUMIVERSE — Boutique Systems Studio",
+  "description": "Studio rekayasa software kustom, agen AI otonom, dan instrumentasi IoT lapangan yang berpusat di Lumajang, Jawa Timur.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": []
 }
