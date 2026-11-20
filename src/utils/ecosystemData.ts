@@ -218,7 +218,7 @@ export const ARCHITECTURE_LAYERS: ArchitectureLayer[] = [
 ];
 
 export interface IndustryVertical {
-  id: 'livestock-aquaculture' | 'enterprise-workflow' | 'smart-facility';
+  id: 'custom-web-mobile' | 'agentic-ai-workforce' | 'field-iot-cps';
   index: string;
   title: string;
   sectorTag: string;
@@ -246,43 +246,43 @@ export interface ReliabilitySpec {
 
 export const INDUSTRY_VERTICALS: IndustryVertical[] = [
   {
-    id: 'livestock-aquaculture',
+    id: 'custom-web-mobile',
     index: '01',
-    title: 'Modern Livestock & Aquaculture',
-    sectorTag: 'Peternakan Presisi & Akuakultur Sirkular',
+    title: 'Aplikasi Web & Mobile Kustom',
+    sectorTag: 'Layanan Rekayasa Web & APK Responsif',
     problem:
-      'Fluktuasi suhu kandang, kadar amonia yang telat terdeteksi, serta pemborosan air dan pakan akibat pencatatan lapangan yang masih manual dan terpisah.',
+      'Pencatatan data operasional masih manual di banyak spreadsheet terpisah, web lama lambat, dan belum memiliki aplikasi mobile khusus untuk tim toko atau lapangan.',
     solution:
-      'Pemasangan simpul sensor mikroklimat dan kualitas air yang terhubung langsung ke kontrol sirkulasi otomatis, kolam bio-konversi, serta instalasi pakan hidroponik hijau.',
-    stack: ['LoRaWAN & RS-485 Probes', 'Closed-Loop Valve Control', 'Real-Time Mobile Alert'],
-    outcome: 'Pengurangan limbah hingga 95% dan stabilitas parameter air maupun kandang 24/7.',
-    recommendedFocus: 'precision-iot',
-  },
-  {
-    id: 'enterprise-workflow',
-    index: '02',
-    title: 'Enterprise Workflow & Data Automation',
-    sectorTag: 'Otomasi Operasional & Rekayasa Web Kustom',
-    problem:
-      'Data operasional tersebar di banyak spreadsheet terpisah, proses persetujuan lambat, serta tingginya risiko human error dalam pelaporan eksekutif.',
-    solution:
-      'Arsitektur web kustom berbasis backend modular dengan pipeline machine learning untuk validasi dokumen, agregasi metrik otomatis, dan dasbor kendali terpusat.',
-    stack: ['Modular REST / gRPC API', 'AI Pipeline Automation', 'Role-Based Access Control'],
-    outcome: 'Mengurangi beban input data manual hingga 80% dengan audit trail yang lengkap.',
+      'Pembuatan aplikasi web modern, portal manajemen terpusat, dan APK mobile (Android/iOS) yang cepat, aman, responsif, dan mudah digunakan oleh seluruh tim bisnis Anda.',
+    stack: ['React & TypeScript', 'REST API & WebSocket', 'Tailwind & PWA/Mobile Ready'],
+    outcome: 'Sistem operasional terpusat rapi, nol salah input manual, dan dapat diakses dari mana saja.',
     recommendedFocus: 'software-ai',
   },
   {
-    id: 'smart-facility',
-    index: '03',
-    title: 'Smart Facility & Microclimate Monitoring',
-    sectorTag: 'Fasilitas Agroteknologi, Gudang & Rumah Kaca',
+    id: 'agentic-ai-workforce',
+    index: '02',
+    title: 'Agen AI Otonom & Otomasi Kerja',
+    sectorTag: 'Layanan Otomasi Tugas Rutin & Rekap Cerdas',
     problem:
-      'Ketidakseimbangan kelembaban, ventilasi, dan distribusi energi antar zona fasilitas yang menyebabkan penyusutan mutu hasil produksi atau penyimpanan.',
+      'Karyawan kehabisan waktu berjam-jam hanya untuk entri berkas berulang, menyalin faktur/invoice, rekap transaksi harian, dan verifikasi dokumen bertumpuk.',
     solution:
-      'Pemetaan sensor multipoint di seluruh zona bangunan dengan edge-node berdaya cadang lokal dan mekanisme otomasi ventilasi maupun irigasi presisi.',
-    stack: ['Edge-Fallback Controller', 'Time-Series Telemetry DB', 'Automated HVAC / Irrigation'],
-    outcome: 'Deteksi anomali lingkungan di bawah 30 detik dengan keseragaman mikroklimat terjaga.',
-    recommendedFocus: 'integrated',
+      'Penerapan agen AI cerdas yang bekerja mandiri 24/7 untuk membaca dokumen PDF/gambar, validasi angka, dan menyajikan laporan ringkas otomatis ke dasbor atau WhatsApp.',
+    stack: ['LLM Workflow (Gemini / Claude)', 'Document OCR & Auto-Parsing', 'Automated Webhooks & Bot'],
+    outcome: 'Memangkas hingga 80% beban administrasi rutin dengan akurasi validasi data 99.4%.',
+    recommendedFocus: 'software-ai',
+  },
+  {
+    id: 'field-iot-cps',
+    index: '03',
+    title: 'Instrumen IoT & Sistem Lapangan',
+    sectorTag: 'Layanan Sensor Fisik & Otomasi Aktuator',
+    problem:
+      'Pemantauan kondisi fisik (suhu, kelembapan, air, mesin) masih dicek manual dengan risiko telat penanganan, kerusakan aset, serta pemborosan air dan listrik.',
+    solution:
+      'Perakitan panel sensor terkalibrasi dan otomasi katup/pompa elektrik yang terhubung langsung ke aplikasi ponsel Anda dengan sistem peringatan bahaya otomatis.',
+    stack: ['RS-485 / Modbus Probes', 'Closed-Loop Relay Control', 'Real-Time Mobile Telemetry'],
+    outcome: 'Deteksi anomali di bawah 15 detik dan kontrol peralatan fisik berjalan otomatis 24/7.',
+    recommendedFocus: 'precision-iot',
   },
 ];
 
@@ -293,7 +293,7 @@ export const ENGAGEMENT_ROADMAP: RoadmapPhase[] = [
     title: 'Audit & Discovery',
     duration: 'Minggu 1–2',
     summary:
-      'Pemetaan alur kerja bisnis, kondisi fisik lokasi, serta titik hambatan data dan perangkat keras secara langsung di lapangan.',
+      'Pemetaan alur kerja bisnis, kebutuhan fitur, serta titik hambatan data atau perangkat secara langsung bersama tim Anda.',
     deliverable: 'Dokumen Analisis Masalah & Ruang Lingkup Teknis',
   },
   {
@@ -302,17 +302,17 @@ export const ENGAGEMENT_ROADMAP: RoadmapPhase[] = [
     title: 'Blueprint & Prototyping',
     duration: 'Minggu 3–4',
     summary:
-      'Perancangan skema arsitektur perangkat lunak modular, topologi jaringan sensor IoT, dan purwarupa antarmuka operator.',
+      'Perancangan skema arsitektur perangkat lunak modular, alur agen AI, topologi perangkat (jika IoT), dan purwarupa antarmuka pengguna.',
     deliverable: 'Cetak Biru Sistem & Purwarupa Tervalidasi',
   },
   {
     id: 'deployment',
     step: '03',
-    title: 'Deployment & IoT Calibration',
+    title: 'Deployment & Integrasi Sistem',
     duration: 'Minggu 5–8',
     summary:
-      'Pengembangan modul backend dan AI, instalasi fisik panel sensor di lokasi, serta kalibrasi ambang batas peringatan.',
-    deliverable: 'Sistem Produksi Aktif & Sensor Terkalibrasi',
+      'Pengembangan modul frontend/backend, integrasi pipeline AI/Cloud, serta instalasi panel sensor fisik (khusus kebutuhan lapangan).',
+    deliverable: 'Sistem Produksi Aktif & Siap Digunakan',
   },
   {
     id: 'telemetry',
@@ -321,7 +321,7 @@ export const ENGAGEMENT_ROADMAP: RoadmapPhase[] = [
     duration: 'Berkelanjutan',
     summary:
       'Pemantauan kesehatan sistem 24/7, pembaruan model otomasi, serta inspeksi berkala untuk memastikan reliabilitas jangka panjang.',
-    deliverable: 'SLA Pemeliharaan & Dukungan Telemetri Aktif',
+    deliverable: 'SLA Pemeliharaan & Dukungan Teknis Aktif',
   },
 ];
 
@@ -390,54 +390,74 @@ export interface SectorSimulatorProfile {
   minScaleText: string;
   defaultScaleText: string;
   maxScaleText: string;
-  metricCard2Title: string;
-  getMetricCard2Detail: (metrics: SandboxMetrics, scale: number, automation: number) => string;
+  metricCard1Title: string;
+  getMetricCard1Value: (metrics: SandboxMetrics, scale: number, automation: number) => string;
   metricCard1Detail: string;
+  metricCard2Title: string;
+  getMetricCard2Value: (metrics: SandboxMetrics, scale: number, automation: number) => string;
+  getMetricCard2Detail: (metrics: SandboxMetrics, scale: number, automation: number) => string;
+  metricCard3Title: string;
+  getMetricCard3Value: (metrics: SandboxMetrics, scale: number, automation: number) => string;
   metricCard3Detail: string;
 }
 
 export const SECTOR_SIMULATOR_PROFILES: Record<IndustryVertical['id'], SectorSimulatorProfile> = {
-  'livestock-aquaculture': {
-    scaleLabel: 'Skala Fasilitas / Populasi Ternak',
-    scaleUnit: 'unit / ekor',
-    minScaleText: '10 ekor (Rintisan)',
-    defaultScaleText: '100 ekor (Standar)',
-    maxScaleText: '250 ekor (Komersial)',
-    metricCard2Title: '02 · DAUR ULANG BIO-SUMBER DAYA',
-    getMetricCard2Detail: (metrics) =>
-      `±${metrics.waterSavedLitersPerDay.toLocaleString('id-ID')} L/hari air & ${metrics.biomassConvertedKgPerMonth.toLocaleString('id-ID')} kg/bln biomassa terkonversi.`,
+  'custom-web-mobile': {
+    scaleLabel: 'Skala Pengguna / Modul Sistem',
+    scaleUnit: 'pengguna / modul',
+    minScaleText: '10 pengguna (UMKM / Toko)',
+    defaultScaleText: '100 pengguna (Bisnis Bertumbuh)',
+    maxScaleText: '250 pengguna (Enterprise / Multi-Cabang)',
+    metricCard1Title: '01 · PENGURANGAN KERJA MANUAL',
+    getMetricCard1Value: (metrics) => `${metrics.manualReductionPct}%`,
     metricCard1Detail:
-      'Pencatatan data pakan, takaran nutrisi, dan jadwal kontrol rutin beralih otomatis ke sistem.',
+      'Pencatatan inventaris, transaksi operasional, dan alur data beralih otomatis ke sistem web & mobile terpadu.',
+    metricCard2Title: '02 · EFISIENSI WAKTU OPERASIONAL',
+    getMetricCard2Value: () => '10x Lebih Cepat',
+    getMetricCard2Detail: (_metrics, scale) =>
+      `±${(scale * 15).toLocaleString('id-ID')} jam kerja/bln terhemat dengan antarmuka web responsif & APK mobile bebas kendala.`,
+    metricCard3Title: '03 · RELIABILITAS & UPTIME SISTEM',
+    getMetricCard3Value: () => '99.9% Uptime',
     metricCard3Detail:
-      'Peringatan anomali (suhu kandang, lonjakan amonia, atau oksigen air) tiba instan di ponsel operator.',
+      'Arsitektur modular siap integrasi ke payment gateway, kasir POS, maupun database cloud dengan standar keamanan TLS & AES-256.',
   },
-  'enterprise-workflow': {
-    scaleLabel: 'Skala Alur Kerja & Proses Dokumen',
-    scaleUnit: 'proses / divisi',
-    minScaleText: '10 proses (Departemen)',
-    defaultScaleText: '100 proses (Perusahaan)',
-    maxScaleText: '250 proses (Grup Multi-Entitas)',
-    metricCard2Title: '02 · EFISIENSI WAKTU & DATA OPERASIONAL',
+  'agentic-ai-workforce': {
+    scaleLabel: 'Volume Berkas & Dokumen Rutin',
+    scaleUnit: 'dokumen / hari',
+    minScaleText: '10 berkas (Tim Kecil)',
+    defaultScaleText: '100 berkas (Operasional Aktif)',
+    maxScaleText: '250 berkas (Volume Tinggi)',
+    metricCard1Title: '01 · OTOMASI TUGAS RUTIN BERULANG',
+    getMetricCard1Value: (metrics) => `${metrics.manualReductionPct}%`,
+    metricCard1Detail:
+      'Validasi berkas faktur, rekap transaksi harian, dan penyusunan laporan dikerjakan mandiri oleh pipeline agen AI.',
+    metricCard2Title: '02 · JAM KERJA BISNIS TERHEMAT',
+    getMetricCard2Value: (_metrics, scale) => `±${(scale * 18).toLocaleString('id-ID')} Jam`,
     getMetricCard2Detail: (_metrics, scale) =>
       `±${(scale * 18).toLocaleString('id-ID')} jam kerja/bln terhemat & ${(scale * 45).toLocaleString('id-ID')} berkas terverifikasi otomatis tanpa human-error.`,
-    metricCard1Detail:
-      'Validasi berkas, rekonsiliasi data transaksi, dan laporan eksekutif di-generate otomatis oleh AI pipeline.',
+    metricCard3Title: '03 · KECEPATAN EKSEKUSI AGEN AI',
+    getMetricCard3Value: () => '< 2 Detik',
     metricCard3Detail:
-      'Deteksi kegagalan sinkronisasi, anomali data transaksi, atau celah akses dilaporkan instan via webhook & ponsel.',
+      'Ekstraksi dokumen PDF, pemindaian OCR cerdas, dan notifikasi anomali data dikirim seketika via webhook atau bot pesan.',
   },
-  'smart-facility': {
-    scaleLabel: 'Cakupan Fasilitas & Titik Pemantauan',
-    scaleUnit: 'titik sensor / zona',
-    minScaleText: '10 titik (Greenhouse / Lab)',
-    defaultScaleText: '100 titik (Gudang / Fasilitas)',
+  'field-iot-cps': {
+    scaleLabel: 'Cakupan Sensor & Titik Lapangan',
+    scaleUnit: 'titik sensor / aktuator',
+    minScaleText: '10 titik (Unit Rintisan)',
+    defaultScaleText: '100 titik (Fasilitas Standar)',
     maxScaleText: '250 titik (Kawasan Multi-Zona)',
-    metricCard2Title: '02 · EFISIENSI ENERGI & MIKROKLIMAT',
-    getMetricCard2Detail: (_metrics, scale, automation) =>
-      `±${(scale * 24).toLocaleString('id-ID')} kWh/bln efisiensi daya HVAC & ${Math.round(92 + (automation / 100) * 7)}% stabilitas mikroklimat presisi 24/7.`,
+    metricCard1Title: '01 · OTOMASI KONTROL ALAT FISIK',
+    getMetricCard1Value: (metrics) => `${metrics.manualReductionPct}%`,
     metricCard1Detail:
-      'Pengaturan kipas exhaust, katup irigasi tetes, dan pencatatan logger lingkungan berjalan otomatis 24/7.',
+      'Otomasi pompa, katup air, ventilasi blower, dan pencatatan parameter lingkungan berjalan otomatis 24/7.',
+    metricCard2Title: '02 · EFISIENSI SUMBER DAYA & BIAYA',
+    getMetricCard2Value: (metrics) => `${metrics.wasteReductionPct}%`,
+    getMetricCard2Detail: (metrics) =>
+      `±${metrics.waterSavedLitersPerDay.toLocaleString('id-ID')} L/hari air terjaga & efisiensi daya listrik terkendali stabil di setiap zona.`,
+    metricCard3Title: '03 · RESPON PERINGATAN KRITIS',
+    getMetricCard3Value: (metrics) => `< ${metrics.telemetryLatencySec} dtk`,
     metricCard3Detail:
-      'Pemberitahuan perubahan suhu ekstrem, kelembaban kritis, atau pemadaman listrik darurat dikirim seketika ke tim teknis.',
+      'Peringatan perubahan suhu ekstrem, kebocoran pipa, atau lonjakan parameter kritis tiba seketika di ponsel tim teknis.',
   },
 };
 

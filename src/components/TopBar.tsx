@@ -10,7 +10,7 @@ interface TopBarProps {
 const NAV_LINKS = [
   { href: '#pendekatan', label: 'Pendekatan' },
   { href: '#pilar', label: 'Pilar' },
-  { href: '#masterplan', label: 'Masterplan' },
+  { href: '#masterplan', label: 'Living Lab' },
   { href: '#profil', label: 'Profil' },
 ] as const;
 

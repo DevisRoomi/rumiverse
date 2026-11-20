@@ -149,9 +149,10 @@ test('SECTOR_SIMULATOR_PROFILES covers all 3 verticals with appropriate dynamic 
   }
 
   // Check specific contextual adaptation
-  assert.equal(SECTOR_SIMULATOR_PROFILES['livestock-aquaculture'].scaleUnit, 'unit / ekor');
-  assert.equal(SECTOR_SIMULATOR_PROFILES['enterprise-workflow'].scaleUnit, 'proses / divisi');
-  assert.equal(SECTOR_SIMULATOR_PROFILES['smart-facility'].scaleUnit, 'titik sensor / zona');
-  assert.ok(SECTOR_SIMULATOR_PROFILES['enterprise-workflow'].metricCard2Title.includes('OPERASIONAL'));
-  assert.ok(SECTOR_SIMULATOR_PROFILES['smart-facility'].metricCard2Title.includes('MIKROKLIMAT'));
+  assert.equal(SECTOR_SIMULATOR_PROFILES['custom-web-mobile'].scaleUnit, 'pengguna / modul');
+  assert.equal(SECTOR_SIMULATOR_PROFILES['agentic-ai-workforce'].scaleUnit, 'dokumen / hari');
+  assert.equal(SECTOR_SIMULATOR_PROFILES['field-iot-cps'].scaleUnit, 'titik sensor / aktuator');
+  assert.ok(SECTOR_SIMULATOR_PROFILES['custom-web-mobile'].metricCard2Title.includes('OPERASIONAL'));
+  assert.ok(SECTOR_SIMULATOR_PROFILES['agentic-ai-workforce'].metricCard2Title.includes('JAM KERJA'));
+  assert.ok(SECTOR_SIMULATOR_PROFILES['field-iot-cps'].metricCard2Title.includes('SUMBER DAYA'));
 });

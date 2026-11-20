@@ -38,18 +38,18 @@ export function SectorSimulationSection({ onConsultSector }: SectorSimulationSec
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pb-8 border-b border-[#D8D6CE] items-end">
           <div className="lg:col-span-6 space-y-2">
             <p className="font-mono text-xs text-[#2E7D5B] tracking-wide uppercase font-semibold">
-              04. Penerapan Sektor &amp; Estimasi Operasional
+              04. Simulasi Layanan &amp; Estimasi Efisiensi
             </p>
             <MaskedHeading
               as="h2"
               className="font-display text-2xl sm:text-3xl font-bold text-[#121311] tracking-tight"
             >
-              Solusi Terapan Lintas Sektor &amp; Dampak Terukur
+              Tiga Solusi Rekayasa Presisi Sesuai Kebutuhan Anda
             </MaskedHeading>
           </div>
           <div className="lg:col-span-6">
             <p className="text-sm sm:text-base text-[#4A4D46] leading-relaxed">
-              Arsitektur sistem kami dirancang modular untuk beradaptasi di berbagai bidang operasional: fasilitas peternakan tertutup, biofilter akuakultur, hingga perkebunan presisi. Tinjau studi kasus per sektor dan simulasikan estimasi efisiensinya.
+              Pilih pilar solusi yang dibutuhkan bisnis Anda: pembuatan aplikasi web &amp; APK mobile kustom, otomatisasi alur kerja cerdas berbasis agen AI, atau instrumentasi sensor IoT lapangan. Simulasikan skala kebutuhan Anda dan tinjau estimasi dampaknya secara transparan.
             </p>
           </div>
         </div>
@@ -59,17 +59,17 @@ export function SectorSimulationSection({ onConsultSector }: SectorSimulationSec
           <div className="flex items-center justify-between">
             <span className="font-mono text-xs text-[#2E7D5B] font-bold uppercase tracking-wider flex items-center gap-2">
               <Layers className="w-3.5 h-3.5" />
-              PILIH SEKTOR OPERASIONAL
+              PILIH PILAR LAYANAN JASA
             </span>
             <span className="hidden sm:inline font-mono text-[11px] text-[#6B6E66]">
-              KLIK TAB UNTUK MEMBUKA SPESIFIKASI SEKTOR
+              KLIK PILAR UNTUK MELIHAT SPESIFIKASI &amp; ESTIMASI DAMPAK
             </span>
           </div>
 
           {/* 3 Sector Tabs */}
           <div
             role="tablist"
-            aria-label="Sektor Ekosistem RUMIVERSE"
+            aria-label="Layanan Rekayasa RUMIVERSE"
             className="grid grid-cols-1 md:grid-cols-3 gap-3"
           >
             {INDUSTRY_VERTICALS.map((vertical) => {
@@ -95,7 +95,7 @@ export function SectorSimulationSection({ onConsultSector }: SectorSimulationSec
                           : 'bg-[#FAF9F6] text-[#2E7D5B] border border-[#D8D6CE]'
                       }`}
                     >
-                      SEKTOR {vertical.index}
+                      LAYANAN {vertical.index}
                     </span>
                     <span
                       className={`text-[11px] font-mono ${
@@ -175,7 +175,7 @@ export function SectorSimulationSection({ onConsultSector }: SectorSimulationSec
                 onClick={() => onConsultSector(activeVertical.recommendedFocus)}
                 className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#1B3B2B] hover:bg-[#121311] text-[#F4F3EF] text-xs font-semibold tracking-tight transition-all cursor-pointer shadow-xs hover:scale-[1.01]"
               >
-                <span>Diskusikan Sektor {activeVertical.title}</span>
+                <span>Konsultasikan Jasa {activeVertical.title}</span>
                 <ArrowUpRight className="w-3.5 h-3.5 text-[#74C69D]" />
               </button>
             </div>
@@ -188,10 +188,10 @@ export function SectorSimulationSection({ onConsultSector }: SectorSimulationSec
             <div className="space-y-1">
               <span className="font-mono text-xs text-[#74C69D] inline-flex items-center gap-2 font-semibold uppercase tracking-wider">
                 <Activity className="w-3.5 h-3.5 animate-pulse" />
-                SIMULATOR ESTIMASI DAMPAK OPERASIONAL
+                SIMULATOR ESTIMASI DAMPAK LAYANAN
               </span>
               <p className="text-xs sm:text-sm text-[#D0D6CF] max-w-xl">
-                Geser nilai di bawah untuk melihat perkiraan dampak efisiensi kerja manual dan konservasi sumber daya pada skala operasional Anda.
+                Geser nilai di bawah untuk melihat perkiraan dampak efisiensi kerja dan keandalan sistem pada skala operasional Anda.
               </p>
             </div>
 
@@ -264,10 +264,10 @@ export function SectorSimulationSection({ onConsultSector }: SectorSimulationSec
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="p-4 rounded-xl bg-[#121311]/50 border border-[#F4F3EF]/15 space-y-1">
               <span className="font-mono text-[10px] text-[#74C69D] uppercase tracking-wider block">
-                01 · PENGURANGAN KERJA MANUAL
+                {activeProfile.metricCard1Title}
               </span>
               <span className="font-mono text-3xl sm:text-4xl font-bold text-[#74C69D] tabular-nums block">
-                {metrics.manualReductionPct}%
+                {activeProfile.getMetricCard1Value(metrics, scale, automation)}
               </span>
               <p className="text-[11px] text-[#D0D6CF] leading-snug">
                 {activeProfile.metricCard1Detail}
@@ -279,7 +279,7 @@ export function SectorSimulationSection({ onConsultSector }: SectorSimulationSec
                 {activeProfile.metricCard2Title}
               </span>
               <span className="font-mono text-3xl sm:text-4xl font-bold text-[#74C69D] tabular-nums block">
-                {metrics.wasteReductionPct}%
+                {activeProfile.getMetricCard2Value(metrics, scale, automation)}
               </span>
               <p className="text-[11px] text-[#D0D6CF] leading-snug">
                 {activeProfile.getMetricCard2Detail(metrics, scale, automation)}
@@ -288,10 +288,10 @@ export function SectorSimulationSection({ onConsultSector }: SectorSimulationSec
 
             <div className="p-4 rounded-xl bg-[#121311]/50 border border-[#F4F3EF]/15 space-y-1">
               <span className="font-mono text-[10px] text-[#74C69D] uppercase tracking-wider block">
-                03 · RESPON PERINGATAN KRITIS
+                {activeProfile.metricCard3Title}
               </span>
               <span className="font-mono text-3xl sm:text-4xl font-bold text-[#74C69D] tabular-nums block">
-                &lt; {metrics.telemetryLatencySec} dtk
+                {activeProfile.getMetricCard3Value(metrics, scale, automation)}
               </span>
               <p className="text-[11px] text-[#D0D6CF] leading-snug">
                 {activeProfile.metricCard3Detail}
@@ -303,10 +303,10 @@ export function SectorSimulationSection({ onConsultSector }: SectorSimulationSec
           <div className="pt-3 border-t border-[#F4F3EF]/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] font-mono text-[#9EA69D]">
             <span className="flex items-center gap-1.5 text-[#74C69D]">
               <span className="w-1.5 h-1.5 rounded-full bg-[#74C69D]" />
-              <span>Model Simulasi: Sektor {activeVertical.index} · {activeVertical.title}</span>
+              <span>Model Simulasi: Layanan {activeVertical.index} · {activeVertical.title}</span>
             </span>
             <span className="text-left sm:text-right">
-              *Estimasi berdasarkan rata-rata benchmark operasional lapangan; hasil aktual menyesuaikan audit lokasi.
+              *Estimasi berdasarkan tolok ukur implementasi sistem nyata; hasil aktual disesuaikan dengan lingkup proyek Anda.
             </span>
           </div>
         </div>

@@ -228,11 +228,11 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
           <div className="max-w-3xl space-y-3">
             <div className="flex flex-wrap items-center gap-2.5">
               <span className="font-mono text-xs text-[#2E7D5B] tracking-wider uppercase font-semibold">
-                03. CETAK BIRU SPASIAL // LIVING LAB RUMIVERSE
+                03. LIVING LAB SHOWCASE // BUKTI INTEGRASI TIGA JASA
               </span>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#1B3B2B] text-[#74C69D] border border-[#74C69D]/30 font-mono text-[10px] font-bold tracking-wider">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#74C69D] animate-pulse" />
-                STATUS: CETAK BIRU ARSITEKTUR &amp; VISI JANGKA PANJANG (HORIZON 2030–2035)
+                LIVING LAB SHOWCASE: INTEGRASI WEB, AI &amp; IOT TERPADU
               </span>
             </div>
 
@@ -240,11 +240,11 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
               as="h2"
               className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-[#121311] tracking-tight"
             >
-              Smart Integrated Eco-Farm Lumajang
+              Living Lab Lumajang: Ekosistem Terpadu
             </MaskedHeading>
 
             <p className="text-sm sm:text-base text-[#4A4D46] leading-relaxed">
-              Masterplan kawasan terpadu ini dirancang sebagai cetak biru arsitektur dan peta jalan strategis jangka panjang (<strong>Horizon 2030–2035</strong>). Living lab di Lumajang ini menjadi sarana uji coba rekayasa kami untuk mengukur batas efisiensi sistem siklus tertutup (<em>closed-loop zero-waste</em>)—dengan target desain memangkas hingga 70% ketergantungan pada pakan pabrikan serta menyuplai kebutuhan energi instrumen secara mandiri.
+              Living Lab di Lumajang ini adalah sarana uji coba terbuka (<em>extreme testbed</em>) RUMIVERSE untuk menguji batas keandalan <strong>tiga pilar jasa kami</strong>: platform web kendali, agen AI pengambil keputusan, dan instrumen sensor lapangan fisik yang saling terhubung secara otomatis 24/7 sebelum diimplementasikan ke proyek klien.
             </p>
 
             {/* Modular Readiness Callout */}
@@ -253,7 +253,7 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
                 ● Adopsi Bertahap &amp; Siap Bangun Hari Ini:
               </span>
               <p className="text-xs text-[#4A4D46] leading-relaxed">
-                Meskipun integrasi seluruh kawasan merupakan visi jangka panjang, setiap modul teknologinya—seperti kandang ayam pintar, bioreaktor maggot BSF, irigasi presisi hidroponik, hingga pemantauan mikrogrid mandiri—sudah berarsitektur modular dan siap diadopsi serta dibangun di lahan Anda secara terpisah sekarang.
+                Meskipun integrasi seluruh kawasan merupakan visi jangka panjang, setiap modul teknologinya—mulai dari aplikasi web dasbor, otomasi agen AI, hingga modul sensor dan aktuator lapangan—berarsitektur modular dan siap kami bangun untuk bisnis Anda secara terpisah hari ini.
               </p>
             </div>
           </div>
