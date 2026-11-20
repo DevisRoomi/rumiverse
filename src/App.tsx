@@ -19,10 +19,12 @@ const AppointmentModal = lazy(() =>
 export default function App() {
   const [preloaderActive, setPreloaderActive] = useState(true);
   const [consultationOpen, setConsultationOpen] = useState(false);
+  const [hasOpenedConsultation, setHasOpenedConsultation] = useState(false);
   const [consultationFocus, setConsultationFocus] =
     useState<ConsultationFormValues['focus']>('integrated');
 
   const openWithFocus = (focus: ConsultationFormValues['focus'] = 'integrated') => {
+    setHasOpenedConsultation(true);
     setConsultationFocus(focus);
     setConsultationOpen(true);
   };
@@ -56,7 +58,7 @@ export default function App() {
       <div className="content-visibility-auto">
         <FooterSection onOpenConsultation={() => openWithFocus('integrated')} />
       </div>
-      {consultationOpen && (
+      {hasOpenedConsultation && (
         <Suspense fallback={null}>
           <AppointmentModal
             open={consultationOpen}
