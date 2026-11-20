@@ -43,6 +43,22 @@
   will-change: transform;
 }
 
+/* Minimal Editorial Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #C8C6BC;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #1B3B2B;
+}
+
 /* Masked editorial clip-path reveal */
 .mask-reveal {
   clip-path: inset(0 0 100% 0);

@@ -29,9 +29,10 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { EditorialImage } from './EditorialImage';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 import type { ConsultationFormValues } from '../utils/ecosystemData';
 
-const COVER_IMG = '/src/assets/images/pilar-3-cyber-physical/cover.jpg';
+const COVER_IMG = '/src/assets/images/pilar-3-cyber-physical/cover.webp';
 const PROTOTYPE_DIAGRAM_IMG = '/src/assets/images/pilar-3-cyber-physical/p3.webp';
 const GREENHOUSE_MANIFOLD_IMG = '/src/assets/images/pilar-3-cyber-physical/p3 3.webp';
 const CONTROL_BOX_IMG = '/src/assets/images/pilar-3-cyber-physical/p3 4.webp';
@@ -169,6 +170,7 @@ export function Pillar3JournalModal({
   onClose,
   onOpenConsultation,
 }: Pillar3JournalModalProps) {
+  useBodyScrollLock(open);
   const [activeNode, setActiveNode] = useState<TelemetryNodeKey>('aquaculture');
   const [simulationScenario, setSimulationScenario] = useState<SimulationScenario>('normal');
   const [livePulseTick, setLivePulseTick] = useState(0);

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, lazy, Suspense } from 'react';
 import { ArrowUpRight, CheckCircle2, ChevronRight, X } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { EditorialImage } from './EditorialImage';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 import type { ConsultationFormValues } from '../utils/ecosystemData';
 
 const Pillar1JournalModal = lazy(() =>
@@ -144,6 +145,7 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
 
   const [isDesktop, setIsDesktop] = useState(false);
   const [selectedPillarId, setSelectedPillarId] = useState<PillarData['id'] | null>(null);
+  useBodyScrollLock(selectedPillarId !== null);
   const [pilar1JournalOpen, setPilar1JournalOpen] = useState(false);
   const [pilar2JournalOpen, setPilar2JournalOpen] = useState(false);
   const [pilar3JournalOpen, setPilar3JournalOpen] = useState(false);

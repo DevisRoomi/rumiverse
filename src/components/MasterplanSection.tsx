@@ -22,6 +22,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { MaskedHeading } from './MaskedHeading';
 import { EditorialImage } from './EditorialImage';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 import type { ConsultationFormValues } from '../utils/ecosystemData';
 import masterplanDroneWebp from '../assets/images/masterplan/masterplan.webp';
 import masterplanBlueprintWebp from '../assets/images/masterplan/masterplan_blueprint.webp';
@@ -208,6 +209,7 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
   const [selectedZoneId, setSelectedZoneId] = useState<string>('smart-coop');
   const [detailTab, setDetailTab] = useState<'hardware' | 'synergy'>('hardware');
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  useBodyScrollLock(lightboxOpen);
   const [expandedStage, setExpandedStage] = useState<string | null>(null);
 
   const toggleStage = (step: string) => {

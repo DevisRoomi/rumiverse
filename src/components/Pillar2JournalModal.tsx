@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { EditorialImage } from './EditorialImage';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 import type { ConsultationFormValues } from '../utils/ecosystemData';
 
 const COVER_IMG = '/src/assets/images/pilar-2-ai-workforce/cover.webp';
@@ -75,6 +76,7 @@ export function Pillar2JournalModal({
   onClose,
   onOpenConsultation,
 }: Pillar2JournalModalProps) {
+  useBodyScrollLock(open);
   const [activeLogTab, setActiveLogTab] = useState<TerminalLogTab>('deliberation');
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const [readingProgress, setReadingProgress] = useState(0);

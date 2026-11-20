@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { EditorialImage } from './EditorialImage';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 import type { ConsultationFormValues } from '../utils/ecosystemData';
 
 const WORKSTATION_IMG = '/src/assets/images/pilar-1-web-mobile/web_office_workstation.webp';
@@ -37,6 +38,7 @@ export function Pillar1JournalModal({
   onClose,
   onOpenConsultation,
 }: Pillar1JournalModalProps) {
+  useBodyScrollLock(open);
   const [activeDashboardMode, setActiveDashboardMode] = useState<'dark' | 'light'>('dark');
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const [readingProgress, setReadingProgress] = useState(0);

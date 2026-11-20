@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { X, CheckCircle2 } from 'lucide-react';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 import {
   validateConsultationInput,
   type ConsultationFormValues,
@@ -32,6 +33,7 @@ export function AppointmentModal({
   defaultFocus = 'integrated',
   onClose,
 }: AppointmentModalProps) {
+  useBodyScrollLock(open);
   const [form, setForm] = useState<ConsultationFormValues>({
     ...INITIAL_FORM,
     focus: defaultFocus,
