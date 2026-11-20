@@ -5,8 +5,6 @@ import {
   AnimatePresence,
   useScroll,
   useTransform,
-  useMotionValue,
-  useSpring,
 } from 'motion/react';
 import { HERO_TELEMETRY_NODES } from '../utils/ecosystemData';
 import { EditorialImage } from './EditorialImage';
@@ -14,67 +12,38 @@ import { MagneticButton } from './MagneticButton';
 import heroVirtualStudioImg from '../assets/images/rumiverse_virtual_studio_hero.webp';
 
 const ROOM_CAMERA_FOCUS: Record<string, { origin: string; scale: number }> = {
-  'node-ai-foundry': { origin: '78% 30%', scale: 1.25 },
-  'node-web-studio': { origin: '52% 38%', scale: 1.25 },
-  'node-field-iot': { origin: '83% 74%', scale: 1.25 },
-  'node-command-ops': { origin: '40% 64%', scale: 1.25 },
+  'node-ai-foundry': { origin: '78% 32%', scale: 1.25 },
+  'node-web-studio': { origin: '66% 27%', scale: 1.25 },
+  'node-field-iot': { origin: '83% 76%', scale: 1.25 },
+  'node-command-ops': { origin: '38% 64%', scale: 1.25 },
 };
 
-// Optimized coordinates positioned directly on workstations (avoiding wall signage)
+// Optimized coordinates positioned directly on respective room workstations with generous breathing room
 const PIN_COORDINATES: Record<string, { top: number; left: number }> = {
-  'node-ai-foundry': { top: 34, left: 77 },
-  'node-web-studio': { top: 42, left: 51 },
+  'node-ai-foundry': { top: 32, left: 78 },
+  'node-web-studio': { top: 27, left: 66 },
   'node-field-iot': { top: 76, left: 83 },
   'node-command-ops': { top: 64, left: 38 },
 };
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const cardRef = useRef<HTMLDivElement | null>(null);
 
   const [activeNodeId, setActiveNodeId] = useState<string>(HERO_TELEMETRY_NODES[0].id);
   // Default to Full Overview (Scale 1.0) so entire 4-room layout is visible initially
   const [isZoomedIn, setIsZoomedIn] = useState(false);
   const [isCtaHovered, setIsCtaHovered] = useState(false);
 
-  // 1. Scrubbed Scroll Parallax (Transitioning out of Hero)
+  // 1. Scrubbed Scroll Parallax (Transitioning out of Hero - subtle & calm)
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end start'],
   });
 
-  const leftColY = useTransform(scrollYProgress, [0, 1], [0, -35]);
-  const rightColScale = useTransform(scrollYProgress, [0, 1], [1, 0.96]);
-  const rightColOpacity = useTransform(scrollYProgress, [0, 0.8, 1], [1, 0.98, 0.9]);
-  const rightColY = useTransform(scrollYProgress, [0, 1], [0, 20]);
-
-  // 2. 3D Tilt Parallax (Spring Physics on Cursor Movement)
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const springConfig = { damping: 24, stiffness: 180, mass: 0.6 };
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [4, -4]), springConfig);
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-4, 4]), springConfig);
-
-  const handleCardMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    ) {
-      return;
-    }
-    const rect = cardRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    mouseX.set(x);
-    mouseY.set(y);
-  };
-
-  const handleCardMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
+  const leftColY = useTransform(scrollYProgress, [0, 1], [0, -30]);
+  const rightColScale = useTransform(scrollYProgress, [0, 1], [1, 0.97]);
+  const rightColOpacity = useTransform(scrollYProgress, [0, 0.8, 1], [1, 0.98, 0.92]);
+  const rightColY = useTransform(scrollYProgress, [0, 1], [0, 16]);
 
   const handleSmoothScroll = () => {
     const target = document.querySelector('#tentang') || document.querySelector('#pilar');
@@ -301,7 +270,7 @@ export function HeroSection() {
           </div>
         </motion.div>
 
-        {/* Right column: 3D Tilt Parallax & Clean Architectural Viewport */}
+        {/* Right column: Calm, Solid, Grounded Architectural Viewport (No Dizziness / No Tilting Platter) */}
         <motion.div
           style={{
             scale: rightColScale,
@@ -311,20 +280,10 @@ export function HeroSection() {
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="lg:col-span-7 p-3 sm:p-5 lg:p-6 flex flex-col justify-center bg-[#FAF9F6] perspective-[1000px]"
+          className="lg:col-span-7 p-3 sm:p-5 lg:p-6 flex flex-col justify-center bg-[#FAF9F6]"
         >
-          {/* 3D Tilt Container Wrapper */}
-          <motion.div
-            ref={cardRef}
-            onMouseMove={handleCardMouseMove}
-            onMouseLeave={handleCardMouseLeave}
-            style={{
-              rotateX,
-              rotateY,
-              transformStyle: 'preserve-3d',
-            }}
-            className="rounded-3xl border border-[#D8D6CE] bg-[#F4F3EF] shadow-[0_16px_40px_-16px_rgba(18,19,17,0.1)] overflow-hidden flex flex-col transition-shadow duration-300 hover:shadow-[0_24px_55px_-12px_rgba(18,19,17,0.16)]"
-          >
+          {/* Stable Grounded Card Frame (Tenang & Santai, Tidak Goyang) */}
+          <div className="rounded-3xl border border-[#D8D6CE] bg-[#F4F3EF] shadow-[0_16px_40px_-16px_rgba(18,19,17,0.1)] overflow-hidden flex flex-col transition-shadow duration-500 hover:shadow-[0_20px_48px_-14px_rgba(18,19,17,0.14)]">
             {/* Viewport Top Header */}
             <div className="px-4 py-2.5 border-b border-[#D8D6CE] bg-[#FAF9F6] flex items-center justify-between gap-4 text-xs font-mono select-none">
               <div className="flex items-center gap-2 text-[#121311]">
@@ -414,47 +373,40 @@ export function HeroSection() {
                   aria-hidden="true"
                 />
 
-                {/* Center Architectural Scope Reticle (Arahkan kursor/klik untuk Auto Tinjau Penuh) */}
+                {/* Center Architectural Scope Reticle (Compact & Well-Spaced in Center Hallway) */}
                 <button
                   type="button"
                   onClick={() => setIsZoomedIn(false)}
                   onMouseEnter={() => setIsZoomedIn(false)}
                   style={{
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%) translateZ(28px)',
+                    top: '52%',
+                    left: '49%',
+                    transform: 'translate(-50%, -50%)',
                   }}
                   aria-label="Pusat pandang: Tinjau penuh seluruh studio"
                   className="group absolute z-25 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#74C69D] transition-all duration-300 select-none"
                   title="Arahkan kursor atau klik untuk tinjau penuh seluruh studio"
                 >
                   <span className="relative flex items-center justify-center">
-                    {/* Subtle ping pulse when currently zoomed in */}
-                    {isZoomedIn && (
-                      <span className="absolute -inset-2.5 rounded-full border border-[#74C69D]/50 animate-ping duration-1500 opacity-60 pointer-events-none" />
-                    )}
-
-                    {/* Scope crosshair reticle badge */}
+                    {/* Discrete Scope Crosshair Badge (Ringkas & Proporsional 24px) */}
                     <span
-                      className={`relative flex items-center justify-center w-8 h-8 rounded-full border transition-all duration-300 shadow-md backdrop-blur-xs ${
+                      className={`relative flex items-center justify-center w-6 h-6 rounded-full border transition-all duration-300 shadow-sm backdrop-blur-xs ${
                         !isZoomedIn
-                          ? 'border-[#74C69D] bg-[#1B3B2B]/90 text-[#74C69D] shadow-[0_0_14px_rgba(116,198,157,0.5)] ring-2 ring-[#74C69D]/40'
-                          : 'border-white/60 bg-[#121311]/80 text-[#D8D6CE] hover:border-[#74C69D] hover:bg-[#1B3B2B] hover:text-[#74C69D] group-hover:scale-110'
+                          ? 'border-[#74C69D] bg-[#1B3B2B]/90 text-[#74C69D] shadow-[0_0_10px_rgba(116,198,157,0.4)] ring-1.5 ring-[#74C69D]/40'
+                          : 'border-white/50 bg-[#121311]/80 text-[#D8D6CE] hover:border-[#74C69D] hover:bg-[#1B3B2B] hover:text-[#74C69D]'
                       }`}
                     >
-                      <Crosshair className="w-4 h-4 stroke-[1.8] transition-transform duration-500 group-hover:rotate-90" />
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#74C69D] absolute" />
+                      <Crosshair className="w-3.5 h-3.5 stroke-[1.8] transition-transform duration-300 group-hover:rotate-45" />
                     </span>
 
                     {/* Floating Reticle Tooltip */}
-                    <span className="pointer-events-none absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-md bg-[#121311]/95 backdrop-blur-md text-[10px] font-mono text-[#74C69D] whitespace-nowrap border border-[#74C69D]/30 opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-lg flex items-center gap-1.5 z-40">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#74C69D] animate-pulse" />
-                      <span>Pusat Pandang · Tinjau Penuh</span>
+                    <span className="pointer-events-none absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-md bg-[#121311]/95 backdrop-blur-md text-[10px] font-mono text-[#74C69D] whitespace-nowrap border border-[#74C69D]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-md z-40">
+                      Pusat Pandang · Tinjau Penuh
                     </span>
                   </span>
                 </button>
 
-                {/* Clean Tactile Room Pins (Numbered Circles - No Permanent Text Collisions) */}
+                {/* Clean Tactile Room Pins (Well-Spaced on Room Desks - No Clutter) */}
                 {HERO_TELEMETRY_NODES.map((node) => {
                   const isSelected = node.id === activeNode.id;
                   const coords = PIN_COORDINATES[node.id] ?? {
@@ -472,7 +424,6 @@ export function HeroSection() {
                       style={{
                         top: `${coords.top}%`,
                         left: `${coords.left}%`,
-                        transform: 'translateZ(26px)',
                       }}
                       aria-label={`Pilih ${node.label}`}
                       aria-pressed={isSelected}
@@ -576,7 +527,7 @@ export function HeroSection() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </motion.div>
       </div>
     </section>
