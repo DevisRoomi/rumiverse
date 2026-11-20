@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { ArrowDownRight, Maximize2, Minimize2 } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { ArrowDownRight, Crosshair, Maximize2, Minimize2 } from 'lucide-react';
 import {
   motion,
   AnimatePresence,
@@ -12,12 +12,6 @@ import { HERO_TELEMETRY_NODES } from '../utils/ecosystemData';
 import { EditorialImage } from './EditorialImage';
 import { MagneticButton } from './MagneticButton';
 import heroVirtualStudioImg from '../assets/images/rumiverse_virtual_studio_hero.webp';
-
-const WING_HIGHLIGHTS = [
-  '01 · Web & Mobile Studio',
-  '02 · Autonomous AI Foundry',
-  '03 · Applied Field IoT Lab',
-];
 
 const ROOM_CAMERA_FOCUS: Record<string, { origin: string; scale: number }> = {
   'node-ai-foundry': { origin: '78% 30%', scale: 1.25 },
@@ -39,20 +33,11 @@ export function HeroSection() {
   const cardRef = useRef<HTMLDivElement | null>(null);
 
   const [activeNodeId, setActiveNodeId] = useState<string>(HERO_TELEMETRY_NODES[0].id);
-  const [tickerIndex, setTickerIndex] = useState(0);
   // Default to Full Overview (Scale 1.0) so entire 4-room layout is visible initially
   const [isZoomedIn, setIsZoomedIn] = useState(false);
   const [isCtaHovered, setIsCtaHovered] = useState(false);
 
-  // 1. Rotating ticker every 2.4 seconds
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTickerIndex((prev) => (prev + 1) % WING_HIGHLIGHTS.length);
-    }, 2400);
-    return () => clearInterval(timer);
-  }, []);
-
-  // 2. Scrubbed Scroll Parallax (Transitioning out of Hero)
+  // 1. Scrubbed Scroll Parallax (Transitioning out of Hero)
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end start'],
@@ -63,7 +48,7 @@ export function HeroSection() {
   const rightColOpacity = useTransform(scrollYProgress, [0, 0.8, 1], [1, 0.98, 0.9]);
   const rightColY = useTransform(scrollYProgress, [0, 1], [0, 20]);
 
-  // 3. 3D Tilt Parallax (Spring Physics on Cursor Movement)
+  // 2. 3D Tilt Parallax (Spring Physics on Cursor Movement)
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -136,15 +121,15 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Masked Line Reveal Headline (Compact 3 Baris Proporsional) */}
+          {/* Masked Line Reveal Headline (3 Baris Bersih: Koma Nempel Rapi di Akhir Baris 2) */}
           <div className="font-display font-bold text-[#121311] tracking-tight leading-[1.12] text-3xl sm:text-4xl lg:text-[2.2rem] xl:text-[2.65rem]">
-            {/* Line 1: Membangun [Software] Presisi, */}
+            {/* Baris 1: Membangun [Software] Presisi, */}
             <div className="overflow-hidden py-0.5">
               <motion.div
                 initial={{ y: '100%', opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.75, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
-                className="flex items-center flex-wrap gap-x-2"
+                className="flex items-center flex-wrap gap-x-2 whitespace-nowrap"
               >
                 <span>Membangun</span>
                 <button
@@ -168,13 +153,13 @@ export function HeroSection() {
               </motion.div>
             </div>
 
-            {/* Line 2: [Agen AI Otonom], dan */}
+            {/* Baris 2: [Agen AI Otonom], (Tanda koma menempel langsung di akhir Otonom) */}
             <div className="overflow-hidden py-0.5">
               <motion.div
                 initial={{ y: '100%', opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.75, delay: 0.14, ease: [0.16, 1, 0.3, 1] }}
-                className="flex items-center flex-wrap gap-x-2"
+                className="whitespace-nowrap"
               >
                 <span
                   role="button"
@@ -191,19 +176,20 @@ export function HeroSection() {
                   }`}
                   title="Klik atau sorot untuk meninjau Autonomous AI Foundry"
                 >
-                  Agen AI Otonom
+                  Agen AI Otonom,
                 </span>
-                <span>, dan</span>
               </motion.div>
             </div>
 
-            {/* Line 3: [Sistem Lapangan.] */}
+            {/* Baris 3: dan [Sistem Lapangan.] */}
             <div className="overflow-hidden py-0.5">
               <motion.div
                 initial={{ y: '100%', opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.75, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                className="flex items-center gap-x-2 whitespace-nowrap"
               >
+                <span>dan</span>
                 <span
                   role="button"
                   tabIndex={0}
@@ -231,23 +217,32 @@ export function HeroSection() {
             instrumen IoT yang menghubungkan kode langsung ke dunia fisik.
           </p>
 
-          {/* CTA & Ticker Area */}
+          {/* CTA & Synchronized Status Area */}
           <div className="pt-4 lg:pt-5 border-t border-[#D8D6CE] flex flex-col gap-4">
-            {/* Dynamic Rotating Ticker */}
+            {/* Indikator Status Divisi: 100% Tersinkronisasi dengan Kartu Kanan */}
             <div className="flex items-center gap-2 text-xs font-mono text-[#4A4D46]">
-              <span className="text-[11px] font-semibold text-[#1B3B2B] tracking-wider uppercase">[DIVISI]</span>
+              <span className="text-[11px] font-semibold text-[#1B3B2B] tracking-wider uppercase">
+                {isZoomedIn ? '[DIVISI AKTIF]' : '[DIVISI STUDIO]'}
+              </span>
               <span className="text-[#8A8D86]">→</span>
               <div className="h-5 overflow-hidden flex items-center">
                 <AnimatePresence mode="wait">
                   <motion.span
-                    key={tickerIndex}
-                    initial={{ opacity: 0, y: 8 }}
+                    key={activeNode.id + (isZoomedIn ? '-zoomed' : '-overview')}
+                    initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.25, ease: 'easeOut' }}
-                    className="font-medium text-[#121311] inline-block tracking-tight text-[11px] sm:text-xs"
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.22, ease: 'easeOut' }}
+                    className="font-medium text-[#121311] inline-flex items-center gap-1.5 tracking-tight text-[11px] sm:text-xs"
                   >
-                    {WING_HIGHLIGHTS[tickerIndex]}
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full ${
+                        isZoomedIn ? 'bg-[#2E7D5B] animate-pulse' : 'bg-[#1B3B2B]'
+                      }`}
+                    />
+                    <span className="font-semibold text-[#1B3B2B]">{activeNode.code}</span>
+                    <span className="text-[#A1A39B]">·</span>
+                    <span>{activeNode.label}</span>
                   </motion.span>
                 </AnimatePresence>
               </div>
@@ -418,6 +413,46 @@ export function HeroSection() {
                   className="absolute top-[72%] left-[86%] w-8 h-8 rounded-full bg-[#52B788]/20 blur-sm pointer-events-none animate-pulse duration-2500"
                   aria-hidden="true"
                 />
+
+                {/* Center Architectural Scope Reticle (Arahkan kursor/klik untuk Auto Tinjau Penuh) */}
+                <button
+                  type="button"
+                  onClick={() => setIsZoomedIn(false)}
+                  onMouseEnter={() => setIsZoomedIn(false)}
+                  style={{
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%) translateZ(28px)',
+                  }}
+                  aria-label="Pusat pandang: Tinjau penuh seluruh studio"
+                  className="group absolute z-25 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#74C69D] transition-all duration-300 select-none"
+                  title="Arahkan kursor atau klik untuk tinjau penuh seluruh studio"
+                >
+                  <span className="relative flex items-center justify-center">
+                    {/* Subtle ping pulse when currently zoomed in */}
+                    {isZoomedIn && (
+                      <span className="absolute -inset-2.5 rounded-full border border-[#74C69D]/50 animate-ping duration-1500 opacity-60 pointer-events-none" />
+                    )}
+
+                    {/* Scope crosshair reticle badge */}
+                    <span
+                      className={`relative flex items-center justify-center w-8 h-8 rounded-full border transition-all duration-300 shadow-md backdrop-blur-xs ${
+                        !isZoomedIn
+                          ? 'border-[#74C69D] bg-[#1B3B2B]/90 text-[#74C69D] shadow-[0_0_14px_rgba(116,198,157,0.5)] ring-2 ring-[#74C69D]/40'
+                          : 'border-white/60 bg-[#121311]/80 text-[#D8D6CE] hover:border-[#74C69D] hover:bg-[#1B3B2B] hover:text-[#74C69D] group-hover:scale-110'
+                      }`}
+                    >
+                      <Crosshair className="w-4 h-4 stroke-[1.8] transition-transform duration-500 group-hover:rotate-90" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#74C69D] absolute" />
+                    </span>
+
+                    {/* Floating Reticle Tooltip */}
+                    <span className="pointer-events-none absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-md bg-[#121311]/95 backdrop-blur-md text-[10px] font-mono text-[#74C69D] whitespace-nowrap border border-[#74C69D]/30 opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-lg flex items-center gap-1.5 z-40">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#74C69D] animate-pulse" />
+                      <span>Pusat Pandang · Tinjau Penuh</span>
+                    </span>
+                  </span>
+                </button>
 
                 {/* Clean Tactile Room Pins (Numbered Circles - No Permanent Text Collisions) */}
                 {HERO_TELEMETRY_NODES.map((node) => {
