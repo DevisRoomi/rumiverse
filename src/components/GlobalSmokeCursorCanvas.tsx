@@ -62,7 +62,7 @@ export function GlobalSmokeCursorCanvas() {
       // Fast check for dark container classes and dark zones
       if (
         el.closest(
-          '.bg-\\[\\#121311\\], .bg-\\[\\#181A16\\], .bg-\\[\\#1B3B2B\\], [data-theme="dark"], footer, #footer, [role="dialog"]'
+          '[class*="bg-[#121311]"], [class*="bg-[#181A16]"], [class*="bg-[#1B3B2B]"], [class*="bg-[#13241B]"], [data-theme="dark"], footer, #footer, [role="dialog"]'
         )
       ) {
         return true;

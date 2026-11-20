@@ -32,7 +32,8 @@ export function SectorSimulationSection({ onConsultSector }: SectorSimulationSec
   };
 
   return (
-    <section id="sektor" className="border-b border-[#D8D6CE] bg-[#FAF9F6]">
+    <section id="simulasi" className="border-b border-[#D8D6CE] bg-[#FAF9F6] relative">
+      <span id="sektor" className="absolute -top-16" aria-hidden="true" />
       <div className="max-w-[1440px] mx-auto px-6 py-14 sm:px-10 sm:py-16 lg:px-12 lg:py-20 space-y-10">
         {/* Section Header */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pb-8 border-b border-[#D8D6CE] items-end">

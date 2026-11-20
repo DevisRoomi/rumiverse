@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { href: '#pendekatan', label: 'Pendekatan' },
   { href: '#pilar', label: 'Pilar' },
   { href: '#masterplan', label: 'Living Lab' },
+  { href: '#simulasi', label: 'Simulasi' },
   { href: '#profil', label: 'Profil' },
 ] as const;
 

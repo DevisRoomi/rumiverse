@@ -32,10 +32,10 @@ import { EditorialImage } from './EditorialImage';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 import type { ConsultationFormValues } from '../utils/ecosystemData';
 
-const COVER_IMG = '/src/assets/images/pilar-3-cyber-physical/cover.webp';
-const PROTOTYPE_DIAGRAM_IMG = '/src/assets/images/pilar-3-cyber-physical/p3.webp';
-const GREENHOUSE_MANIFOLD_IMG = '/src/assets/images/pilar-3-cyber-physical/p3 3.webp';
-const CONTROL_BOX_IMG = '/src/assets/images/pilar-3-cyber-physical/p3 4.webp';
+import COVER_IMG from '../assets/images/pilar-3-cyber-physical/cover.webp';
+import PROTOTYPE_DIAGRAM_IMG from '../assets/images/pilar-3-cyber-physical/p3.webp';
+import GREENHOUSE_MANIFOLD_IMG from '../assets/images/pilar-3-cyber-physical/p3_3.webp';
+import CONTROL_BOX_IMG from '../assets/images/pilar-3-cyber-physical/p3_4.webp';
 
 interface Pillar3JournalModalProps {
   open: boolean;

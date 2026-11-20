@@ -105,7 +105,7 @@ export function AppointmentModal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 12 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="relative z-10 w-full max-w-xl bg-[#F4F3EF] border border-[#D8D6CE] text-[#121311] max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl overflow-hidden"
+            className="relative z-10 w-full max-w-xl bg-[#F4F3EF] border border-[#D8D6CE] text-[#121311] max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl"
           >
             {/* Modal Header */}
             <div className="px-6 py-5 border-b border-[#D8D6CE] flex items-center justify-between gap-4 bg-[#FAF9F6]">

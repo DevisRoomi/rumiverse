@@ -21,11 +21,11 @@ import { EditorialImage } from './EditorialImage';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 import type { ConsultationFormValues } from '../utils/ecosystemData';
 
-const WORKSTATION_IMG = '/src/assets/images/pilar-1-web-mobile/web_office_workstation.webp';
-const DESIGN_SYSTEM_IMG = '/src/assets/images/pilar-1-web-mobile/p1_design_system.webp';
-const DASHBOARD_DARK_IMG = '/src/assets/images/pilar-1-web-mobile/p1_dashboard_dark.webp';
-const DASHBOARD_LIGHT_IMG = '/src/assets/images/pilar-1-web-mobile/p1_dashboard_light.webp';
-const MOBILE_DESK_IMG = '/src/assets/images/pilar-1-web-mobile/p1_mobile_desk.webp';
+import WORKSTATION_IMG from '../assets/images/pilar-1-web-mobile/web_office_workstation.webp';
+import DESIGN_SYSTEM_IMG from '../assets/images/pilar-1-web-mobile/p1_design_system.webp';
+import DASHBOARD_DARK_IMG from '../assets/images/pilar-1-web-mobile/p1_dashboard_dark.webp';
+import DASHBOARD_LIGHT_IMG from '../assets/images/pilar-1-web-mobile/p1_dashboard_light.webp';
+import MOBILE_DESK_IMG from '../assets/images/pilar-1-web-mobile/p1_mobile_desk.webp';
 
 interface Pillar1JournalModalProps {
   open: boolean;

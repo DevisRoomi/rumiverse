@@ -23,7 +23,8 @@ export function AboutSection() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <section id="tentang" ref={ref} className="border-b border-[#D8D6CE] bg-[#FAF9F6]">
+    <section id="pendekatan" ref={ref} className="border-b border-[#D8D6CE] bg-[#FAF9F6] relative">
+      <span id="tentang" className="absolute -top-16" aria-hidden="true" />
       <div className="max-w-[1440px] mx-auto px-6 py-16 sm:px-10 sm:py-20 lg:px-12 lg:py-24">
         {/* Section Header */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-end pb-8">

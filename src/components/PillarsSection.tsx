@@ -15,9 +15,9 @@ const Pillar3JournalModal = lazy(() =>
   import('./Pillar3JournalModal').then((m) => ({ default: m.Pillar3JournalModal }))
 );
 
-const SOFTWARE_IMAGE_SRC = '/src/assets/images/pillar_software_hardware.webp';
-const AI_IMAGE_SRC = '/src/assets/images/pilar-2-ai-workforce/cover.webp';
-const IOT_IMAGE_SRC = '/src/assets/images/pilar-3-cyber-physical/cover.webp';
+import SOFTWARE_IMAGE_SRC from '../assets/images/pillar_software_hardware.webp';
+import AI_IMAGE_SRC from '../assets/images/pilar-2-ai-workforce/cover.webp';
+import IOT_IMAGE_SRC from '../assets/images/pilar-3-cyber-physical/cover.webp';
 
 export interface PillarData {
   id: 'web-mobile' | 'ai-workforce' | 'cyber-physical';

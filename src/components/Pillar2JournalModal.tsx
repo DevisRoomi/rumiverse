@@ -22,10 +22,10 @@ import { EditorialImage } from './EditorialImage';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 import type { ConsultationFormValues } from '../utils/ecosystemData';
 
-const COVER_IMG = '/src/assets/images/pilar-2-ai-workforce/cover.webp';
-const PIPELINE_WHITEBOARD_IMG = '/src/assets/images/pilar-2-ai-workforce/p2.webp';
-const DASHBOARD_CLI_IMG = '/src/assets/images/pilar-2-ai-workforce/p2 2.webp';
-const DISPATCH_WORKFLOW_IMG = '/src/assets/images/pilar-2-ai-workforce/p2 3.webp';
+import COVER_IMG from '../assets/images/pilar-2-ai-workforce/cover.webp';
+import PIPELINE_WHITEBOARD_IMG from '../assets/images/pilar-2-ai-workforce/p2.webp';
+import DASHBOARD_CLI_IMG from '../assets/images/pilar-2-ai-workforce/p2_2.webp';
+import DISPATCH_WORKFLOW_IMG from '../assets/images/pilar-2-ai-workforce/p2_3.webp';
 
 interface Pillar2JournalModalProps {
   open: boolean;
