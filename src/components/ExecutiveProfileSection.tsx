@@ -1,4 +1,4 @@
-import { Github, Linkedin, MapPin } from 'lucide-react';
+import { Github, Linkedin } from 'lucide-react';
 import { MaskedHeading } from './MaskedHeading';
 import { useReveal } from '../hooks/useReveal';
 import founderPhoto from '../assets/images/founder.webp';
@@ -16,61 +16,34 @@ export function ExecutiveProfileSection() {
               visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}
           >
-            <div className="p-3 sm:p-4 rounded-3xl bg-[#F4F3EF] border border-[#D8D6CE] shadow-sm">
-              <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden border border-[#D8D6CE] bg-gradient-to-b from-[#1A3326] via-[#12231A] to-[#0A140F] group shadow-inner">
-                {/* Subtle Studio Spotlight in Background */}
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(116,198,157,0.22)_0%,transparent_65%)] pointer-events-none" />
-
-                {/* Subtle Architectural Grid Texture */}
-                <div
-                  className="absolute inset-0 opacity-[0.06] pointer-events-none"
-                  style={{
-                    backgroundImage:
-                      'linear-gradient(#74C69D 1px, transparent 1px), linear-gradient(90deg, #74C69D 1px, transparent 1px)',
-                    backgroundSize: '24px 24px',
-                  }}
-                />
-
-                {/* Founder Cutout Portrait (Black & White Editorial with Interactive Warm Color Hover) */}
+            {/* Clean Card Frame: Soft ivory background, 1px thin border, rounded-2xl, no heavy shadows */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-[#F4F3EF] border border-[#D8D6CE] shadow-xs">
+              {/* Photo Frame: Neutral warm studio backdrop, completely clear of overlays */}
+              <div className="relative aspect-[3/4] w-full rounded-xl overflow-hidden border border-[#D8D6CE] bg-gradient-to-b from-[#EAE8E1] via-[#E3E1D9] to-[#D8D6CE] group">
                 <img
                   src={founderPhoto}
                   alt="Potret Abu Devis Jalaluddin Rumi — Rekayasawan & Pendiri RUMIVERSE"
-                  className="w-full h-full object-cover object-bottom filter grayscale contrast-[1.12] brightness-[0.98] group-hover:grayscale-0 group-hover:contrast-[1.04] transition-all duration-700 ease-out group-hover:scale-[1.03] drop-shadow-[0_16px_28px_rgba(0,0,0,0.45)] relative z-10"
+                  className="w-full h-full object-cover object-bottom transition-transform duration-500 ease-out group-hover:scale-[1.02]"
                 />
-
-                {/* Subtle Edge Vignette */}
-                <div className="absolute inset-0 bg-radial-[circle_at_center,transparent_55%,rgba(10,20,15,0.4)_100%] pointer-events-none z-20" />
-
-                {/* Technical Coordinates Badge */}
-                <div className="absolute top-3 left-3 z-30 bg-[#121311]/80 backdrop-blur-md px-2.5 py-1 rounded-md text-[10px] font-mono text-[#74C69D] border border-white/10 shadow-xs">
-                  8°08&apos;S 113°13&apos;E · LUMAJANG STUDIO
-                </div>
-
-                {/* Mode Indicator Pill (Monochrome / Color Cue) */}
-                <div className="absolute top-3 right-3 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[#121311]/80 backdrop-blur-md px-2 py-0.5 rounded-full text-[9px] font-mono text-[#F4F3EF] border border-white/10 shadow-xs">
-                  Natural Tone
-                </div>
-
-                {/* Bottom Identity Card Overlay */}
-                <div className="absolute bottom-3 left-3 right-3 z-30 bg-[#121311]/85 backdrop-blur-md p-3 rounded-xl border border-white/15 flex items-center justify-between shadow-md">
-                  <div className="space-y-0.5">
-                    <span className="font-mono text-[11px] text-[#F4F3EF] block font-bold tracking-tight">
-                      ABU DEVIS J. RUMI
-                    </span>
-                    <span className="font-mono text-[10px] text-[#74C69D] block">
-                      Systems Architect &amp; Software Engineer
-                    </span>
-                  </div>
-                  <span className="w-2 h-2 rounded-full bg-[#74C69D] animate-pulse" />
-                </div>
               </div>
 
-              <div className="mt-3 px-1 flex items-center justify-between text-xs font-mono text-[#6B6E66]">
-                <span className="flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-[#2E7D5B]" />
-                  <span>Lumajang (Living Lab) &amp; Bogor (Studio)</span>
-                </span>
-                <span className="text-[#2E7D5B] font-semibold">● Rekayasa Langsung</span>
+              {/* Minimalist Identity Block (Outside image, directly underneath photo) */}
+              <div className="mt-4 pt-1 space-y-1">
+                {/* Baris 1 (Tebal) */}
+                <h3 className="font-display text-lg sm:text-xl font-bold text-[#121311] tracking-tight">
+                  Abu Devis Jalaluddin Rumi
+                </h3>
+
+                {/* Baris 2 (Abu-abu lembut) */}
+                <p className="font-mono text-xs sm:text-sm text-[#6B6E66]">
+                  Founder &amp; Systems Architect
+                </p>
+
+                {/* Baris 3 (Teks kecil dengan satu titik hijau halus) */}
+                <div className="pt-1.5 flex items-center gap-2 text-xs font-mono text-[#6B6E66]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#2E7D5B]" />
+                  <span>Lumajang · Bogor, Indonesia</span>
+                </div>
               </div>
             </div>
           </div>
