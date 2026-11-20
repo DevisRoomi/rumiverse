@@ -170,18 +170,18 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
   }, []);
 
   // Pinned scroll-driven choreography using Framer Motion
-  // Generous height gives smooth, unhurried, tactile scroll pacing
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
   });
 
-  // 1. Single Monumental Title:
-  // Starts centered, neat, 2-line format without overflow clipping,
-  // then glides smoothly to top-left header position.
-  const titleScale = useTransform(scrollYProgress, [0, 0.24], [1.65, 1.0]);
-  const titleY = useTransform(scrollYProgress, [0, 0.24], ['20vh', '0vh']);
-  const titleX = useTransform(scrollYProgress, [0, 0.24], ['20vw', '0vw']);
+  // 1. Single Kinetic Title:
+  // At scroll 0: DEAD-CENTERED on screen using exact mathematical centering (left: 50%, x: -50%).
+  // As user scrolls (0.00 -> 0.24): Smoothly glides to top-left header position (left: 0%, x: 0%) and scales to normal.
+  const titleLeft = useTransform(scrollYProgress, [0, 0.24], ['50%', '0%']);
+  const titleX = useTransform(scrollYProgress, [0, 0.24], ['-50%', '0%']);
+  const titleY = useTransform(scrollYProgress, [0, 0.24], ['24vh', '0vh']);
+  const titleScale = useTransform(scrollYProgress, [0, 0.24], [1.5, 1.0]);
 
   // Header bottom border line & extra details fade in cleanly as title docks
   const headerBorderOpacity = useTransform(scrollYProgress, [0.16, 0.26], [0, 1]);
@@ -189,23 +189,21 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
   const headerExtrasY = useTransform(scrollYProgress, [0.14, 0.26], [12, 0]);
 
   // 2. Sequential Entrance of the 3 Cards:
-  // Each card slides smoothly up from the bottom directly into its column.
-  // NO out-motion! Once all 3 cards are in a row, they STAY 100% CLEAR, SHARP, AND PERMANENT.
+  // Pure physical rise from below the viewport at 100% FULL OPACITY and RAZOR-SHARP CLARITY.
+  // NO blur, NO foggy opacity, NO out-motion!
+  // Once arrived, all 3 cards stay 100% clear, permanent, and rock-solid.
   
   // Card 1 enters Column 1 (Scroll 0.16 -> 0.38)
-  const card1Y = useTransform(scrollYProgress, [0.16, 0.38], ['80vh', '0vh']);
-  const card1Opacity = useTransform(scrollYProgress, [0.16, 0.35], [0, 1]);
+  const card1Y = useTransform(scrollYProgress, [0.16, 0.38], ['100vh', '0vh']);
 
-  // Card 2 enters Column 2 (Scroll 0.32 -> 0.54)
-  const card2Y = useTransform(scrollYProgress, [0.32, 0.54], ['80vh', '0vh']);
-  const card2Opacity = useTransform(scrollYProgress, [0.32, 0.50], [0, 1]);
+  // Card 2 enters Column 2 (Scroll 0.30 -> 0.52)
+  const card2Y = useTransform(scrollYProgress, [0.30, 0.52], ['100vh', '0vh']);
 
-  // Card 3 enters Column 3 (Scroll 0.48 -> 0.70)
-  const card3Y = useTransform(scrollYProgress, [0.48, 0.70], ['80vh', '0vh']);
-  const card3Opacity = useTransform(scrollYProgress, [0.48, 0.66], [0, 1]);
+  // Card 3 enters Column 3 (Scroll 0.44 -> 0.66)
+  const card3Y = useTransform(scrollYProgress, [0.44, 0.66], ['100vh', '0vh']);
 
-  // 3. Locked & Fully Clear Runway (Scroll 0.70 -> 1.00):
-  // All 3 cards are completely docked in a row, 100% sharp, 100% full color,
+  // 3. Fully Clear, Locked Runway (Scroll 0.66 -> 1.00):
+  // All 3 cards remain permanently docked in a row, 100% sharp, 100% full color,
   // ZERO out-motion, ZERO unwanted blur, fully interactive for browsing and clicking!
 
   // Architectural progress bar at the top edge of the sticky viewport
@@ -237,7 +235,7 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
       id="pilar"
       ref={containerRef}
       className={`border-b border-[#D8D6CE] bg-[#F4F3EF] relative ${
-        isDesktop ? 'h-[400vh]' : 'h-auto'
+        isDesktop ? 'h-[360vh]' : 'h-auto'
       }`}
     >
       {/* Pinned Sticky Stage (Desktop) / Normal Section (Mobile) */}
@@ -267,7 +265,7 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
               className="absolute bottom-0 left-0 right-0 h-px bg-[#D8D6CE]"
             />
 
-            <div className="relative">
+            <div className="relative w-full md:w-auto">
               {/* Eyebrow badge (fades in as title docks) */}
               <motion.div
                 style={isDesktop ? { opacity: headerExtrasOpacity, y: headerExtrasY } : {}}
@@ -277,11 +275,12 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
                 <span>02. Spesifikasi Divisi // Tiga Pilar Rekayasa</span>
               </motion.div>
 
-              {/* THE ONLY TITLE: Neatly centered at scroll 0, glides smoothly to top-left header */}
+              {/* THE ONLY TITLE: Mathematically dead-centered at scroll 0, glides smoothly to top-left header */}
               <motion.h2
                 style={
                   isDesktop
                     ? {
+                        left: titleLeft,
                         x: titleX,
                         y: titleY,
                         scale: titleScale,
@@ -289,7 +288,7 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
                       }
                     : {}
                 }
-                className="font-display text-2xl sm:text-3xl lg:text-4xl xl:text-[40px] font-black text-[#121311] tracking-tight leading-[1.06] whitespace-nowrap"
+                className="relative font-display text-2xl sm:text-3xl lg:text-4xl xl:text-[40px] font-black text-[#121311] tracking-tight leading-[1.06] whitespace-nowrap"
               >
                 Tiga Sayap Rekayasa<br />
                 <span className="text-[#1B3B2B]">RUMIVERSE</span>
@@ -306,13 +305,12 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
             </motion.p>
           </div>
 
-          {/* 3 Pillars Grid: Tall, commanding cards entering sequentially into their columns */}
-          {/* Once in a row, they stay 100% clear and sharp, with NO out-motion! */}
+          {/* 3 Pillars Grid: Tall, commanding cards entering sequentially from below at 100% sharpness */}
+          {/* Once in a row, they stay 100% clear, permanent, and rock-solid with NO out-motion! */}
           <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-4 sm:p-6 lg:px-12 gap-5 lg:gap-6 items-stretch pb-6 relative z-10 border-b border-[#D8D6CE]">
             {PILLARS_LIST.map((pillar, idx) => {
               // Connect animations based on column index
               const cardY = isDesktop ? (idx === 0 ? card1Y : idx === 1 ? card2Y : card3Y) : 0;
-              const cardOpacity = isDesktop ? (idx === 0 ? card1Opacity : idx === 1 ? card2Opacity : card3Opacity) : 1;
 
               return (
                 <div key={pillar.id} className="h-full flex items-stretch relative">
@@ -321,11 +319,10 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
                       isDesktop
                         ? {
                             y: cardY,
-                            opacity: cardOpacity,
                           }
                         : {}
                     }
-                    className="w-full h-full max-h-[70vh] rounded-2xl border border-[#D8D6CE] hover:border-[#1B3B2B] bg-[#FAF9F6] hover:bg-[#FFFFFF] shadow-sm hover:shadow-xl transition-all duration-300 p-5 sm:p-6 flex flex-col justify-between relative group cursor-pointer"
+                    className="w-full h-full max-h-[70vh] rounded-2xl border border-[#D8D6CE] hover:border-[#1B3B2B] bg-[#FAF9F6] hover:bg-[#FFFFFF] shadow-sm hover:shadow-xl transition-colors duration-300 p-5 sm:p-6 flex flex-col justify-between relative group cursor-pointer"
                     onClick={() => handlePillarClick(pillar.id)}
                   >
                     <div className="flex flex-col h-full justify-between">
