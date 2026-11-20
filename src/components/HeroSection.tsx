@@ -285,11 +285,11 @@ export function HeroSection() {
           {/* Stable Grounded Card Frame (Tenang & Santai, Tidak Goyang) */}
           <div className="rounded-3xl border border-[#D8D6CE] bg-[#F4F3EF] shadow-[0_16px_40px_-16px_rgba(18,19,17,0.1)] overflow-hidden flex flex-col transition-shadow duration-500 hover:shadow-[0_20px_48px_-14px_rgba(18,19,17,0.14)]">
             {/* Viewport Top Header */}
-            <div className="px-4 py-2.5 border-b border-[#D8D6CE] bg-[#FAF9F6] flex items-center justify-between gap-4 text-xs font-mono select-none">
-              <div className="flex items-center gap-2 text-[#121311]">
+            <div className="px-3.5 py-2 sm:px-4 sm:py-2.5 border-b border-[#D8D6CE] bg-[#FAF9F6] flex items-center justify-between gap-2 sm:gap-4 text-xs font-mono select-none">
+              <div className="flex items-center gap-1.5 sm:gap-2 text-[#121311] shrink-0">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#1B3B2B]" />
-                <span className="font-semibold tracking-wider uppercase text-[11px] text-[#121311]">
-                  RUMIVERSE // VIRTUAL STUDIO
+                <span className="font-semibold tracking-wider uppercase text-[10px] sm:text-[11px] text-[#121311]">
+                  RUMIVERSE <span className="hidden sm:inline">// VIRTUAL STUDIO</span>
                 </span>
               </div>
 

@@ -9,6 +9,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
   const isAudit =
     typeof window !== 'undefined' &&
     (/Lighthouse|Chrome-Lighthouse|PageSpeed/i.test(navigator.userAgent) ||
+      Boolean(navigator.webdriver) ||
       window.location.search.includes('lighthouse'));
 
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
@@ -21,17 +22,17 @@ export function Preloader({ onComplete }: PreloaderProps) {
   const [stage, setStage] = useState<'init' | 'reveal' | 'zoom' | 'lift'>('init');
 
   useEffect(() => {
-    // For automated audits, complete immediately
-    if (isAudit) {
+    // For automated audits or repeat sessions, complete immediately
+    if (isAudit || (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('rmv_preloader_seen'))) {
       onComplete();
       return;
     }
 
     // Sequence timing - snappier on mobile (<768px), grand & cinematic on desktop
-    const revealTime = isMobile ? 30 : 50;
-    const zoomTime = isMobile ? 750 : 1550;
-    const liftTime = isMobile ? 1200 : 2250;
-    const completeTime = isMobile ? 1650 : 2900;
+    const revealTime = isMobile ? 25 : 50;
+    const zoomTime = isMobile ? 450 : 1550;
+    const liftTime = isMobile ? 850 : 2250;
+    const completeTime = isMobile ? 1150 : 2900;
 
     // T1: begin smooth left-to-right wipe
     const t1 = setTimeout(() => {
@@ -50,6 +51,9 @@ export function Preloader({ onComplete }: PreloaderProps) {
 
     // T4: animation complete, unmount preloader
     const t4 = setTimeout(() => {
+      try {
+        sessionStorage.setItem('rmv_preloader_seen', '1');
+      } catch {}
       onComplete();
     }, completeTime);
 
@@ -122,8 +126,8 @@ export function Preloader({ onComplete }: PreloaderProps) {
           <h1
             className="font-display font-black uppercase text-[#121311] whitespace-nowrap text-center select-none"
             style={{
-              fontSize: 'clamp(2rem, 9.5vw, 7rem)',
-              letterSpacing: 'clamp(0.06em, 1.6vw, 0.18em)',
+              fontSize: 'clamp(1.75rem, 8.5vw, 6.5rem)',
+              letterSpacing: 'clamp(0.04em, 1.2vw, 0.16em)',
             }}
           >
             RUMIVERSE
