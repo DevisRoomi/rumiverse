@@ -141,7 +141,7 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
   const [pilar2JournalOpen, setPilar2JournalOpen] = useState(false);
   const [pilar3JournalOpen, setPilar3JournalOpen] = useState(false);
 
-  // Responsive check for desktop pinned scroll sequence
+  // Responsive check for desktop pinned scroll choreography
   useEffect(() => {
     const checkDesktop = () => {
       setIsDesktop(window.innerWidth >= 1024);
@@ -175,48 +175,44 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
     offset: ['start start', 'end end'],
   });
 
-  // 1. Big Title: Starts huge and centered, shrinks and glides to final header position
-  const titleScale = useTransform(scrollYProgress, [0, 0.32], [1.75, 1.0]);
-  const titleY = useTransform(scrollYProgress, [0, 0.32], [130, 0]);
-  const titleX = useTransform(scrollYProgress, [0, 0.32], [35, 0]);
+  // 1. Massive Center Headline (Phase 1: 0.00 -> 0.32)
+  // At scroll 0: Huge font-black screen-filling title in the center of the viewport
+  const bigTitleOpacity = useTransform(scrollYProgress, [0, 0.16, 0.30], [1, 1, 0]);
+  const bigTitleScale = useTransform(scrollYProgress, [0.12, 0.30], [1.0, 0.52]);
+  const bigTitleY = useTransform(scrollYProgress, [0.12, 0.30], ['0vh', '-34vh']);
 
-  // Eyebrow and right subtitle fade in as the big title settles
-  const headerExtrasOpacity = useTransform(scrollYProgress, [0.15, 0.32], [0, 1]);
-  const headerExtrasY = useTransform(scrollYProgress, [0.15, 0.32], [10, 0]);
+  // 2. Docked Top Header (Phase 1 -> 2 transition: 0.18 -> 0.32)
+  // Seamless handoff from the shrinking big title to the settled header bar
+  const headerOpacity = useTransform(scrollYProgress, [0.18, 0.32], [0, 1]);
+  const headerY = useTransform(scrollYProgress, [0.18, 0.32], [-20, 0]);
 
-  // 2. Staggered Cards Entrance (Phase 2: 0.20 -> 0.60)
-  // Card 1
-  const card1Y = useTransform(scrollYProgress, [0.18, 0.40], [180, 0]);
-  const card1Opacity = useTransform(scrollYProgress, [0.18, 0.30], [0, 1]);
+  // 3. Sequential Card Arrivals in Center (Phase 2 to 4: 0.18 -> 0.66)
+  // Card 1: arrives in center between 0.18 and 0.36
+  const card1Y = useTransform(scrollYProgress, [0.18, 0.36, 0.66, 0.80], ['100vh', '0vh', '0vh', '0vh']);
+  const card1Opacity = useTransform(scrollYProgress, [0.18, 0.28], [0, 1]);
+  const card1X = useTransform(scrollYProgress, [0.66, 0.80], ['100%', '0%']);
+  const card1Scale = useTransform(scrollYProgress, [0.36, 0.52, 0.54, 0.66, 0.80], [1.0, 0.96, 0.96, 0.92, 1.0]);
 
-  // Card 2
-  const card2Y = useTransform(scrollYProgress, [0.28, 0.50], [220, 0]);
-  const card2Opacity = useTransform(scrollYProgress, [0.28, 0.40], [0, 1]);
+  // Card 2: arrives in center between 0.36 and 0.52
+  const card2Y = useTransform(scrollYProgress, [0.36, 0.52, 0.66, 0.80], ['100vh', '0vh', '0vh', '0vh']);
+  const card2Opacity = useTransform(scrollYProgress, [0.36, 0.44], [0, 1]);
+  const card2X = useTransform(scrollYProgress, [0.66, 0.80], ['0%', '0%']);
+  const card2Scale = useTransform(scrollYProgress, [0.52, 0.66, 0.80], [1.0, 0.96, 1.0]);
 
-  // Card 3
-  const card3Y = useTransform(scrollYProgress, [0.38, 0.60], [260, 0]);
-  const card3Opacity = useTransform(scrollYProgress, [0.38, 0.50], [0, 1]);
+  // Card 3: arrives in center between 0.52 and 0.66
+  const card3Y = useTransform(scrollYProgress, [0.52, 0.66, 0.66, 0.80], ['100vh', '0vh', '0vh', '0vh']);
+  const card3Opacity = useTransform(scrollYProgress, [0.52, 0.60], [0, 1]);
+  const card3X = useTransform(scrollYProgress, [0.66, 0.80], ['-100%', '0%']);
+  const card3Scale = useTransform(scrollYProgress, [0.66, 0.80], [1.0, 1.0]);
 
-  // 3. Card Content Reveal (Images, Summaries, Deliverables) (Phase 3: 0.58 -> 0.88)
-  // Card 1 internal reveal
-  const card1ImgOpacity = useTransform(scrollYProgress, [0.55, 0.70], [0, 1]);
-  const card1ImgScale = useTransform(scrollYProgress, [0.55, 0.70], [0.93, 1.0]);
-  const card1BodyOpacity = useTransform(scrollYProgress, [0.60, 0.75], [0, 1]);
-  const card1BodyY = useTransform(scrollYProgress, [0.60, 0.75], [14, 0]);
+  // 4. Spread and Card Content Unfolding (Phase 5 & 6: 0.78 -> 0.94)
+  // Once the 3 cards have spread into their 3 columns, images and descriptions unfold smoothly!
+  const cardDetailsMaxHeight = useTransform(scrollYProgress, [0.78, 0.93], ['0px', '540px']);
+  const cardDetailsOpacity = useTransform(scrollYProgress, [0.80, 0.93], [0, 1]);
+  const cardDetailsY = useTransform(scrollYProgress, [0.80, 0.93], [16, 0]);
+  const cardImgScale = useTransform(scrollYProgress, [0.80, 0.93], [0.93, 1.0]);
 
-  // Card 2 internal reveal
-  const card2ImgOpacity = useTransform(scrollYProgress, [0.62, 0.77], [0, 1]);
-  const card2ImgScale = useTransform(scrollYProgress, [0.62, 0.77], [0.93, 1.0]);
-  const card2BodyOpacity = useTransform(scrollYProgress, [0.67, 0.82], [0, 1]);
-  const card2BodyY = useTransform(scrollYProgress, [0.67, 0.82], [14, 0]);
-
-  // Card 3 internal reveal
-  const card3ImgOpacity = useTransform(scrollYProgress, [0.70, 0.85], [0, 1]);
-  const card3ImgScale = useTransform(scrollYProgress, [0.70, 0.85], [0.93, 1.0]);
-  const card3BodyOpacity = useTransform(scrollYProgress, [0.75, 0.90], [0, 1]);
-  const card3BodyY = useTransform(scrollYProgress, [0.75, 0.90], [14, 0]);
-
-  // Progress Bar for visual feedback
+  // Architectural progress bar at the top edge of the sticky viewport
   const progressBarWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
 
   const handlePillarClick = (pillarId: PillarData['id']) => {
@@ -245,7 +241,7 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
       id="pilar"
       ref={containerRef}
       className={`border-b border-[#D8D6CE] bg-[#F4F3EF] relative ${
-        isDesktop ? 'h-[250vh]' : 'h-auto'
+        isDesktop ? 'h-[420vh]' : 'h-auto'
       }`}
     >
       {/* Pinned Sticky Stage (Desktop) / Normal Section (Mobile) */}
@@ -256,9 +252,9 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
             : 'relative'
         }`}
       >
-        {/* Subtle Top Architectural Progress Line (Visual sequence feedback) */}
+        {/* Subtle Architectural Scroll Progress Line */}
         {isDesktop && (
-          <div className="absolute top-0 left-0 right-0 h-0.5 bg-[#D8D6CE] z-30">
+          <div className="absolute top-0 left-0 right-0 h-0.5 bg-[#D8D6CE] z-40">
             <motion.div
               style={{ width: progressBarWidth }}
               className="h-full bg-[#1B3B2B]"
@@ -266,163 +262,181 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
           </div>
         )}
 
-        <div className="max-w-[1440px] w-full mx-auto flex flex-col justify-between h-full">
-          {/* Section Header */}
-          <div className="px-6 py-6 sm:px-10 lg:px-12 lg:py-7 border-b border-[#D8D6CE] flex flex-col md:flex-row md:items-end justify-between gap-6 relative z-20">
-            <div className="max-w-2xl relative">
+        {/* 1. Monumental Screen-Filling Kinetic Title (Solo Desktop Stage at scroll 0) */}
+        {isDesktop && (
+          <motion.div
+            style={{
+              opacity: bigTitleOpacity,
+              scale: bigTitleScale,
+              y: bigTitleY,
+            }}
+            className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center z-30 px-6 sm:px-10 select-none"
+          >
+            <div className="flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#FAF9F6] border border-[#D8D6CE] text-xs font-mono font-bold text-[#1B3B2B] tracking-widest uppercase mb-6 shadow-xs">
+              <span className="w-2 h-2 rounded-full bg-[#2E7D5B] animate-pulse" />
+              <span>02. Spesifikasi Divisi // Tiga Pilar Rekayasa</span>
+            </div>
+
+            <h2 className="font-display font-black text-6xl sm:text-7xl lg:text-[7vw] xl:text-[8vw] text-[#121311] tracking-tighter leading-[0.92] max-w-6xl">
+              Tiga Sayap Rekayasa<br />
+              <span className="text-[#1B3B2B]">RUMIVERSE</span>
+            </h2>
+
+            <div className="mt-8 flex items-center gap-3 font-mono text-xs text-[#6B6E66] tracking-wider uppercase bg-[#FAF9F6]/90 backdrop-blur-xs px-4 py-2 rounded-full border border-[#D8D6CE] shadow-2xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#1B3B2B]" />
+              <span>Gulir untuk membuka sayap arsitektur</span>
+              <span className="text-[#1B3B2B] font-bold">&darr;</span>
+            </div>
+          </motion.div>
+        )}
+
+        <div className="max-w-[1440px] w-full mx-auto flex flex-col justify-between h-full relative z-10">
+          {/* 2. Permanent Header Bar (Fades in smoothly as big title docks) */}
+          <motion.div
+            style={isDesktop ? { opacity: headerOpacity, y: headerY } : {}}
+            className="px-6 py-5 sm:px-10 lg:px-12 lg:py-6 border-b border-[#D8D6CE] flex flex-col md:flex-row md:items-end justify-between gap-6 relative z-20 bg-[#F4F3EF]/95 backdrop-blur-xs"
+          >
+            <div className="max-w-2xl">
               {/* Eyebrow badge */}
-              <motion.div
-                style={isDesktop ? { opacity: headerExtrasOpacity, y: headerExtrasY } : {}}
-                className="flex items-center gap-2 text-xs font-mono text-[#2E7D5B] tracking-wider uppercase mb-2"
-              >
+              <div className="flex items-center gap-2 text-xs font-mono text-[#2E7D5B] tracking-wider uppercase mb-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#2E7D5B]" />
                 <span>02. Spesifikasi Divisi // Tiga Pilar Rekayasa</span>
-              </motion.div>
-
-              {/* Huge Kinetic Title that Shrinks to Header Position */}
-              <div className="relative">
-                <motion.h2
-                  style={
-                    isDesktop
-                      ? {
-                          scale: titleScale,
-                          y: titleY,
-                          x: titleX,
-                          transformOrigin: 'top left',
-                        }
-                      : {}
-                  }
-                  className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-[#121311] tracking-tight leading-[1.15] whitespace-normal"
-                >
-                  Tiga Sayap Rekayasa RUMIVERSE
-                </motion.h2>
               </div>
+
+              {/* Bold Settled Title */}
+              <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-black text-[#121311] tracking-tight leading-[1.15]">
+                Tiga Sayap Rekayasa RUMIVERSE
+              </h2>
             </div>
 
             {/* Subtitle Paragraph */}
-            <motion.p
-              style={isDesktop ? { opacity: headerExtrasOpacity, y: headerExtrasY } : {}}
-              className="text-xs sm:text-sm text-[#4A4D46] max-w-md leading-relaxed"
-            >
+            <p className="text-xs sm:text-sm text-[#4A4D46] max-w-md leading-relaxed">
               Mulai dari antarmuka perangkat lunak, otomatisasi agen AI mandiri, hingga implementasi
               instrumen sensor fisik yang teruji di Lumajang.
-            </motion.p>
-          </div>
+            </p>
+          </motion.div>
 
-          {/* 3-Column Editorial Pillars Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-b border-[#D8D6CE] flex-1 items-stretch">
+          {/* 3. The 3 Pillars Layout (Sequential Centered Entrance -> Spread into 3 Columns -> Unfold) */}
+          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-4 sm:p-6 lg:p-8 items-center relative z-10 border-b border-[#D8D6CE]">
             {PILLARS_LIST.map((pillar, idx) => {
-              const isLast = idx === PILLARS_LIST.length - 1;
-
-              // Connect card animations based on index
+              // Connect animations based on column index
               const cardY = isDesktop ? (idx === 0 ? card1Y : idx === 1 ? card2Y : card3Y) : 0;
               const cardOpacity = isDesktop ? (idx === 0 ? card1Opacity : idx === 1 ? card2Opacity : card3Opacity) : 1;
-
-              const imgOpacity = isDesktop ? (idx === 0 ? card1ImgOpacity : idx === 1 ? card2ImgOpacity : card3ImgOpacity) : 1;
-              const imgScale = isDesktop ? (idx === 0 ? card1ImgScale : idx === 1 ? card2ImgScale : card3ImgScale) : 1;
-
-              const bodyOpacity = isDesktop ? (idx === 0 ? card1BodyOpacity : idx === 1 ? card2BodyOpacity : card3BodyOpacity) : 1;
-              const bodyY = isDesktop ? (idx === 0 ? card1BodyY : idx === 1 ? card2BodyY : card3BodyY) : 0;
+              const cardX = isDesktop ? (idx === 0 ? card1X : idx === 1 ? card2X : card3X) : '0%';
+              const cardScale = isDesktop ? (idx === 0 ? card1Scale : idx === 1 ? card2Scale : card3Scale) : 1;
+              const cardZIndex = isDesktop ? (idx === 0 ? 10 : idx === 1 ? 20 : 30) : 10;
 
               return (
-                <motion.article
+                <div
                   key={pillar.id}
-                  style={isDesktop ? { y: cardY, opacity: cardOpacity } : {}}
-                  className={`group flex flex-col justify-between p-5 sm:p-6 lg:p-6 border-b lg:border-b-0 ${
-                    !isLast ? 'lg:border-r border-[#D8D6CE]' : ''
-                  } bg-[#FAF9F6] hover:bg-[#F4F3EF] transition-colors duration-300 relative z-10`}
+                  className="p-2 sm:p-3 lg:p-3 h-full flex items-center justify-center relative"
                 >
-                  <div>
-                    {/* Card Index & Tag (Visible early in entry phase) */}
-                    <div className="flex items-center justify-between gap-4 pb-2.5 border-b border-[#D8D6CE] font-mono text-xs">
-                      <span className="text-[#121311] font-bold tracking-wider">{pillar.index}</span>
-                      <span className="text-[#6B6E66] uppercase text-[10px] sm:text-[11px] tracking-wide">
-                        {pillar.tag}
-                      </span>
-                    </div>
-
-                    {/* Title & Subtitle (Visible during card arrival phase) */}
-                    <div className="mt-3.5 min-h-[58px] sm:min-h-[66px] flex flex-col justify-start">
-                      <h3 className="font-display text-base sm:text-lg lg:text-xl font-bold text-[#121311] tracking-tight group-hover:text-[#1B3B2B] transition-colors leading-[1.22]">
-                        {pillar.title}
-                      </h3>
-                      <p className="mt-1 text-[11px] sm:text-xs text-[#6B6E66] font-mono leading-relaxed">
-                        {pillar.subtitle}
-                      </p>
-                    </div>
-
-                    {/* Smooth Unfolding Image Frame (Phase 3 Reveal) */}
-                    <motion.div
-                      style={isDesktop ? { opacity: imgOpacity, scale: imgScale } : {}}
-                      className="mt-3 relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-[#D8D6CE] hover:border-[#1B3B2B] bg-[#E2E0D8] group/img cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B3B2B] shadow-2xs transition-all duration-300"
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => handlePillarClick(pillar.id)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          handlePillarClick(pillar.id);
-                        }
-                      }}
-                      aria-label={`Buka Bedah Spesifikasi untuk ${pillar.title}`}
-                    >
-                      <EditorialImage
-                        src={pillar.imageSrc}
-                        alt={pillar.imageAlt}
-                        className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover/img:scale-[1.04]"
-                        fallbackTitle={pillar.title}
-                        fallbackSubtitle={pillar.tag}
-                      />
-
-                      {/* Vignette on hover */}
-                      <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/20 transition-colors duration-300 pointer-events-none" />
-
-                      {/* Frosted Glass Action Pill */}
-                      <div className="absolute top-2.5 right-2.5 z-10 pointer-events-none flex items-center h-7 px-2 rounded-full bg-[#121311]/70 backdrop-blur-md border border-white/20 text-[#F4F3EF] shadow-md transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/img:bg-[#1B3B2B] group-hover/img:border-[#74C69D]/60 group-hover/img:text-[#74C69D] group-hover/img:px-2.5">
-                        <ArrowUpRight className="w-3.5 h-3.5 text-[#F4F3EF] group-hover/img:text-[#74C69D] transition-transform duration-300 group-hover/img:translate-x-0.5 group-hover/img:-translate-y-0.5 shrink-0" />
-                        <span className="max-w-0 opacity-0 overflow-hidden whitespace-nowrap font-mono text-[10px] font-semibold tracking-wider transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/img:max-w-[80px] group-hover/img:opacity-100 group-hover/img:ml-1">
-                          Spesifikasi
+                  <motion.article
+                    style={
+                      isDesktop
+                        ? {
+                            x: cardX,
+                            y: cardY,
+                            scale: cardScale,
+                            opacity: cardOpacity,
+                            zIndex: cardZIndex,
+                          }
+                        : {}
+                    }
+                    className="w-full rounded-2xl border border-[#D8D6CE] hover:border-[#1B3B2B] bg-[#FAF9F6] hover:bg-[#F4F3EF] shadow-md transition-colors duration-300 p-5 sm:p-6 flex flex-col justify-between relative group cursor-pointer"
+                    onClick={() => handlePillarClick(pillar.id)}
+                  >
+                    <div>
+                      {/* Card Header (Visible during individual arrival phase) */}
+                      <div className="flex items-center justify-between gap-4 pb-2.5 border-b border-[#D8D6CE] font-mono text-xs">
+                        <span className="text-[#121311] font-bold tracking-wider">{pillar.index}</span>
+                        <span className="text-[#6B6E66] uppercase text-[10px] sm:text-[11px] tracking-wide">
+                          {pillar.tag}
                         </span>
                       </div>
-                    </motion.div>
 
-                    {/* Smooth Unfolding Summary & Deliverables (Phase 3 Reveal) */}
-                    <motion.div
-                      style={isDesktop ? { opacity: bodyOpacity, y: bodyY } : {}}
-                      className="mt-3 space-y-3"
-                    >
-                      {/* Honest Summary */}
-                      <p className="text-xs sm:text-[13px] text-[#353732] leading-[1.55] line-clamp-3">
-                        {pillar.summary}
-                      </p>
-
-                      {/* Deliverable Highlights */}
-                      <ul className="pt-2.5 border-t border-[#D8D6CE]/80 space-y-1.5 text-xs text-[#242622]">
-                        {pillar.deliverables.slice(0, 3).map((item, itemIdx) => (
-                          <li key={itemIdx} className="flex items-start gap-2 font-medium leading-tight">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0 mt-0.5" />
-                            <span className="line-clamp-1">{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </motion.div>
-                  </div>
-
-                  {/* Mobile Action Button */}
-                  <div className="mt-4 pt-3 border-t border-[#D8D6CE] block md:hidden">
-                    <button
-                      type="button"
-                      onClick={() => handlePillarClick(pillar.id)}
-                      className="w-full inline-flex items-center justify-between px-3.5 py-2.5 rounded-xl border border-[#C8C6BC] bg-[#F4F3EF] active:bg-[#1B3B2B] active:text-[#FFFFFF] text-[#121311] text-xs font-mono font-semibold transition-all duration-200 cursor-pointer shadow-2xs"
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#2E7D5B]" />
-                        <span>[+ Bedah Spesifikasi]</span>
+                      {/* Title & Subtitle (Pillar Title Only in early phase) */}
+                      <div className="mt-3.5 flex flex-col justify-start">
+                        <h3 className="font-display text-base sm:text-lg lg:text-xl font-bold text-[#121311] tracking-tight group-hover:text-[#1B3B2B] transition-colors leading-[1.22]">
+                          {pillar.title}
+                        </h3>
+                        <p className="mt-1 text-[11px] sm:text-xs text-[#6B6E66] font-mono leading-relaxed">
+                          {pillar.subtitle}
+                        </p>
                       </div>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-[#4A4D46]" />
-                    </button>
-                  </div>
-                </motion.article>
+
+                      {/* Smooth Unfolding Body: Image, Summary, and Deliverables */}
+                      {/* Only opens smoothly after the cards line up across all 3 columns! */}
+                      <motion.div
+                        style={
+                          isDesktop
+                            ? {
+                                maxHeight: cardDetailsMaxHeight,
+                                opacity: cardDetailsOpacity,
+                                y: cardDetailsY,
+                              }
+                            : {}
+                        }
+                        className="overflow-hidden"
+                      >
+                        {/* 16:9 Editorial Image Frame */}
+                        <motion.div
+                          style={isDesktop ? { scale: cardImgScale } : {}}
+                          className="mt-3.5 relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-[#D8D6CE] hover:border-[#1B3B2B] bg-[#E2E0D8] group/img focus-visible:outline-2 focus-visible:outline-[#1B3B2B] shadow-2xs transition-all duration-300"
+                          role="button"
+                          tabIndex={0}
+                          aria-label={`Buka Bedah Spesifikasi untuk ${pillar.title}`}
+                        >
+                          <EditorialImage
+                            src={pillar.imageSrc}
+                            alt={pillar.imageAlt}
+                            className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover/img:scale-[1.04]"
+                            fallbackTitle={pillar.title}
+                            fallbackSubtitle={pillar.tag}
+                          />
+
+                          {/* Vignette on hover */}
+                          <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/20 transition-colors duration-300 pointer-events-none" />
+
+                          {/* Action Pill */}
+                          <div className="absolute top-2.5 right-2.5 z-10 pointer-events-none flex items-center h-7 px-2 rounded-full bg-[#121311]/70 backdrop-blur-md border border-white/20 text-[#F4F3EF] shadow-md transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/img:bg-[#1B3B2B] group-hover/img:border-[#74C69D]/60 group-hover/img:text-[#74C69D] group-hover/img:px-2.5">
+                            <ArrowUpRight className="w-3.5 h-3.5 text-[#F4F3EF] group-hover/img:text-[#74C69D] transition-transform duration-300 group-hover/img:translate-x-0.5 group-hover/img:-translate-y-0.5 shrink-0" />
+                            <span className="max-w-0 opacity-0 overflow-hidden whitespace-nowrap font-mono text-[10px] font-semibold tracking-wider transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/img:max-w-[80px] group-hover/img:opacity-100 group-hover/img:ml-1">
+                              Spesifikasi
+                            </span>
+                          </div>
+                        </motion.div>
+
+                        {/* Honest Summary & Deliverables */}
+                        <div className="mt-3 space-y-3">
+                          <p className="text-xs sm:text-[13px] text-[#353732] leading-[1.55] line-clamp-3">
+                            {pillar.summary}
+                          </p>
+
+                          <ul className="pt-2.5 border-t border-[#D8D6CE]/80 space-y-1.5 text-xs text-[#242622]">
+                            {pillar.deliverables.slice(0, 3).map((item, itemIdx) => (
+                              <li key={itemIdx} className="flex items-start gap-2 font-medium leading-tight">
+                                <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0 mt-0.5" />
+                                <span className="line-clamp-1">{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </motion.div>
+                    </div>
+
+                    {/* Mobile Quick Action Pill */}
+                    <div className="mt-4 pt-3 border-t border-[#D8D6CE] block lg:hidden">
+                      <div className="w-full inline-flex items-center justify-between px-3.5 py-2.5 rounded-xl border border-[#C8C6BC] bg-[#F4F3EF] active:bg-[#1B3B2B] active:text-[#FFFFFF] text-[#121311] text-xs font-mono font-semibold transition-all duration-200 shadow-2xs">
+                        <div className="flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#2E7D5B]" />
+                          <span>[+ Bedah Spesifikasi]</span>
+                        </div>
+                        <ArrowUpRight className="w-3.5 h-3.5 text-[#4A4D46]" />
+                      </div>
+                    </div>
+                  </motion.article>
+                </div>
               );
             })}
           </div>
