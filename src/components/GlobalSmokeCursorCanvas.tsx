@@ -1,22 +1,18 @@
 import { useEffect, useRef } from 'react';
 
-interface SmokeRing {
+interface SoftSmokeRing {
   x: number;
   y: number;
   vx: number;
   vy: number;
   initialRadius: number;
   targetRadius: number;
-  initialLineWidth: number;
-  rotation: number;
-  rotSpeed: number;
-  wobblePhase: number;
-  wobbleFreq: number;
   life: number;
   maxLife: number;
   isDark: boolean;
   hue: number;
   peakAlpha: number;
+  wobblePhase: number;
 }
 
 export function GlobalSmokeCursorCanvas() {
@@ -35,13 +31,12 @@ export function GlobalSmokeCursorCanvas() {
 
     let animationFrameId: number;
     let isRunning = false;
-    const rings: SmokeRing[] = [];
-    const MAX_RINGS = 35;
+    const rings: SoftSmokeRing[] = [];
+    const MAX_RINGS = 14; // Keep canvas light and uncluttered
 
-    let lastSpawnX = 0;
-    let lastSpawnY = 0;
+    let lastSpawnX = -999;
+    let lastSpawnY = -999;
     let lastSpawnTime = 0;
-    let spawnCounter = 0;
 
     // High-DPI responsive viewport sizing
     const handleResize = () => {
@@ -94,34 +89,31 @@ export function GlobalSmokeCursorCanvas() {
       return false;
     };
 
-    const spawnRing = (x: number, y: number, dirX: number, dirY: number, isDark: boolean, scaleMultiplier = 1.0) => {
+    const spawnSmokeDonut = (x: number, y: number, dirX: number, dirY: number, isDark: boolean) => {
       if (rings.length >= MAX_RINGS) {
         rings.shift();
       }
 
-      const initialRadius = (Math.random() * 4 + 14) * scaleMultiplier;
-      const targetRadius = (Math.random() * 24 + 56) * scaleMultiplier;
-      const initialLineWidth = isDark ? 2.4 * scaleMultiplier : 1.2 * scaleMultiplier;
-      const peakAlpha = isDark ? 0.32 : 0.08; // Translucent glow on dark; ultra-sheer kinetic ripple on light
-      const hue = isDark ? 154 + Math.random() * 18 : 158 + Math.random() * 12;
+      // Expansion parameters: start compact near cursor, billow widely into soft mist
+      const initialRadius = Math.random() * 4 + 14;
+      const targetRadius = Math.random() * 35 + 95; // Wide soft expansion
+      // Lowered peak opacity (0.15 - 0.22 on dark; 0.05 on light) for authentic vapor feel
+      const peakAlpha = isDark ? 0.20 : 0.05;
+      const hue = isDark ? 154 + Math.random() * 16 : 158;
 
       rings.push({
-        x: x + (Math.random() - 0.5) * 6,
-        y: y + (Math.random() - 0.5) * 6,
-        vx: dirX * 0.3 + (Math.random() - 0.5) * 0.25,
-        vy: dirY * 0.2 - (Math.random() * 0.35 + 0.45), // buoyant upward drift
+        x: x + (Math.random() - 0.5) * 4,
+        y: y + (Math.random() - 0.5) * 4,
+        vx: dirX * 0.25 + (Math.random() - 0.5) * 0.3,
+        vy: dirY * 0.15 - (Math.random() * 0.4 + 0.8), // Clean buoyant drift upward
         initialRadius,
         targetRadius,
-        initialLineWidth,
-        rotation: Math.random() * Math.PI * 2,
-        rotSpeed: (Math.random() - 0.5) * 0.015,
-        wobblePhase: Math.random() * Math.PI * 2,
-        wobbleFreq: Math.random() > 0.5 ? 2 : 3,
         life: 0,
-        maxLife: Math.round(Math.random() * 18 + 52), // ~1.0 - 1.2s at 60fps
+        maxLife: Math.round(Math.random() * 8 + 62), // ~1.05 - 1.15 seconds (vanishes within 1.2s)
         isDark,
         hue,
         peakAlpha,
+        wobblePhase: Math.random() * Math.PI * 2,
       });
     };
 
@@ -130,23 +122,25 @@ export function GlobalSmokeCursorCanvas() {
       const clientX = e.clientX;
       const clientY = e.clientY;
 
+      if (lastSpawnX === -999) {
+        lastSpawnX = clientX;
+        lastSpawnY = clientY;
+        lastSpawnTime = now;
+        return;
+      }
+
       const dx = clientX - lastSpawnX;
       const dy = clientY - lastSpawnY;
       const dist = Math.hypot(dx, dy);
 
-      // Multi-ring trail: spawn when moved sufficiently or with smooth time stagger
-      if (dist >= 15 || (now - lastSpawnTime >= 50 && dist >= 5)) {
-        const dirX = dist > 0 ? dx / dist : 0;
-        const dirY = dist > 0 ? dy / dist : 0;
+      // Throttling: exactly 1 soft ring every 36px of travel (fits 30-40px perfectly)
+      const MIN_SPAWN_DIST = 36;
+      if (dist >= MIN_SPAWN_DIST && now - lastSpawnTime >= 60) {
+        const dirX = dx / dist;
+        const dirY = dy / dist;
         const isDark = checkIsDark(clientX, clientY);
 
-        spawnRing(clientX, clientY, dirX, dirY, isDark, 1.0);
-        spawnCounter++;
-
-        // Staggered companion ring every 2nd emission for deep vortex trail depth
-        if (spawnCounter % 2 === 0) {
-          spawnRing(clientX - dirX * 6, clientY - dirY * 6, dirX * 0.6, dirY * 0.6, isDark, 0.68);
-        }
+        spawnSmokeDonut(clientX, clientY, dirX, dirY, isDark);
 
         lastSpawnX = clientX;
         lastSpawnY = clientY;
@@ -178,52 +172,43 @@ export function GlobalSmokeCursorCanvas() {
         }
 
         const progress = ring.life / ring.maxLife; // 0 to 1
-        // power2.out expansion curve: rapid initial puff, smooth deceleration
+        // power2.out expansion curve: fast initial puff, smoothly slowing down as it disperses
         const easeOutQuad = 1 - Math.pow(1 - progress, 2);
         const radius = ring.initialRadius + (ring.targetRadius - ring.initialRadius) * easeOutQuad;
 
-        // Organic drift & upward float
-        ring.x += ring.vx + Math.sin(progress * Math.PI * 2 + ring.wobblePhase) * 0.35;
+        // Organic upward float with subtle horizontal air swirl
+        ring.x += ring.vx + Math.sin(progress * Math.PI * 2 + ring.wobblePhase) * 0.4;
         ring.y += ring.vy;
-        ring.rotation += ring.rotSpeed;
 
-        // Bell-curve opacity: rises smoothly, peaks, and dissipates to zero without hard cuts
+        // Smooth dissipation bell curve: rises, peaks, and evaporates completely before 1.2s
         const alpha = Math.sin(progress * Math.PI) * ring.peakAlpha;
-        const currentLineWidth = Math.max(0.5, ring.initialLineWidth * (1 - progress * 0.55));
 
-        // Jellyfish pulse morphing (squash & stretch ratio)
-        const pulse = Math.sin(progress * Math.PI * 3 + ring.wobblePhase) * 0.08;
-        const radiusX = radius * (1 + pulse);
-        const radiusY = radius * (1 - pulse);
+        // Radial-gradient donut geometry: feathered hole at center, misty body, feathered outer edge
+        const rInner = Math.max(0, radius * 0.32);
+        const rOuter = radius * 1.35;
 
-        ctx.save();
-        ctx.beginPath();
-        ctx.ellipse(ring.x, ring.y, radiusX, radiusY, ring.rotation, 0, Math.PI * 2);
-        ctx.lineWidth = currentLineWidth;
+        const grad = ctx.createRadialGradient(ring.x, ring.y, rInner, ring.x, ring.y, rOuter);
 
         if (ring.isDark) {
-          // Luminous emerald / mint vape ring on dark background
-          ctx.strokeStyle = `hsla(${ring.hue}, 48%, 68%, ${alpha})`;
-          ctx.shadowColor = `hsla(${ring.hue}, 56%, 55%, ${alpha * 0.8})`;
-          ctx.shadowBlur = 9 * (1 - progress * 0.3);
-          ctx.stroke();
-
-          // Delicate secondary inner concentric ring for smoke thickness
-          ctx.beginPath();
-          ctx.ellipse(ring.x, ring.y, radiusX * 0.72, radiusY * 0.72, ring.rotation, 0, Math.PI * 2);
-          ctx.lineWidth = Math.max(0.5, currentLineWidth * 0.55);
-          ctx.strokeStyle = `hsla(${ring.hue}, 52%, 76%, ${alpha * 0.45})`;
-          ctx.shadowBlur = 4;
-          ctx.stroke();
+          // Velvety emerald / sage vapor on dark background
+          grad.addColorStop(0, `hsla(${ring.hue}, 48%, 68%, 0)`);
+          grad.addColorStop(0.25, `hsla(${ring.hue}, 48%, 68%, ${alpha * 0.3})`);
+          grad.addColorStop(0.5, `hsla(${ring.hue}, 52%, 72%, ${alpha})`); // peak foggy ring
+          grad.addColorStop(0.75, `hsla(${ring.hue}, 46%, 62%, ${alpha * 0.35})`);
+          grad.addColorStop(1, `hsla(${ring.hue}, 40%, 50%, 0)`); // feathered outer veil
         } else {
-          // Ultra-sheer kinetic air ripple on light background (never disturbs reading text!)
-          ctx.strokeStyle = `rgba(38, 72, 56, ${alpha})`;
-          ctx.shadowColor = `rgba(38, 72, 56, ${alpha * 0.4})`;
-          ctx.shadowBlur = 3;
-          ctx.stroke();
+          // Ultra-sheer kinetic air shimmer on light background (never obscures text!)
+          grad.addColorStop(0, `rgba(46, 85, 68, 0)`);
+          grad.addColorStop(0.25, `rgba(46, 85, 68, ${alpha * 0.3})`);
+          grad.addColorStop(0.5, `rgba(46, 85, 68, ${alpha})`);
+          grad.addColorStop(0.75, `rgba(46, 85, 68, ${alpha * 0.35})`);
+          grad.addColorStop(1, `rgba(46, 85, 68, 0)`);
         }
 
-        ctx.restore();
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(ring.x, ring.y, rOuter, 0, Math.PI * 2);
+        ctx.fill();
       }
 
       if (rings.length > 0) {
@@ -243,7 +228,7 @@ export function GlobalSmokeCursorCanvas() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-40"
+      className="fixed inset-0 pointer-events-none z-40 [filter:blur(10px)]"
       aria-hidden="true"
     />
   );
