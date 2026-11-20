@@ -3,7 +3,9 @@ import {
   ArrowRight,
   Camera,
   CheckCircle2,
+  ChevronDown,
   ChevronRight,
+  ChevronUp,
   Compass,
   Cpu,
   Droplets,
@@ -206,6 +208,11 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
   const [selectedZoneId, setSelectedZoneId] = useState<string>('smart-coop');
   const [detailTab, setDetailTab] = useState<'hardware' | 'synergy'>('hardware');
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [expandedStage, setExpandedStage] = useState<string | null>(null);
+
+  const toggleStage = (step: string) => {
+    setExpandedStage((prev) => (prev === step ? null : step));
+  };
 
   const currentMode = VIEW_MODES[viewMode];
   const selectedZone = ZONES.find((z) => z.id === selectedZoneId) ?? ZONES[0];
@@ -684,125 +691,285 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
                 Enam Tahapan Rantai Pasok Biologis Mandiri
               </h3>
               <p className="text-sm text-[#4A4D46] leading-relaxed">
-                Setiap residu dari satu zona diolah menjadi masukan bernutrisi bagi zona berikutnya. Siklus biologis ini menargetkan pemangkasan hingga 70% ketergantungan pada pakan pabrikan melalui biokonversi mandiri yang seluruh simpulnya dikendalikan sensor dan otomasi perangkat lunak.
+                Setiap residu dari satu zona diolah menjadi masukan bernutrisi bagi zona berikutnya. Siklus biologis ini memangkas hingga 70% ketergantungan pakan pabrik melalui biokonversi alami yang dipadukan dengan kontrol sensor dan otomasi perangkat lunak.
               </p>
             </div>
             <div className="hidden lg:flex items-center gap-2 font-mono text-[11px] text-[#6B6E66] border border-[#D8D6CE] bg-[#F4F3EF] px-3 py-1.5 rounded-lg shrink-0">
               <span className="w-2 h-2 rounded-full bg-[#2E7D5B]" />
-              <span>DIAGRAM ALUR SIKLUS (01 → 06 ↺ 01)</span>
+              <span>SIKLUS TERTUTUP (01 → 06 ↺ 01)</span>
             </div>
           </div>
 
-          {/* 6 Sequential Flow Cards with Software/AI Control and Directional Arrows */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+          {/* 6 Sequential Flow Cards with Accordion (Ringkas 1-2 Kalimat & Detail Sensor On-Click) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {[
               {
                 step: '01',
                 title: 'Ternak & Unggas',
-                desc: 'Pemeliharaan ayam & ruminansia dengan pakan presisi',
-                techControl: 'Sensor amonia & pakan via app mobile',
+                summary: 'Pemeliharaan ayam petelur dan ternak dengan ritme pakan terukur serta pemantauan mikroklimat kandang berkala.',
+                hardware: 'Sensor Amonia MQ-137, Sensor Suhu/Kelembaban SHT31, Feeder Otomatis ESP32.',
+                software: 'Aplikasi mobile pemantau konsumsi pakan & trigger peringatan dini amonia via WebSocket.',
+                cycleImpact: 'Menghasilkan residu kotoran segar bernutrisi tinggi tanpa penumpukan bau di kandang.',
               },
               {
                 step: '02',
                 title: 'Kotoran Segar',
-                desc: 'Talang gravitasi mengalirkan feses tanpa jeda penumpukan bau',
-                techControl: 'Pembersihan mekanis terjadwal',
+                summary: 'Talang pembersih gravitasi mengalirkan feses secara otomatis langsung ke ruang pemrosesan biologis.',
+                hardware: 'Conveyor scraper otomatis, katup pembilas gravitasi, mikrokontroler aktuator.',
+                software: 'Jadwal flushing otomatis berbasis timer mikrokontroler & log pembersihan harian.',
+                cycleImpact: 'Kandang bebas bau berlebih, feses segar langsung siap diurai larva tanpa fermentasi liar.',
               },
               {
                 step: '03',
-                title: 'Maggot BSF',
-                desc: 'Biokonversi feses jadi larva berkadar protein 42%',
-                techControl: 'AI memprediksi siklus panen & separator pupa',
+                title: 'Biokonversi Maggot BSF',
+                summary: 'Larva Black Soldier Fly mengurai feses menjadi biomassa larva berprotein 42% dan pupuk kasgot subur.',
+                hardware: 'Bioreaktor larva tertutup, separator pupa getar otomatis, probe suhu biomassa.',
+                software: 'Model AI prediktif siklus panen larva dan estimasi rasio konversi biomassa harian.',
+                cycleImpact: 'Mereduksi hingga 80% volume limbah kotoran dalam 14 hari menjadi sumber pakan mandiri.',
               },
               {
                 step: '04',
-                title: 'Pakan Mandiri',
-                desc: 'Larva segar & kasgot memangkas konsentrat pabrik',
-                techControl: 'Formulasi ransum dihitung AI harian',
+                title: 'Pakan Mandiri & Kasgot',
+                summary: 'Larva segar dan ampas kasgot diproses menjadi pakan alami, memangkas biaya konsentrat pabrik hingga 70%.',
+                hardware: 'Mesin pelet pencampur pakan mandiri, timbangan digital terkalibrasi load-cell.',
+                software: 'Algoritma formulasi pakan otomatis untuk menghitung kebutuhan nutrisi optimal harian.',
+                cycleImpact: 'Pakan berprotein tinggi disalurkan kembali ke ternak unggas dan kolam ikan.',
               },
               {
                 step: '05',
                 title: 'Air Kaya Nitrat',
-                desc: 'Air kolam ikan dipompa ke hidroponik & mina padi',
-                techControl: 'Katup solenoid LoRa aktif via sensor EC',
+                summary: 'Air buangan kolam ikan dialirkan secara teratur menyuplai nutrisi alami ke talang sayuran hidroponik.',
+                hardware: 'Sensor konduktivitas listrik (EC), probe TDS, katup solenoid LoRaWAN bertenaga surya.',
+                software: 'Logika closed-loop: pompa hidroponik aktif saat level nitrat & suhu berada di titik puncak.',
+                cycleImpact: 'Nutrisi organik alami terserap tanaman tanpa memerlukan pupuk kimia sintetis tambahan.',
               },
               {
                 step: '06',
-                title: 'Air Bersih & Pakan',
-                desc: 'Akar tanaman memfilter air kembali murni ke kolam ternak',
-                techControl: 'Probe DO/pH verifikasi air sebelum siklus berulang',
+                title: 'Air Bersih & Pakan Alami',
+                summary: 'Akar tanaman menyaring air hingga kembali jernih sebelum disirkulasikan kembali ke kolam ternak.',
+                hardware: 'Probe DO (Dissolved Oxygen), pH sensor industri, bio-filter berlapis kerikil vulkanik.',
+                software: 'Dasbor telemetri memverifikasi kejernihan air sebelum katup resirkulasi utama dibuka.',
+                cycleImpact: 'Siklus air 100% tertutup dan berkelanjutan tanpa ada air yang terbuang sia-sia.',
               },
-            ].map((node, idx) => (
-              <div
-                key={node.step}
-                className="p-4 rounded-xl bg-[#F4F3EF] border border-[#D8D6CE] flex flex-col justify-between shadow-2xs relative"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#1B3B2B] text-[#74C69D]">
-                      TAHAP {node.step}
-                    </span>
-                    {idx < 5 ? (
-                      <span className="hidden lg:inline text-[#2E7D5B] font-mono text-xs font-bold">
-                        →
+            ].map((node, idx) => {
+              const isExpanded = expandedStage === node.step;
+              return (
+                <div
+                  key={node.step}
+                  className={`p-4 sm:p-5 rounded-2xl border transition-all duration-300 flex flex-col justify-between ${
+                    isExpanded
+                      ? 'bg-[#FAF9F6] border-[#1B3B2B] shadow-md ring-1 ring-[#1B3B2B]/20'
+                      : 'bg-[#F4F3EF] border-[#D8D6CE] hover:border-[#1B3B2B]/40 hover:bg-[#FAF9F6] shadow-2xs'
+                  }`}
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-2.5">
+                      <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#1B3B2B] text-[#74C69D] tracking-wide">
+                        TAHAP {node.step}
                       </span>
-                    ) : (
-                      <span className="hidden lg:inline text-[#2E7D5B] font-mono text-[9px] font-bold bg-[#FAF9F6] border border-[#D8D6CE] px-1 py-0.5 rounded">
-                        ↺ SIKLUS
+                      <span className="text-[#2E7D5B] font-mono text-[11px] font-bold">
+                        {idx < 5 ? '→' : '↺ SIKLUS'}
                       </span>
-                    )}
-                  </div>
-                  <h4 className="font-display font-bold text-sm text-[#121311] mb-1">
-                    {node.title}
-                  </h4>
-                  <p className="text-[11px] text-[#4A4D46] leading-relaxed">
-                    {node.desc}
-                  </p>
-                </div>
+                    </div>
 
-                {/* Software / AI Control Layer Badge */}
-                <div className="pt-2.5 mt-2.5 border-t border-[#D8D6CE] flex items-start gap-1.5 text-[10px] font-mono text-[#2E7D5B]">
-                  <Cpu className="w-3 h-3 text-[#2E7D5B] shrink-0 mt-0.5" />
-                  <span className="leading-tight">{node.techControl}</span>
+                    <h4 className="font-display font-bold text-base text-[#121311] tracking-tight mb-1.5">
+                      {node.title}
+                    </h4>
+
+                    {/* Ringkasan 1-2 Kalimat Lugas & Ramah Awam */}
+                    <p className="text-xs text-[#4A4D46] leading-relaxed">
+                      {node.summary}
+                    </p>
+                  </div>
+
+                  {/* Tombol Accordion (Touch-target nyaman di mobile min 40px) */}
+                  <div className="mt-3.5 pt-3 border-t border-[#D8D6CE]">
+                    <button
+                      type="button"
+                      onClick={() => toggleStage(node.step)}
+                      aria-expanded={isExpanded}
+                      className="w-full inline-flex items-center justify-between px-3 py-2 rounded-xl text-xs font-mono font-medium text-[#1B3B2B] hover:text-[#121311] bg-white/70 hover:bg-white border border-[#D8D6CE] transition-all cursor-pointer min-h-[40px]"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#2E7D5B]" />
+                        <span>{isExpanded ? 'Sembunyikan Rincian' : '+ Detail Sensor & Otomasi'}</span>
+                      </div>
+                      {isExpanded ? (
+                        <ChevronUp className="w-3.5 h-3.5 text-[#2E7D5B]" />
+                      ) : (
+                        <ChevronDown className="w-3.5 h-3.5 text-[#6B6E66]" />
+                      )}
+                    </button>
+
+                    {/* Accordion Rincian Sensor & Software */}
+                    <AnimatePresence>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.25, ease: 'easeInOut' }}
+                          className="overflow-hidden"
+                        >
+                          <div className="mt-3 pt-3 border-t border-[#D8D6CE]/80 space-y-2.5 text-[11px] font-mono">
+                            <div className="bg-white/80 p-2.5 rounded-lg border border-[#D8D6CE]/60">
+                              <span className="text-[#2E7D5B] font-bold block mb-0.5">// HARDWARE SENSOR:</span>
+                              <span className="text-[#242622] leading-relaxed block">{node.hardware}</span>
+                            </div>
+                            <div className="bg-white/80 p-2.5 rounded-lg border border-[#D8D6CE]/60">
+                              <span className="text-[#1B3B2B] font-bold block mb-0.5">// SOFTWARE &amp; OTOMASI:</span>
+                              <span className="text-[#242622] leading-relaxed block">{node.software}</span>
+                            </div>
+                            <div className="bg-[#FAF9F6] p-2.5 rounded-lg border border-[#74C69D]/40">
+                              <span className="text-[#2E7D5B] font-bold block mb-0.5">// DAMPAK SIKLUS:</span>
+                              <span className="text-[#4A4D46] leading-relaxed block">{node.cycleImpact}</span>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
-          {/* Ajakan Diskusi Ringan di Akhir Masterplan */}
-          <div className="mt-12 p-6 sm:p-8 rounded-2xl bg-[#EAE8E1]/90 border border-[#D8D6CE] flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-2xs">
-            <div className="space-y-2 max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-[#1B3B2B] text-[#74C69D] border border-[#74C69D]/30 font-mono text-[10px] font-bold tracking-wider">
+          {/* Dual Gateway: Pintu Masuk Jelas untuk Klien Non-Pertanian & Fasilitas Fisik */}
+          <div className="mt-14 rounded-3xl bg-[#121311] text-[#F4F3EF] border border-[#2E7D5B]/30 p-6 sm:p-10 lg:p-12 shadow-xl relative overflow-hidden">
+            {/* Ambient Background Gradient */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-[#1B3B2B]/25 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
+
+            <div className="relative z-10 max-w-4xl space-y-3 mb-8">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#1B3B2B] text-[#74C69D] border border-[#74C69D]/30 font-mono text-xs font-bold tracking-wider">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#74C69D] animate-pulse" />
-                <span>DARI CETAK BIRU MENUJU IMPLEMENTASI NYATA</span>
+                <span>PINTU MASUK KLIEN BISNIS &amp; ENTERPRISE</span>
               </div>
-              <h4 className="font-display font-bold text-lg sm:text-xl text-[#121311] leading-snug">
-                Punya lahan, fasilitas peternakan, atau sistem operasional yang ingin diotomatisasi?
-              </h4>
-              <p className="text-xs sm:text-sm text-[#4A4D46] leading-relaxed">
-                Anda tidak harus langsung membangun seluruh kawasan terpadu sekaligus. Kami dapat membantu mengaudit kebutuhan operasional Anda dan memulai dari satu bagian yang paling dibutuhkan lahan atau usaha Anda saat ini.
+
+              <h3 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-[#FFFFFF] tracking-tight leading-snug">
+                Bukan di Sektor Pertanian? Arsitektur Kode Kami Siap untuk Bisnis Anda.
+              </h3>
+
+              <p className="text-sm sm:text-base text-[#D8D6CE] leading-relaxed max-w-3xl">
+                Living Lab Lumajang adalah tempat kami membuktikan keandalan sistem di lingkungan fisik terberat. Fondasi rekayasa perangkat lunak dan kecerdasan buatan yang sama kami dedikasikan untuk mentransformasi operasional korporat, ritel, logistik, agensi, dan platform SaaS Anda.
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3 shrink-0">
+            {/* Dua Pintu Masuk Mandiri (Dual Gateway Grid) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 relative z-10">
+              {/* Pintu 01: Enterprise Digital, Web/Mobile & Autonomous AI */}
+              <div className="p-6 sm:p-7 rounded-2xl bg-[#181A16] border border-[#2E7D5B]/40 hover:border-[#74C69D]/60 flex flex-col justify-between transition-all group shadow-sm">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="p-2.5 rounded-xl bg-[#2E7D5B]/20 text-[#74C69D] border border-[#2E7D5B]/30">
+                      <LayoutDashboard className="w-5 h-5" />
+                    </div>
+                    <span className="font-mono text-[11px] text-[#74C69D] font-bold tracking-wider px-2.5 py-0.5 rounded-md bg-[#1B3B2B]">
+                      PINTU 01 // DIGITAL &amp; AI
+                    </span>
+                  </div>
+
+                  <div>
+                    <h4 className="font-display text-lg sm:text-xl font-bold text-white group-hover:text-[#74C69D] transition-colors">
+                      Aplikasi Web, Mobile &amp; Agen AI Bisnis
+                    </h4>
+                    <p className="mt-1.5 text-xs sm:text-[13px] text-[#A6A89F] leading-relaxed">
+                      Solusi software kustom untuk korporat, ritel, SaaS, dan logistik yang membutuhkan sistem digital stabil serta asisten cerdas 24/7.
+                    </p>
+                  </div>
+
+                  <ul className="space-y-2 text-xs text-[#D8D6CE] pt-2 border-t border-white/10">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#74C69D] shrink-0 mt-0.5" />
+                      <span>Website representatif, portal ERP/CRM &amp; dasbor pemantauan operasional</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#74C69D] shrink-0 mt-0.5" />
+                      <span>Agen AI otonom untuk ekstraksi dokumen PDF, invoice OCR &amp; asisten WhatsApp</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#74C69D] shrink-0 mt-0.5" />
+                      <span>Arsitektur REST API cepat, database relasional &amp; integrasi multi-cabang</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (onOpenConsultation) {
+                      onOpenConsultation('software-ai');
+                    }
+                  }}
+                  className="mt-6 w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-[#2E7D5B] hover:bg-[#236046] text-[#FFFFFF] font-semibold text-xs sm:text-sm tracking-tight transition-all cursor-pointer shadow-md hover:scale-[1.01] min-h-[44px]"
+                >
+                  <span>Konsultasi Software &amp; Agen AI Bisnis</span>
+                  <ArrowRight className="w-4 h-4 text-[#FFFFFF]" />
+                </button>
+              </div>
+
+              {/* Pintu 02: Cyber-Physical & IoT Lapangan */}
+              <div className="p-6 sm:p-7 rounded-2xl bg-[#181A16] border border-white/10 hover:border-[#D8D6CE]/60 flex flex-col justify-between transition-all group shadow-sm">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="p-2.5 rounded-xl bg-white/10 text-[#F4F3EF] border border-white/15">
+                      <Cpu className="w-5 h-5" />
+                    </div>
+                    <span className="font-mono text-[11px] text-[#D8D6CE] font-bold tracking-wider px-2.5 py-0.5 rounded-md bg-white/10">
+                      PINTU 02 // HARDWARE &amp; IOT
+                    </span>
+                  </div>
+
+                  <div>
+                    <h4 className="font-display text-lg sm:text-xl font-bold text-white group-hover:text-[#F4F3EF] transition-colors">
+                      Sensor Fisik, Telemetri &amp; Otomasi Lapangan
+                    </h4>
+                    <p className="mt-1.5 text-xs sm:text-[13px] text-[#A6A89F] leading-relaxed">
+                      Untuk fasilitas pabrik, gudang, perkebunan, dan peternakan yang ingin menghubungkan sensor fisik ke software cloud.
+                    </p>
+                  </div>
+
+                  <ul className="space-y-2 text-xs text-[#D8D6CE] pt-2 border-t border-white/10">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#74C69D] shrink-0 mt-0.5" />
+                      <span>Sensor industri (suhu, kelembaban, amonia, pH, aliran air &amp; energi listrik)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#74C69D] shrink-0 mt-0.5" />
+                      <span>Mikrokontroler ESP32/RS-485 Modbus dengan box panel tahan cuaca (IP65)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#74C69D] shrink-0 mt-0.5" />
+                      <span>Kendali pompa air, katup solenoid &amp; aktuator otomatis (closed-loop)</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (onOpenConsultation) {
+                      onOpenConsultation('precision-iot');
+                    }
+                  }}
+                  className="mt-6 w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-[#FAF9F6] hover:bg-[#FFFFFF] text-[#121311] font-semibold text-xs sm:text-sm tracking-tight transition-all cursor-pointer shadow-md hover:scale-[1.01] min-h-[44px]"
+                >
+                  <span>Konsultasi Sensor &amp; Otomasi Lapangan</span>
+                  <ArrowRight className="w-4 h-4 text-[#121311]" />
+                </button>
+              </div>
+            </div>
+
+            {/* Footer Navigation Link */}
+            <div className="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-[#A6A89F]">
+              <p>
+                Ingin melihat bagaimana alur kami mendampingi proyek Anda dari tahap konsep hingga implementasi?
+              </p>
               <a
                 href="#roadmap"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-[#D8D6CE] hover:border-[#121311] bg-[#FAF9F6] text-xs font-mono font-semibold text-[#121311] hover:bg-white transition-all shadow-2xs cursor-pointer"
+                className="inline-flex items-center gap-1.5 text-[#74C69D] hover:text-white font-mono font-medium underline underline-offset-4 cursor-pointer"
               >
-                <span>Lihat Alur Kerja Sama Kami ↓</span>
+                <span>Pelajari Roadmap Kerja Sama Kami →</span>
               </a>
-              <button
-                type="button"
-                onClick={() => {
-                  if (onOpenConsultation) {
-                    onOpenConsultation('integrated');
-                  }
-                }}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1B3B2B] hover:bg-[#121311] text-[#F4F3EF] text-xs font-semibold tracking-tight transition-all cursor-pointer shadow-xs hover:scale-[1.01]"
-              >
-                <span>Diskusi Ringan &amp; Konsultasi</span>
-                <ArrowRight className="w-3.5 h-3.5 text-[#74C69D]" />
-              </button>
             </div>
           </div>
         </div>
