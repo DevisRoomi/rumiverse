@@ -58,13 +58,25 @@ export default function App() {
         <HeroSection />
         <AboutSection />
         <PillarsSection onOpenConsultation={openWithFocus} />
-        <MasterplanSection onOpenConsultation={openWithFocus} />
-        <SectorSimulationSection onConsultSector={openWithFocus} />
-        <EngagementRoadmapSection />
-        <SecurityReliabilityBar />
-        <ExecutiveProfileSection />
+        <div className="content-visibility-auto">
+          <MasterplanSection onOpenConsultation={openWithFocus} />
+        </div>
+        <div className="content-visibility-auto">
+          <SectorSimulationSection onConsultSector={openWithFocus} />
+        </div>
+        <div className="content-visibility-auto">
+          <EngagementRoadmapSection />
+        </div>
+        <div className="content-visibility-auto">
+          <SecurityReliabilityBar />
+        </div>
+        <div className="content-visibility-auto">
+          <ExecutiveProfileSection />
+        </div>
       </main>
-      <FooterSection onOpenConsultation={() => openWithFocus('integrated')} />
+      <div className="content-visibility-auto">
+        <FooterSection onOpenConsultation={() => openWithFocus('integrated')} />
+      </div>
       {consultationOpen && (
         <Suspense fallback={null}>
           <AppointmentModal

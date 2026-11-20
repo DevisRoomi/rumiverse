@@ -394,31 +394,31 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
                 {/* Technical Framing HUD Corner Marks (Lifted to avoid container rounded clipping) */}
                 {viewMode === 'circular' ? (
                   <>
-                    <div className="absolute top-3.5 sm:top-4 left-4 sm:left-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/50 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10 shadow-sm">
+                    <div className="absolute top-3.5 sm:top-4 left-4 sm:left-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/80 px-2 py-0.5 rounded border border-white/10 shadow-sm">
                       ┌ [DRONE ALT: 120M]
                     </div>
-                    <div className="absolute top-3.5 sm:top-4 right-4 sm:right-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/50 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10 shadow-sm">
+                    <div className="absolute top-3.5 sm:top-4 right-4 sm:right-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/80 px-2 py-0.5 rounded border border-white/10 shadow-sm">
                       [GPS: 8°08&apos;S 113°13&apos;E] ┐
                     </div>
-                    <div className="absolute bottom-4 sm:bottom-4.5 left-4 sm:left-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/50 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10 shadow-sm">
+                    <div className="absolute bottom-4 sm:bottom-4.5 left-4 sm:left-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/80 px-2 py-0.5 rounded border border-white/10 shadow-sm">
                       └ [HEADING: 320° NW]
                     </div>
-                    <div className="absolute bottom-4 sm:bottom-4.5 right-4 sm:right-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/50 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10 shadow-sm">
+                    <div className="absolute bottom-4 sm:bottom-4.5 right-4 sm:right-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/80 px-2 py-0.5 rounded border border-white/10 shadow-sm">
                       [LUMAJANG LIVING LAB] ┘
                     </div>
                   </>
                 ) : (
                   <>
-                    <div className="absolute top-3.5 sm:top-4 left-4 sm:left-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/50 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10 shadow-sm">
+                    <div className="absolute top-3.5 sm:top-4 left-4 sm:left-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/80 px-2 py-0.5 rounded border border-white/10 shadow-sm">
                       ┌ [NW: 8°08&apos;S]
                     </div>
-                    <div className="absolute top-3.5 sm:top-4 right-4 sm:right-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/50 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10 shadow-sm">
+                    <div className="absolute top-3.5 sm:top-4 right-4 sm:right-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/80 px-2 py-0.5 rounded border border-white/10 shadow-sm">
                       [NE: 113°13&apos;E] ┐
                     </div>
-                    <div className="absolute bottom-4 sm:bottom-4.5 left-4 sm:left-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/50 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10 shadow-sm">
+                    <div className="absolute bottom-4 sm:bottom-4.5 left-4 sm:left-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/80 px-2 py-0.5 rounded border border-white/10 shadow-sm">
                       └ [SW: ZONE-05]
                     </div>
-                    <div className="absolute bottom-4 sm:bottom-4.5 right-4 sm:right-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/50 backdrop-blur-xs px-2 py-0.5 rounded border border-white/10 shadow-sm">
+                    <div className="absolute bottom-4 sm:bottom-4.5 right-4 sm:right-4.5 font-mono text-[9px] text-white/90 tracking-widest pointer-events-none select-none bg-black/80 px-2 py-0.5 rounded border border-white/10 shadow-sm">
                       [SE: SCALE 1:500] ┘
                     </div>
                   </>
@@ -982,7 +982,7 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-[#121311]/95 backdrop-blur-md flex flex-col p-4 sm:p-8"
+            className="fixed inset-0 z-50 bg-[#121311]/98 flex flex-col p-4 sm:p-8"
           >
             <div className="flex items-center justify-between pb-4 border-b border-white/20 text-white font-mono text-xs">
               <div className="flex items-center gap-3">

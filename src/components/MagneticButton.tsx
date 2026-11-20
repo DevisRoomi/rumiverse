@@ -28,27 +28,45 @@ export function MagneticButton({
 }: MagneticButtonProps) {
   const ref = useRef<HTMLElement | null>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const rafId = useRef<number | null>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    if (
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    ) {
-      return;
+    // Disable magnetic physics on touchscreens, mobile, or reduced motion
+    if (typeof window !== 'undefined') {
+      if (
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+        window.matchMedia('(hover: none)').matches ||
+        window.innerWidth < 768
+      ) {
+        return;
+      }
     }
 
-    const node = ref.current;
-    if (!node) return;
-    const rect = node.getBoundingClientRect();
-    const relX = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
-    const relY = (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
-    setOffset({
-      x: Math.max(-strength, Math.min(strength, relX * strength)),
-      y: Math.max(-strength, Math.min(strength, relY * strength)),
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+
+    if (rafId.current) {
+      cancelAnimationFrame(rafId.current);
+    }
+
+    rafId.current = requestAnimationFrame(() => {
+      const node = ref.current;
+      if (!node) return;
+      const rect = node.getBoundingClientRect();
+      const relX = (clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
+      const relY = (clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
+      setOffset({
+        x: Math.max(-strength, Math.min(strength, relX * strength)),
+        y: Math.max(-strength, Math.min(strength, relY * strength)),
+      });
     });
   };
 
   const handleMouseLeave = () => {
+    if (rafId.current) {
+      cancelAnimationFrame(rafId.current);
+      rafId.current = null;
+    }
     setOffset({ x: 0, y: 0 });
   };
 

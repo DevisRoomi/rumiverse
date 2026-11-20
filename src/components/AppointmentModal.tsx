@@ -78,7 +78,7 @@ export function AppointmentModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#121311]/70 backdrop-blur-[2px] p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#121311]/85 p-4"
       role="presentation"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();

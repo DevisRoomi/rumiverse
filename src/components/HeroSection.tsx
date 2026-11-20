@@ -391,17 +391,17 @@ export function HeroSection() {
                   <span className="relative flex items-center justify-center">
                     {/* Discrete Scope Crosshair Badge (Ringkas & Proporsional 24px) */}
                     <span
-                      className={`relative flex items-center justify-center w-6 h-6 rounded-full border transition-all duration-300 shadow-sm backdrop-blur-xs ${
+                      className={`relative flex items-center justify-center w-6 h-6 rounded-full border transition-all duration-300 shadow-sm ${
                         !isZoomedIn
-                          ? 'border-[#74C69D] bg-[#1B3B2B]/90 text-[#74C69D] shadow-[0_0_10px_rgba(116,198,157,0.4)] ring-1.5 ring-[#74C69D]/40'
-                          : 'border-white/50 bg-[#121311]/80 text-[#D8D6CE] hover:border-[#74C69D] hover:bg-[#1B3B2B] hover:text-[#74C69D]'
+                          ? 'border-[#74C69D] bg-[#1B3B2B]/95 text-[#74C69D] shadow-[0_0_10px_rgba(116,198,157,0.4)] ring-1.5 ring-[#74C69D]/40'
+                          : 'border-white/50 bg-[#121311]/90 text-[#D8D6CE] hover:border-[#74C69D] hover:bg-[#1B3B2B] hover:text-[#74C69D]'
                       }`}
                     >
                       <Crosshair className="w-3.5 h-3.5 stroke-[1.8] transition-transform duration-300 group-hover:rotate-45" />
                     </span>
 
                     {/* Floating Reticle Tooltip */}
-                    <span className="pointer-events-none absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-md bg-[#121311]/95 backdrop-blur-md text-[10px] font-mono text-[#74C69D] whitespace-nowrap border border-[#74C69D]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-md z-40">
+                    <span className="pointer-events-none absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-md bg-[#121311] text-[10px] font-mono text-[#74C69D] whitespace-nowrap border border-[#74C69D]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-md z-40">
                       Pusat Pandang · Tinjau Penuh
                     </span>
                   </span>
@@ -450,7 +450,7 @@ export function HeroSection() {
                         </span>
 
                         {/* Floating Tooltip Only Visible on Hover */}
-                        <span className="pointer-events-none absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-md bg-[#121311]/90 backdrop-blur-xs text-[10px] font-mono text-[#F4F3EF] whitespace-nowrap border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-md">
+                        <span className="pointer-events-none absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-md bg-[#121311]/95 text-[10px] font-mono text-[#F4F3EF] whitespace-nowrap border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-md">
                           {node.shortLabel}
                         </span>
                       </span>

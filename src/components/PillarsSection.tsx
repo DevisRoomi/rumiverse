@@ -326,10 +326,11 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
                       isDesktop
                         ? {
                             y: cardY,
+                            willChange: 'transform',
                           }
                         : {}
                     }
-                    className="w-full h-full max-h-[calc(100vh-210px)] rounded-2xl border border-[#D8D6CE] hover:border-[#1B3B2B] bg-[#FAF9F6] hover:bg-[#FFFFFF] shadow-sm hover:shadow-xl transition-colors duration-300 p-4 sm:p-5 flex flex-col justify-between relative group cursor-pointer overflow-hidden"
+                    className="w-full h-full max-h-[calc(100vh-210px)] rounded-2xl border border-[#D8D6CE] hover:border-[#1B3B2B] bg-[#FAF9F6] hover:bg-[#FFFFFF] shadow-sm hover:shadow-xl transition-colors duration-300 p-4 sm:p-5 flex flex-col justify-between relative group cursor-pointer overflow-hidden gpu-layer"
                     onClick={() => handlePillarClick(pillar.id)}
                   >
                     <div className="flex flex-col h-full justify-between">
@@ -355,8 +356,8 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 pointer-events-none" />
 
                         {/* Interactive Pill */}
-                        <div className="absolute top-2 right-2 z-10 pointer-events-none flex items-center h-6 px-2.5 rounded-full bg-[#121311]/75 backdrop-blur-md border border-white/20 text-[#F4F3EF] shadow-md transition-all duration-300 group-hover:bg-[#1B3B2B] group-hover:border-[#74C69D]/60 group-hover:text-[#74C69D]">
-                          <ArrowUpRight className="w-3 h-3 text-[#F4F3EF] group-hover:text-[#74C69D] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shrink-0" />
+                        <div className="absolute top-2 right-2 z-10 pointer-events-none flex items-center h-6 px-2.5 rounded-full bg-[#121311]/90 border border-white/20 text-[#F4F3EF] shadow-2xs transition-colors duration-200 group-hover:bg-[#1B3B2B] group-hover:border-[#74C69D]/60 group-hover:text-[#74C69D]">
+                          <ArrowUpRight className="w-3 h-3 text-[#F4F3EF] group-hover:text-[#74C69D] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shrink-0" />
                           <span className="font-mono text-[9px] font-semibold tracking-wider ml-1">
                             Spesifikasi
                           </span>
@@ -411,7 +412,7 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
       {/* Architectural Detail Sheet (Slide-in Drawer Modal) */}
       <AnimatePresence>
         {selectedPillar && (
-          <div className="fixed inset-0 z-50 flex items-center justify-end bg-[#121311]/50 backdrop-blur-xs p-0 sm:p-4">
+          <div className="fixed inset-0 z-50 flex items-center justify-end bg-[#121311]/60 p-0 sm:p-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
