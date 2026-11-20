@@ -180,8 +180,8 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
   // As user scrolls (0.00 -> 0.24): Smoothly glides to top-left header position (left: 0%, x: 0%) and scales to normal.
   const titleLeft = useTransform(scrollYProgress, [0, 0.24], ['50%', '0%']);
   const titleX = useTransform(scrollYProgress, [0, 0.24], ['-50%', '0%']);
-  const titleY = useTransform(scrollYProgress, [0, 0.24], ['24vh', '0vh']);
-  const titleScale = useTransform(scrollYProgress, [0, 0.24], [1.5, 1.0]);
+  const titleY = useTransform(scrollYProgress, [0, 0.24], ['20vh', '0vh']);
+  const titleScale = useTransform(scrollYProgress, [0, 0.24], [1.35, 1.0]);
 
   // Header bottom border line & extra details fade in cleanly as title docks
   const headerBorderOpacity = useTransform(scrollYProgress, [0.16, 0.26], [0, 1]);
@@ -242,7 +242,7 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
       <div
         className={`${
           isDesktop
-            ? 'sticky top-0 h-screen max-h-screen overflow-hidden flex flex-col justify-between'
+            ? 'sticky top-[60px] h-[calc(100vh-60px)] max-h-[calc(100vh-60px)] overflow-hidden flex flex-col justify-between'
             : 'relative'
         }`}
       >
@@ -258,7 +258,7 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
 
         <div className="max-w-[1440px] w-full mx-auto flex flex-col justify-between h-full relative z-10">
           {/* Section Header: Holds the SINGLE kinetic title that starts centered & glides to left */}
-          <div className="px-6 py-5 sm:px-10 lg:px-12 lg:py-6 flex flex-col md:flex-row md:items-end justify-between gap-6 relative z-20">
+          <div className="px-6 py-3 sm:px-10 lg:px-12 lg:py-4 flex flex-col md:flex-row md:items-end justify-between gap-4 relative z-20 shrink-0">
             {/* Dynamic divider line that fades in only when title docks */}
             <motion.div
               style={isDesktop ? { opacity: headerBorderOpacity } : {}}
@@ -269,7 +269,7 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
               {/* Eyebrow badge (fades in as title docks) */}
               <motion.div
                 style={isDesktop ? { opacity: headerExtrasOpacity, y: headerExtrasY } : {}}
-                className="flex items-center gap-2 text-xs font-mono text-[#2E7D5B] tracking-wider uppercase mb-1.5"
+                className="flex items-center gap-2 text-xs font-mono text-[#2E7D5B] tracking-wider uppercase mb-1"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-[#2E7D5B]" />
                 <span>02. Spesifikasi Divisi // Tiga Pilar Rekayasa</span>
@@ -288,7 +288,7 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
                       }
                     : {}
                 }
-                className="relative font-display text-2xl sm:text-3xl lg:text-4xl xl:text-[40px] font-black text-[#121311] tracking-tight leading-[1.06] whitespace-nowrap"
+                className="relative font-display text-xl sm:text-2xl lg:text-3xl xl:text-[34px] font-black text-[#121311] tracking-tight leading-[1.08] whitespace-nowrap"
               >
                 Tiga Sayap Rekayasa<br />
                 <span className="text-[#1B3B2B]">RUMIVERSE</span>
@@ -298,7 +298,7 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
             {/* Subtitle Paragraph (fades in as title docks on the left) */}
             <motion.p
               style={isDesktop ? { opacity: headerExtrasOpacity, y: headerExtrasY } : {}}
-              className="text-xs sm:text-sm text-[#4A4D46] max-w-md leading-relaxed"
+              className="text-xs sm:text-[13px] text-[#4A4D46] max-w-md leading-relaxed"
             >
               Mulai dari antarmuka perangkat lunak, otomatisasi agen AI mandiri, hingga implementasi
               instrumen sensor fisik yang teruji di Lumajang.
@@ -307,13 +307,13 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
 
           {/* 3 Pillars Grid: Tall, commanding cards entering sequentially from below at 100% sharpness */}
           {/* Once in a row, they stay 100% clear, permanent, and rock-solid with NO out-motion! */}
-          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-4 sm:p-6 lg:px-12 gap-5 lg:gap-6 items-stretch pb-6 relative z-10 border-b border-[#D8D6CE]">
+          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-6 lg:px-12 gap-4 lg:gap-6 items-stretch pb-4 pt-2 relative z-10 border-b border-[#D8D6CE] min-h-0 overflow-hidden">
             {PILLARS_LIST.map((pillar, idx) => {
               // Connect animations based on column index
               const cardY = isDesktop ? (idx === 0 ? card1Y : idx === 1 ? card2Y : card3Y) : 0;
 
               return (
-                <div key={pillar.id} className="h-full flex items-stretch relative">
+                <div key={pillar.id} className="h-full flex items-stretch relative min-h-0">
                   <motion.article
                     style={
                       isDesktop
@@ -322,12 +322,12 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
                           }
                         : {}
                     }
-                    className="w-full h-full max-h-[70vh] rounded-2xl border border-[#D8D6CE] hover:border-[#1B3B2B] bg-[#FAF9F6] hover:bg-[#FFFFFF] shadow-sm hover:shadow-xl transition-colors duration-300 p-5 sm:p-6 flex flex-col justify-between relative group cursor-pointer"
+                    className="w-full h-full max-h-[calc(100vh-210px)] rounded-2xl border border-[#D8D6CE] hover:border-[#1B3B2B] bg-[#FAF9F6] hover:bg-[#FFFFFF] shadow-sm hover:shadow-xl transition-colors duration-300 p-4 sm:p-5 flex flex-col justify-between relative group cursor-pointer overflow-hidden"
                     onClick={() => handlePillarClick(pillar.id)}
                   >
                     <div className="flex flex-col h-full justify-between">
                       {/* Top Bar: Index & Tag */}
-                      <div className="flex items-center justify-between gap-4 pb-2.5 border-b border-[#D8D6CE] font-mono text-xs">
+                      <div className="flex items-center justify-between gap-4 pb-2 border-b border-[#D8D6CE] font-mono text-xs">
                         <span className="text-[#121311] font-bold text-sm tracking-wider">{pillar.index}</span>
                         <span className="text-[#6B6E66] uppercase text-[10px] sm:text-[11px] tracking-wide font-medium">
                           {pillar.tag}
@@ -335,7 +335,7 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
                       </div>
 
                       {/* 16:9 Editorial Image (Always razor sharp and crystal clear) */}
-                      <div className="mt-3 relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-[#D8D6CE] group-hover:border-[#1B3B2B] bg-[#E2E0D8] shadow-2xs transition-all duration-300 shrink-0">
+                      <div className="mt-2.5 relative aspect-[16/9] max-h-[145px] sm:max-h-[160px] w-full overflow-hidden rounded-xl border border-[#D8D6CE] group-hover:border-[#1B3B2B] bg-[#E2E0D8] shadow-2xs transition-all duration-300 shrink-0">
                         <EditorialImage
                           src={pillar.imageSrc}
                           alt={pillar.imageAlt}
@@ -348,33 +348,33 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 pointer-events-none" />
 
                         {/* Interactive Pill */}
-                        <div className="absolute top-2.5 right-2.5 z-10 pointer-events-none flex items-center h-7 px-2.5 rounded-full bg-[#121311]/75 backdrop-blur-md border border-white/20 text-[#F4F3EF] shadow-md transition-all duration-300 group-hover:bg-[#1B3B2B] group-hover:border-[#74C69D]/60 group-hover:text-[#74C69D]">
-                          <ArrowUpRight className="w-3.5 h-3.5 text-[#F4F3EF] group-hover:text-[#74C69D] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shrink-0" />
-                          <span className="font-mono text-[10px] font-semibold tracking-wider ml-1">
+                        <div className="absolute top-2 right-2 z-10 pointer-events-none flex items-center h-6 px-2.5 rounded-full bg-[#121311]/75 backdrop-blur-md border border-white/20 text-[#F4F3EF] shadow-md transition-all duration-300 group-hover:bg-[#1B3B2B] group-hover:border-[#74C69D]/60 group-hover:text-[#74C69D]">
+                          <ArrowUpRight className="w-3 h-3 text-[#F4F3EF] group-hover:text-[#74C69D] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shrink-0" />
+                          <span className="font-mono text-[9px] font-semibold tracking-wider ml-1">
                             Spesifikasi
                           </span>
                         </div>
                       </div>
 
                       {/* Title & Subtitle */}
-                      <div className="mt-3.5">
-                        <h3 className="font-display text-base sm:text-lg lg:text-xl xl:text-[22px] font-bold text-[#121311] tracking-tight group-hover:text-[#1B3B2B] transition-colors leading-[1.2]">
+                      <div className="mt-2.5">
+                        <h3 className="font-display text-base sm:text-lg lg:text-xl font-bold text-[#121311] tracking-tight group-hover:text-[#1B3B2B] transition-colors leading-[1.2]">
                           {pillar.title}
                         </h3>
-                        <p className="mt-1 text-xs text-[#6B6E66] font-mono leading-relaxed">
+                        <p className="mt-0.5 text-xs text-[#6B6E66] font-mono leading-relaxed line-clamp-1">
                           {pillar.subtitle}
                         </p>
                       </div>
 
                       {/* Summary & Deliverables */}
-                      <div className="mt-3 space-y-2.5 pt-2.5 border-t border-[#D8D6CE]/80">
-                        <p className="text-xs sm:text-[13px] text-[#353732] leading-relaxed line-clamp-2">
+                      <div className="mt-2.5 space-y-2 pt-2 border-t border-[#D8D6CE]/80">
+                        <p className="text-xs text-[#353732] leading-relaxed line-clamp-2">
                           {pillar.summary}
                         </p>
 
-                        <ul className="space-y-1.5 text-xs text-[#242622]">
+                        <ul className="space-y-1 text-[11px] sm:text-xs text-[#242622]">
                           {pillar.deliverables.slice(0, 3).map((item, itemIdx) => (
-                            <li key={itemIdx} className="flex items-start gap-2 font-medium leading-tight">
+                            <li key={itemIdx} className="flex items-start gap-1.5 font-medium leading-tight">
                               <CheckCircle2 className="w-3.5 h-3.5 text-[#2E7D5B] shrink-0 mt-0.5" />
                               <span className="line-clamp-1">{item}</span>
                             </li>
@@ -384,8 +384,8 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
                     </div>
 
                     {/* Mobile Quick Action Pill */}
-                    <div className="mt-4 pt-3 border-t border-[#D8D6CE] block lg:hidden">
-                      <div className="w-full inline-flex items-center justify-between px-3.5 py-2.5 rounded-xl border border-[#C8C6BC] bg-[#F4F3EF] active:bg-[#1B3B2B] active:text-[#FFFFFF] text-[#121311] text-xs font-mono font-semibold transition-all duration-200 shadow-2xs">
+                    <div className="mt-3 pt-2.5 border-t border-[#D8D6CE] block lg:hidden">
+                      <div className="w-full inline-flex items-center justify-between px-3.5 py-2 rounded-xl border border-[#C8C6BC] bg-[#F4F3EF] active:bg-[#1B3B2B] active:text-[#FFFFFF] text-[#121311] text-xs font-mono font-semibold transition-all duration-200 shadow-2xs">
                         <div className="flex items-center gap-2">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#2E7D5B]" />
                           <span>[+ Bedah Spesifikasi]</span>
