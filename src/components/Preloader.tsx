@@ -5,11 +5,12 @@ interface PreloaderProps {
 }
 
 export function Preloader({ onComplete }: PreloaderProps) {
-  // If running inside automated audit:
+  // If running inside automated audit or direct deep link with hash:
   const isAudit =
     typeof window !== 'undefined' &&
     (/Lighthouse|Chrome-Lighthouse|PageSpeed/i.test(navigator.userAgent) ||
       Boolean(navigator.webdriver) ||
+      Boolean(window.location.hash) ||
       window.location.search.includes('lighthouse'));
 
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;

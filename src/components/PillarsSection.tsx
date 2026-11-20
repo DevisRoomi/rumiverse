@@ -146,9 +146,15 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
   const [isDesktop, setIsDesktop] = useState(false);
   const [selectedPillarId, setSelectedPillarId] = useState<PillarData['id'] | null>(null);
   useBodyScrollLock(selectedPillarId !== null);
-  const [pilar1JournalOpen, setPilar1JournalOpen] = useState(false);
-  const [pilar2JournalOpen, setPilar2JournalOpen] = useState(false);
-  const [pilar3JournalOpen, setPilar3JournalOpen] = useState(false);
+  const [pilar1JournalOpen, setPilar1JournalOpen] = useState(
+    () => typeof window !== 'undefined' && window.location.hash === '#jurnal-pilar-01'
+  );
+  const [pilar2JournalOpen, setPilar2JournalOpen] = useState(
+    () => typeof window !== 'undefined' && window.location.hash === '#jurnal-pilar-02'
+  );
+  const [pilar3JournalOpen, setPilar3JournalOpen] = useState(
+    () => typeof window !== 'undefined' && window.location.hash === '#jurnal-pilar-03'
+  );
 
   // Responsive check for desktop pinned scroll choreography
   useEffect(() => {
