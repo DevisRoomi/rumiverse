@@ -22,6 +22,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { MaskedHeading } from './MaskedHeading';
 import { EditorialImage } from './EditorialImage';
+import { SmokeCursorCanvas } from './SmokeCursorCanvas';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 import type { ConsultationFormValues } from '../utils/ecosystemData';
 import masterplanDroneWebp from '../assets/images/masterplan/masterplan.webp';
@@ -837,32 +838,84 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
           </div>
 
           {/* Dual Gateway: Pintu Masuk Jelas untuk Klien Non-Pertanian & Fasilitas Fisik */}
-          <div className="mt-14 rounded-3xl bg-[#121311] text-[#F4F3EF] border border-[#2E7D5B]/30 p-6 sm:p-10 lg:p-12 shadow-xl relative overflow-hidden">
+          <motion.div
+            initial={{ scale: 0.97, y: 30, opacity: 0 }}
+            whileInView={{ scale: 1, y: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
+            className="mt-14 rounded-3xl bg-[#121311] text-[#F4F3EF] border border-[#2E7D5B]/30 p-6 sm:p-10 lg:p-12 shadow-2xl relative overflow-hidden group/box"
+          >
+            {/* Interactive Aesthetic Smoke Trail Canvas */}
+            <SmokeCursorCanvas />
+
             {/* Ambient Background Gradient */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-[#1B3B2B]/25 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
 
             <div className="relative z-10 max-w-4xl space-y-3 mb-8">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#1B3B2B] text-[#74C69D] border border-[#74C69D]/30 font-mono text-xs font-bold tracking-wider">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#74C69D] animate-pulse" />
+              {/* Badge with Live Pulse Dot */}
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.1, ease: [0.215, 0.61, 0.355, 1] }}
+                className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#1B3B2B] text-[#74C69D] border border-[#74C69D]/30 font-mono text-xs font-bold tracking-wider"
+              >
+                <motion.span
+                  animate={{ scale: [1, 1.4, 1], opacity: [0.6, 1, 0.6] }}
+                  transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
+                  className="w-1.5 h-1.5 rounded-full bg-[#74C69D]"
+                />
                 <span>PINTU MASUK KLIEN BISNIS &amp; ENTERPRISE</span>
-              </div>
+              </motion.div>
 
+              {/* Staggered SplitText Heading */}
               <h3 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-[#FFFFFF] tracking-tight leading-snug">
-                Bukan di Sektor Pertanian? Arsitektur Kode Kami Siap untuk Bisnis Anda.
+                {['Bukan', 'di', 'Sektor', 'Pertanian?', 'Arsitektur', 'Kode', 'Kami', 'Siap', 'untuk', 'Bisnis', 'Anda.'].map(
+                  (word, i) => (
+                    <span key={i} className="inline-block overflow-hidden mr-1.5 py-0.5">
+                      <motion.span
+                        initial={{ y: 22, opacity: 0 }}
+                        whileInView={{ y: 0, opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{
+                          duration: 0.6,
+                          delay: 0.16 + i * 0.035,
+                          ease: [0.215, 0.61, 0.355, 1],
+                        }}
+                        className="inline-block"
+                      >
+                        {word}
+                      </motion.span>
+                    </span>
+                  )
+                )}
               </h3>
 
-              <p className="text-sm sm:text-base text-[#D8D6CE] leading-relaxed max-w-3xl">
+              <motion.p
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.36, ease: [0.215, 0.61, 0.355, 1] }}
+                className="text-sm sm:text-base text-[#D8D6CE] leading-relaxed max-w-3xl"
+              >
                 Living Lab Lumajang adalah tempat kami membuktikan keandalan sistem di lingkungan fisik terberat. Fondasi rekayasa perangkat lunak dan kecerdasan buatan yang sama kami dedikasikan untuk mentransformasi operasional korporat, ritel, logistik, agensi, dan platform SaaS Anda.
-              </p>
+              </motion.p>
             </div>
 
             {/* Dua Pintu Masuk Mandiri (Dual Gateway Grid) */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 relative z-10">
               {/* Pintu 01: Enterprise Digital, Web/Mobile & Autonomous AI */}
-              <div className="p-6 sm:p-7 rounded-2xl bg-[#181A16] border border-[#2E7D5B]/40 hover:border-[#74C69D]/60 flex flex-col justify-between transition-all group shadow-sm">
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.22, ease: [0.215, 0.61, 0.355, 1] }}
+                whileHover={{ y: -4 }}
+                className="p-6 sm:p-7 rounded-2xl bg-[#181A16] border border-[#2E7D5B]/40 hover:border-[#74C69D]/80 flex flex-col justify-between transition-colors duration-300 group shadow-md"
+              >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <div className="p-2.5 rounded-xl bg-[#2E7D5B]/20 text-[#74C69D] border border-[#2E7D5B]/30">
+                    <div className="p-2.5 rounded-xl bg-[#2E7D5B]/20 text-[#74C69D] border border-[#2E7D5B]/30 group-hover:scale-108 group-hover:rotate-3 transition-transform duration-300 ease-out">
                       <LayoutDashboard className="w-5 h-5" />
                     </div>
                     <span className="font-mono text-[11px] text-[#74C69D] font-bold tracking-wider px-2.5 py-0.5 rounded-md bg-[#1B3B2B]">
@@ -880,18 +933,27 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
                   </div>
 
                   <ul className="space-y-2 text-xs text-[#D8D6CE] pt-2 border-t border-white/10">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#74C69D] shrink-0 mt-0.5" />
-                      <span>Website representatif, portal ERP/CRM &amp; dasbor pemantauan operasional</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#74C69D] shrink-0 mt-0.5" />
-                      <span>Agen AI otonom untuk ekstraksi dokumen PDF, invoice OCR &amp; asisten WhatsApp</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#74C69D] shrink-0 mt-0.5" />
-                      <span>Arsitektur REST API cepat, database relasional &amp; integrasi multi-cabang</span>
-                    </li>
+                    {[
+                      'Website representatif, portal ERP/CRM & dasbor pemantauan operasional',
+                      'Agen AI otonom untuk ekstraksi dokumen PDF, invoice OCR & asisten WhatsApp',
+                      'Arsitektur REST API cepat, database relasional & integrasi multi-cabang',
+                    ].map((point, idx) => (
+                      <motion.li
+                        key={idx}
+                        initial={{ opacity: 0, x: -10 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{
+                          duration: 0.45,
+                          delay: 0.35 + idx * 0.06,
+                          ease: [0.215, 0.61, 0.355, 1],
+                        }}
+                        className="flex items-start gap-2"
+                      >
+                        <CheckCircle2 className="w-4 h-4 text-[#74C69D] shrink-0 mt-0.5" />
+                        <span>{point}</span>
+                      </motion.li>
+                    ))}
                   </ul>
                 </div>
 
@@ -902,18 +964,25 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
                       onOpenConsultation('software-ai');
                     }
                   }}
-                  className="mt-6 w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-[#2E7D5B] hover:bg-[#236046] text-[#FFFFFF] font-semibold text-xs sm:text-sm tracking-tight transition-all cursor-pointer shadow-md hover:scale-[1.01] min-h-[44px]"
+                  className="mt-6 w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-[#2E7D5B] hover:bg-[#236046] text-[#FFFFFF] font-semibold text-xs sm:text-sm tracking-tight transition-all cursor-pointer shadow-md hover:scale-[1.01] active:scale-[0.99] min-h-[44px]"
                 >
                   <span>Konsultasi Software &amp; Agen AI Bisnis</span>
                   <ArrowRight className="w-4 h-4 text-[#FFFFFF]" />
                 </button>
-              </div>
+              </motion.div>
 
               {/* Pintu 02: Cyber-Physical & IoT Lapangan */}
-              <div className="p-6 sm:p-7 rounded-2xl bg-[#181A16] border border-white/10 hover:border-[#D8D6CE]/60 flex flex-col justify-between transition-all group shadow-sm">
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.37, ease: [0.215, 0.61, 0.355, 1] }}
+                whileHover={{ y: -4 }}
+                className="p-6 sm:p-7 rounded-2xl bg-[#181A16] border border-white/10 hover:border-[#74C69D]/80 flex flex-col justify-between transition-colors duration-300 group shadow-md"
+              >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <div className="p-2.5 rounded-xl bg-white/10 text-[#F4F3EF] border border-white/15">
+                    <div className="p-2.5 rounded-xl bg-white/10 text-[#F4F3EF] border border-white/15 group-hover:scale-108 group-hover:rotate-3 transition-transform duration-300 ease-out">
                       <Cpu className="w-5 h-5" />
                     </div>
                     <span className="font-mono text-[11px] text-[#D8D6CE] font-bold tracking-wider px-2.5 py-0.5 rounded-md bg-white/10">
@@ -931,18 +1000,27 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
                   </div>
 
                   <ul className="space-y-2 text-xs text-[#D8D6CE] pt-2 border-t border-white/10">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#74C69D] shrink-0 mt-0.5" />
-                      <span>Sensor industri (suhu, kelembaban, amonia, pH, aliran air &amp; energi listrik)</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#74C69D] shrink-0 mt-0.5" />
-                      <span>Mikrokontroler ESP32/RS-485 Modbus dengan box panel tahan cuaca (IP65)</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#74C69D] shrink-0 mt-0.5" />
-                      <span>Kendali pompa air, katup solenoid &amp; aktuator otomatis (closed-loop)</span>
-                    </li>
+                    {[
+                      'Sensor industri (suhu, kelembaban, amonia, pH, aliran air & energi listrik)',
+                      'Mikrokontroler ESP32/RS-485 Modbus dengan box panel tahan cuaca (IP65)',
+                      'Kendali pompa air, katup solenoid & aktuator otomatis (closed-loop)',
+                    ].map((point, idx) => (
+                      <motion.li
+                        key={idx}
+                        initial={{ opacity: 0, x: -10 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{
+                          duration: 0.45,
+                          delay: 0.5 + idx * 0.06,
+                          ease: [0.215, 0.61, 0.355, 1],
+                        }}
+                        className="flex items-start gap-2"
+                      >
+                        <CheckCircle2 className="w-4 h-4 text-[#74C69D] shrink-0 mt-0.5" />
+                        <span>{point}</span>
+                      </motion.li>
+                    ))}
                   </ul>
                 </div>
 
@@ -953,12 +1031,12 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
                       onOpenConsultation('precision-iot');
                     }
                   }}
-                  className="mt-6 w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-[#FAF9F6] hover:bg-[#FFFFFF] text-[#121311] font-semibold text-xs sm:text-sm tracking-tight transition-all cursor-pointer shadow-md hover:scale-[1.01] min-h-[44px]"
+                  className="mt-6 w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-[#FAF9F6] hover:bg-[#FFFFFF] text-[#121311] font-semibold text-xs sm:text-sm tracking-tight transition-all cursor-pointer shadow-md hover:scale-[1.01] active:scale-[0.99] min-h-[44px]"
                 >
                   <span>Konsultasi Sensor &amp; Otomasi Lapangan</span>
                   <ArrowRight className="w-4 h-4 text-[#121311]" />
                 </button>
-              </div>
+              </motion.div>
             </div>
 
             {/* Footer Navigation Link */}
@@ -973,7 +1051,7 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
                 <span>Pelajari Roadmap Kerja Sama Kami →</span>
               </a>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 
