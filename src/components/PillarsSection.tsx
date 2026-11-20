@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight, CheckCircle2, ChevronRight, X } from 'lucide-react';
-import { motion, AnimatePresence, useScroll, useTransform, useMotionTemplate } from 'motion/react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { EditorialImage } from './EditorialImage';
 import { Pillar1JournalModal } from './Pillar1JournalModal';
 import { Pillar2JournalModal } from './Pillar2JournalModal';
@@ -170,47 +170,43 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
   }, []);
 
   // Pinned scroll-driven choreography using Framer Motion
-  // Generous height (500vh) gives a long, luxurious, cinematic scroll travel distance
+  // Generous height gives smooth, unhurried, tactile scroll pacing
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
   });
 
-  // 1. Single Monumental Title: Starts GIGANTIC (scale: 2.4, font-black ~100px),
-  // then smoothly glides left and scales into the top-left header bar.
-  // ONLY ONE title element exists - zero ghosting or duplicate text!
-  const titleScale = useTransform(scrollYProgress, [0, 0.26], [2.4, 1.0]);
-  const titleY = useTransform(scrollYProgress, [0, 0.26], ['20vh', '0vh']);
-  const titleX = useTransform(scrollYProgress, [0, 0.26], ['3vw', '0vw']);
+  // 1. Single Monumental Title:
+  // Starts centered, neat, 2-line format without overflow clipping,
+  // then glides smoothly to top-left header position.
+  const titleScale = useTransform(scrollYProgress, [0, 0.24], [1.65, 1.0]);
+  const titleY = useTransform(scrollYProgress, [0, 0.24], ['20vh', '0vh']);
+  const titleX = useTransform(scrollYProgress, [0, 0.24], ['20vw', '0vw']);
 
-  // Header bottom border line & extra details fade in cleanly as title reaches header
-  const headerBorderOpacity = useTransform(scrollYProgress, [0.18, 0.28], [0, 1]);
-  const headerExtrasOpacity = useTransform(scrollYProgress, [0.16, 0.28], [0, 1]);
-  const headerExtrasY = useTransform(scrollYProgress, [0.16, 0.28], [12, 0]);
+  // Header bottom border line & extra details fade in cleanly as title docks
+  const headerBorderOpacity = useTransform(scrollYProgress, [0.16, 0.26], [0, 1]);
+  const headerExtrasOpacity = useTransform(scrollYProgress, [0.14, 0.26], [0, 1]);
+  const headerExtrasY = useTransform(scrollYProgress, [0.14, 0.26], [12, 0]);
 
-  // 2. Gradual, Long-Distance Blur & Rise Transitions ("efek scroll buremnya agak lama atau jauh")
-  // Each card has a wide, generous scroll window where soft lens blur resolves into crisp definition:
+  // 2. Sequential Entrance of the 3 Cards:
+  // Each card slides smoothly up from the bottom directly into its column.
+  // NO out-motion! Once all 3 cards are in a row, they STAY 100% CLEAR, SHARP, AND PERMANENT.
   
-  // Card 1 enters Column 1 (Scroll 0.15 -> 0.46)
-  const card1Y = useTransform(scrollYProgress, [0.15, 0.46], ['85vh', '0vh']);
-  const card1Opacity = useTransform(scrollYProgress, [0.15, 0.44], [0, 1]);
-  const card1BlurVal = useTransform(scrollYProgress, [0.15, 0.46], [16, 0]);
-  const card1Filter = useMotionTemplate`blur(${card1BlurVal}px)`;
+  // Card 1 enters Column 1 (Scroll 0.16 -> 0.38)
+  const card1Y = useTransform(scrollYProgress, [0.16, 0.38], ['80vh', '0vh']);
+  const card1Opacity = useTransform(scrollYProgress, [0.16, 0.35], [0, 1]);
 
-  // Card 2 enters Column 2 (Scroll 0.35 -> 0.66)
-  const card2Y = useTransform(scrollYProgress, [0.35, 0.66], ['85vh', '0vh']);
-  const card2Opacity = useTransform(scrollYProgress, [0.35, 0.64], [0, 1]);
-  const card2BlurVal = useTransform(scrollYProgress, [0.35, 0.66], [16, 0]);
-  const card2Filter = useMotionTemplate`blur(${card2BlurVal}px)`;
+  // Card 2 enters Column 2 (Scroll 0.32 -> 0.54)
+  const card2Y = useTransform(scrollYProgress, [0.32, 0.54], ['80vh', '0vh']);
+  const card2Opacity = useTransform(scrollYProgress, [0.32, 0.50], [0, 1]);
 
-  // Card 3 enters Column 3 (Scroll 0.55 -> 0.85)
-  const card3Y = useTransform(scrollYProgress, [0.55, 0.85], ['85vh', '0vh']);
-  const card3Opacity = useTransform(scrollYProgress, [0.55, 0.83], [0, 1]);
-  const card3BlurVal = useTransform(scrollYProgress, [0.55, 0.85], [16, 0]);
-  const card3Filter = useMotionTemplate`blur(${card3BlurVal}px)`;
+  // Card 3 enters Column 3 (Scroll 0.48 -> 0.70)
+  const card3Y = useTransform(scrollYProgress, [0.48, 0.70], ['80vh', '0vh']);
+  const card3Opacity = useTransform(scrollYProgress, [0.48, 0.66], [0, 1]);
 
-  // 3. Stable Runway (Scroll 0.85 -> 1.00):
-  // All 3 cards remain 100% stationary, razor-sharp (blur: 0px), crystal clear, and interactive!
+  // 3. Locked & Fully Clear Runway (Scroll 0.70 -> 1.00):
+  // All 3 cards are completely docked in a row, 100% sharp, 100% full color,
+  // ZERO out-motion, ZERO unwanted blur, fully interactive for browsing and clicking!
 
   // Architectural progress bar at the top edge of the sticky viewport
   const progressBarWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
@@ -241,7 +237,7 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
       id="pilar"
       ref={containerRef}
       className={`border-b border-[#D8D6CE] bg-[#F4F3EF] relative ${
-        isDesktop ? 'h-[500vh]' : 'h-auto'
+        isDesktop ? 'h-[400vh]' : 'h-auto'
       }`}
     >
       {/* Pinned Sticky Stage (Desktop) / Normal Section (Mobile) */}
@@ -263,7 +259,7 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
         )}
 
         <div className="max-w-[1440px] w-full mx-auto flex flex-col justify-between h-full relative z-10">
-          {/* Section Header: Holds the SINGLE kinetic title that starts monumental & glides to left */}
+          {/* Section Header: Holds the SINGLE kinetic title that starts centered & glides to left */}
           <div className="px-6 py-5 sm:px-10 lg:px-12 lg:py-6 flex flex-col md:flex-row md:items-end justify-between gap-6 relative z-20">
             {/* Dynamic divider line that fades in only when title docks */}
             <motion.div
@@ -272,7 +268,7 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
             />
 
             <div className="relative">
-              {/* Eyebrow badge (fades in as title arrives) */}
+              {/* Eyebrow badge (fades in as title docks) */}
               <motion.div
                 style={isDesktop ? { opacity: headerExtrasOpacity, y: headerExtrasY } : {}}
                 className="flex items-center gap-2 text-xs font-mono text-[#2E7D5B] tracking-wider uppercase mb-1.5"
@@ -281,7 +277,7 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
                 <span>02. Spesifikasi Divisi // Tiga Pilar Rekayasa</span>
               </motion.div>
 
-              {/* THE ONLY TITLE: Monumental at scroll 0 (scale: 2.4), glides to left header position */}
+              {/* THE ONLY TITLE: Neatly centered at scroll 0, glides smoothly to top-left header */}
               <motion.h2
                 style={
                   isDesktop
@@ -293,9 +289,10 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
                       }
                     : {}
                 }
-                className="font-display text-2xl sm:text-3xl lg:text-4xl xl:text-[42px] font-black text-[#121311] tracking-tight leading-[1.08] whitespace-normal"
+                className="font-display text-2xl sm:text-3xl lg:text-4xl xl:text-[40px] font-black text-[#121311] tracking-tight leading-[1.06] whitespace-nowrap"
               >
-                Tiga Sayap Rekayasa <span className="text-[#1B3B2B]">RUMIVERSE</span>
+                Tiga Sayap Rekayasa<br />
+                <span className="text-[#1B3B2B]">RUMIVERSE</span>
               </motion.h2>
             </div>
 
@@ -309,13 +306,13 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
             </motion.p>
           </div>
 
-          {/* 3 Pillars Grid: Tall, commanding cards entering with gradual, cinematic blur resolution */}
+          {/* 3 Pillars Grid: Tall, commanding cards entering sequentially into their columns */}
+          {/* Once in a row, they stay 100% clear and sharp, with NO out-motion! */}
           <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-4 sm:p-6 lg:px-12 gap-5 lg:gap-6 items-stretch pb-6 relative z-10 border-b border-[#D8D6CE]">
             {PILLARS_LIST.map((pillar, idx) => {
               // Connect animations based on column index
               const cardY = isDesktop ? (idx === 0 ? card1Y : idx === 1 ? card2Y : card3Y) : 0;
               const cardOpacity = isDesktop ? (idx === 0 ? card1Opacity : idx === 1 ? card2Opacity : card3Opacity) : 1;
-              const cardFilter = isDesktop ? (idx === 0 ? card1Filter : idx === 1 ? card2Filter : card3Filter) : 'none';
 
               return (
                 <div key={pillar.id} className="h-full flex items-stretch relative">
@@ -325,7 +322,6 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
                         ? {
                             y: cardY,
                             opacity: cardOpacity,
-                            filter: cardFilter,
                           }
                         : {}
                     }
