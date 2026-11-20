@@ -316,7 +316,7 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
 
           {/* 3 Pillars Grid: Tall, commanding cards entering sequentially from below at 100% sharpness */}
           {/* Once in a row, they stay 100% clear, permanent, and rock-solid with NO out-motion! */}
-          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-6 lg:px-12 gap-4 lg:gap-6 items-stretch pb-4 pt-2 relative z-10 border-b border-[#D8D6CE] min-h-0 overflow-hidden">
+          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-6 lg:px-12 gap-4 lg:gap-6 items-stretch pb-4 pt-2 relative z-10 border-b border-[#D8D6CE] min-h-0 lg:overflow-hidden">
             {PILLARS_LIST.map((pillar, idx) => {
               // Connect animations based on column index
               const cardY = isDesktop ? (idx === 0 ? card1Y : idx === 1 ? card2Y : card3Y) : 0;
@@ -332,7 +332,7 @@ export function PillarsSection({ onOpenConsultation }: PillarsSectionProps) {
                           }
                         : {}
                     }
-                    className="w-full h-full max-h-[calc(100vh-210px)] rounded-2xl border border-[#D8D6CE] hover:border-[#1B3B2B] bg-[#FAF9F6] hover:bg-[#FFFFFF] shadow-sm hover:shadow-xl transition-colors duration-300 p-4 sm:p-5 flex flex-col justify-between relative group cursor-pointer overflow-hidden gpu-layer"
+                    className="w-full h-full lg:max-h-[calc(100vh-210px)] rounded-2xl border border-[#D8D6CE] hover:border-[#1B3B2B] bg-[#FAF9F6] hover:bg-[#FFFFFF] shadow-sm hover:shadow-xl transition-colors duration-300 p-4 sm:p-5 flex flex-col justify-between relative group cursor-pointer overflow-hidden gpu-layer"
                     onClick={() => handlePillarClick(pillar.id)}
                   >
                     <div className="flex flex-col h-full justify-between">

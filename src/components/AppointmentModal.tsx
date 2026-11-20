@@ -206,7 +206,7 @@ export function AppointmentModal({
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
                       placeholder="Nama Anda"
-                      className="w-full px-3.5 py-2.5 text-sm bg-[#FAF9F6] border border-[#D8D6CE] rounded-xl text-[#121311] transition-all duration-150 focus:outline-none focus:border-[#1B3B2B] focus:ring-2 focus:ring-[#1B3B2B]/10 focus:bg-white"
+                      className="w-full px-3.5 py-2.5 text-base sm:text-sm bg-[#FAF9F6] border border-[#D8D6CE] rounded-xl text-[#121311] transition-all duration-150 focus:outline-none focus:border-[#1B3B2B] focus:ring-2 focus:ring-[#1B3B2B]/10 focus:bg-white"
                     />
                     {errors.name && (
                       <p className="mt-1 text-xs text-red-700" role="alert">
@@ -228,7 +228,7 @@ export function AppointmentModal({
                       value={form.organization}
                       onChange={(e) => setForm({ ...form, organization: e.target.value })}
                       placeholder="Nama organisasi"
-                      className="w-full px-3.5 py-2.5 text-sm bg-[#FAF9F6] border border-[#D8D6CE] rounded-xl text-[#121311] transition-all duration-150 focus:outline-none focus:border-[#1B3B2B] focus:ring-2 focus:ring-[#1B3B2B]/10 focus:bg-white"
+                      className="w-full px-3.5 py-2.5 text-base sm:text-sm bg-[#FAF9F6] border border-[#D8D6CE] rounded-xl text-[#121311] transition-all duration-150 focus:outline-none focus:border-[#1B3B2B] focus:ring-2 focus:ring-[#1B3B2B]/10 focus:bg-white"
                     />
                     {errors.organization && (
                       <p className="mt-1 text-xs text-red-700" role="alert">
@@ -252,7 +252,7 @@ export function AppointmentModal({
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
                       placeholder="nama@perusahaan.co.id"
-                      className="w-full px-3.5 py-2.5 text-sm bg-[#FAF9F6] border border-[#D8D6CE] rounded-xl text-[#121311] transition-all duration-150 focus:outline-none focus:border-[#1B3B2B] focus:ring-2 focus:ring-[#1B3B2B]/10 focus:bg-white"
+                      className="w-full px-3.5 py-2.5 text-base sm:text-sm bg-[#FAF9F6] border border-[#D8D6CE] rounded-xl text-[#121311] transition-all duration-150 focus:outline-none focus:border-[#1B3B2B] focus:ring-2 focus:ring-[#1B3B2B]/10 focus:bg-white"
                     />
                     {errors.email && (
                       <p className="mt-1 text-xs text-red-700" role="alert">
@@ -274,7 +274,7 @@ export function AppointmentModal({
                       value={form.phone}
                       onChange={(e) => setForm({ ...form, phone: e.target.value })}
                       placeholder={STUDIO_CONTACT.phone}
-                      className="w-full px-3.5 py-2.5 text-sm bg-[#FAF9F6] border border-[#D8D6CE] rounded-xl text-[#121311] transition-all duration-150 focus:outline-none focus:border-[#1B3B2B] focus:ring-2 focus:ring-[#1B3B2B]/10 focus:bg-white"
+                      className="w-full px-3.5 py-2.5 text-base sm:text-sm bg-[#FAF9F6] border border-[#D8D6CE] rounded-xl text-[#121311] transition-all duration-150 focus:outline-none focus:border-[#1B3B2B] focus:ring-2 focus:ring-[#1B3B2B]/10 focus:bg-white"
                     />
                     {errors.phone && (
                       <p className="mt-1 text-xs text-red-700" role="alert">
@@ -297,7 +297,7 @@ export function AppointmentModal({
                     onChange={(e) =>
                       setForm({ ...form, focus: e.target.value as ConsultationFormValues['focus'] })
                     }
-                    className="w-full px-3.5 py-2.5 text-sm bg-[#FAF9F6] border border-[#D8D6CE] rounded-xl text-[#121311] transition-all duration-150 focus:outline-none focus:border-[#1B3B2B] focus:ring-2 focus:ring-[#1B3B2B]/10 focus:bg-white cursor-pointer"
+                    className="w-full px-3.5 py-2.5 text-base sm:text-sm bg-[#FAF9F6] border border-[#D8D6CE] rounded-xl text-[#121311] transition-all duration-150 focus:outline-none focus:border-[#1B3B2B] focus:ring-2 focus:ring-[#1B3B2B]/10 focus:bg-white cursor-pointer"
                   >
                     <option value="software-ai">Aplikasi Web, Mobile &amp; Agen AI (Pilar 01 &amp; 02)</option>
                     <option value="precision-iot">Instrumen IoT &amp; Sistem Lapangan (Pilar 03)</option>
@@ -318,7 +318,7 @@ export function AppointmentModal({
                     value={form.notes}
                     onChange={(e) => setForm({ ...form, notes: e.target.value })}
                     placeholder="Ceritakan skala operasional dan tantangan sistem yang ingin diselesaikan..."
-                    className="w-full px-3.5 py-2.5 text-sm bg-[#FAF9F6] border border-[#D8D6CE] rounded-xl text-[#121311] transition-all duration-150 focus:outline-none focus:border-[#1B3B2B] focus:ring-2 focus:ring-[#1B3B2B]/10 focus:bg-white resize-none"
+                    className="w-full px-3.5 py-2.5 text-base sm:text-sm bg-[#FAF9F6] border border-[#D8D6CE] rounded-xl text-[#121311] transition-all duration-150 focus:outline-none focus:border-[#1B3B2B] focus:ring-2 focus:ring-[#1B3B2B]/10 focus:bg-white resize-none"
                   />
                   {errors.notes && (
                     <p className="mt-1 text-xs text-red-700" role="alert">

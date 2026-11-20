@@ -91,14 +91,14 @@ export function HeroSection() {
           </div>
 
           {/* Masked Line Reveal Headline (3 Baris Bersih: Koma Nempel Rapi di Akhir Baris 2) */}
-          <div className="font-display font-bold text-[#121311] tracking-tight leading-[1.12] text-3xl sm:text-4xl lg:text-[2.2rem] xl:text-[2.65rem]">
+          <div className="font-display font-bold text-[#121311] tracking-tight leading-[1.14] text-[1.65rem] sm:text-3xl md:text-4xl lg:text-[2.2rem] xl:text-[2.65rem]">
             {/* Baris 1: Membangun [Software] Presisi, */}
             <div className="overflow-hidden py-0.5">
               <motion.div
                 initial={{ y: '100%', opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.75, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
-                className="flex items-center flex-wrap gap-x-2 whitespace-nowrap"
+                className="flex items-center flex-wrap gap-x-1.5 sm:gap-x-2 sm:whitespace-nowrap"
               >
                 <span>Membangun</span>
                 <button
@@ -128,7 +128,7 @@ export function HeroSection() {
                 initial={{ y: '100%', opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.75, delay: 0.14, ease: [0.16, 1, 0.3, 1] }}
-                className="whitespace-nowrap"
+                className="sm:whitespace-nowrap"
               >
                 <span
                   role="button"
@@ -156,7 +156,7 @@ export function HeroSection() {
                 initial={{ y: '100%', opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.75, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                className="flex items-center gap-x-2 whitespace-nowrap"
+                className="flex items-center gap-x-1.5 sm:gap-x-2 sm:whitespace-nowrap"
               >
                 <span>dan</span>
                 <span
@@ -495,7 +495,7 @@ export function HeroSection() {
                 <span className="text-[11px] font-mono text-[#6B6E66] mr-1 hidden sm:inline">
                   Fokus Divisi:
                 </span>
-                <div className="inline-flex flex-wrap p-0.5 rounded-full bg-[#EAE8E1]/80 border border-[#D8D6CE] gap-0.5">
+                <div className="inline-flex flex-wrap p-0.5 rounded-full bg-[#EAE8E1]/80 border border-[#D8D6CE] gap-0.5 max-w-full overflow-x-auto">
                   {HERO_TELEMETRY_NODES.map((node) => {
                     const isActive = node.id === activeNode.id;
                     return (
