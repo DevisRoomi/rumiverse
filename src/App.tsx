@@ -41,9 +41,7 @@ export default function App() {
         <HeroSection />
         <AboutSection />
         <PillarsSection onOpenConsultation={openWithFocus} />
-        <div className="content-visibility-auto">
-          <MasterplanSection onOpenConsultation={openWithFocus} />
-        </div>
+        <MasterplanSection onOpenConsultation={openWithFocus} />
         <div className="content-visibility-auto">
           <SectorSimulationSection onConsultSector={openWithFocus} />
         </div>

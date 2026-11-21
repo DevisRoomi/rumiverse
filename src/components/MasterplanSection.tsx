@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import {
   ArrowRight,
   Camera,
@@ -1052,72 +1053,76 @@ export function MasterplanSection({ onOpenConsultation }: MasterplanSectionProps
       </div>
 
       {/* Fullscreen Masterplan Lightbox Modal */}
-      <AnimatePresence>
-        {lightboxOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-[#121311]/98 flex flex-col p-4 sm:p-8"
-          >
-            <div className="flex items-center justify-between pb-4 border-b border-white/20 text-white font-mono text-xs">
-              <div className="flex items-center gap-3">
-                <span className="px-2.5 py-0.5 rounded bg-[#1B3B2B] text-[#74C69D] font-bold">
-                  {currentMode.badge}
-                </span>
-                <span className="hidden sm:inline">
-                  SMART INTEGRATED ECO-FARM // LUMAJANG LIVING LAB
-                </span>
-              </div>
+      {typeof document !== 'undefined' &&
+        createPortal(
+          <AnimatePresence>
+            {lightboxOpen && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-[100] bg-[#121311]/98 backdrop-blur-md flex flex-col p-4 sm:p-8"
+              >
+                <div className="flex items-center justify-between pb-4 border-b border-white/20 text-white font-mono text-xs shrink-0">
+                  <div className="flex items-center gap-3">
+                    <span className="px-2.5 py-0.5 rounded bg-[#1B3B2B] text-[#74C69D] font-bold">
+                      {currentMode.badge}
+                    </span>
+                    <span className="hidden sm:inline">
+                      SMART INTEGRATED ECO-FARM // LUMAJANG LIVING LAB
+                    </span>
+                  </div>
 
-              {/* Mode Switcher in Lightbox */}
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-1 p-0.5 rounded-lg bg-white/10 border border-white/15">
-                  <button
-                    type="button"
-                    onClick={() => setViewMode('circular')}
-                    className={`px-2.5 py-1 rounded text-[11px] font-mono transition-all cursor-pointer ${
-                      viewMode === 'circular'
-                        ? 'bg-[#1B3B2B] text-[#74C69D]'
-                        : 'text-white/70 hover:text-white'
-                    }`}
-                  >
-                    Foto Drone
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setViewMode('blueprint')}
-                    className={`px-2.5 py-1 rounded text-[11px] font-mono transition-all cursor-pointer ${
-                      viewMode === 'blueprint'
-                        ? 'bg-[#1B3B2B] text-[#74C69D]'
-                        : 'text-white/70 hover:text-white'
-                    }`}
-                  >
-                    Cetak Biru 3D
-                  </button>
+                  {/* Mode Switcher in Lightbox */}
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1 p-0.5 rounded-lg bg-white/10 border border-white/15">
+                      <button
+                        type="button"
+                        onClick={() => setViewMode('circular')}
+                        className={`px-2.5 py-1 rounded text-[11px] font-mono transition-all cursor-pointer ${
+                          viewMode === 'circular'
+                            ? 'bg-[#1B3B2B] text-[#74C69D]'
+                            : 'text-white/70 hover:text-white'
+                        }`}
+                      >
+                        Foto Drone
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setViewMode('blueprint')}
+                        className={`px-2.5 py-1 rounded text-[11px] font-mono transition-all cursor-pointer ${
+                          viewMode === 'blueprint'
+                            ? 'bg-[#1B3B2B] text-[#74C69D]'
+                            : 'text-white/70 hover:text-white'
+                        }`}
+                      >
+                        Cetak Biru 3D
+                      </button>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => setLightboxOpen(false)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/30 text-white hover:bg-white/10 transition-all cursor-pointer"
+                    >
+                      <span>Tutup</span>
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => setLightboxOpen(false)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/30 text-white hover:bg-white/10 transition-all cursor-pointer"
-                >
-                  <span>Tutup</span>
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-
-            <div className="flex-1 flex items-center justify-center overflow-auto p-4">
-              <img
-                src={currentMode.image}
-                alt={currentMode.alt}
-                className="max-h-[85vh] max-w-full object-contain rounded-xl shadow-2xl border border-white/10"
-              />
-            </div>
-          </motion.div>
+                <div className="flex-1 min-h-0 flex items-center justify-center overflow-auto p-2 sm:p-4">
+                  <img
+                    src={currentMode.image}
+                    alt={currentMode.alt}
+                    className="max-h-[85vh] max-w-full object-contain rounded-xl shadow-2xl border border-white/10"
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
     </section>
   );
 }

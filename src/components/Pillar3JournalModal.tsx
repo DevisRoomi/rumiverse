@@ -258,7 +258,7 @@ export function Pillar3JournalModal({
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.99 }}
           transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-0 z-50 flex flex-col bg-[#FAF9F6] text-[#121311] overflow-hidden select-text shadow-2xl"
+          className="fixed inset-0 z-[100] flex flex-col bg-[#FAF9F6] text-[#121311] overflow-hidden select-text shadow-2xl"
         >
           {/* Sticky Editorial Header */}
           <header className="sticky top-0 z-40 bg-[#FAF9F6] border-b border-[#D8D6CE] shadow-2xs">
