@@ -28,7 +28,7 @@ test('industry verticals and engagement roadmap are complete and numbered', () =
 test('authentic contact details match required principal architect and phone', () => {
   assert.equal(STUDIO_CONTACT.architectName, 'Abu Devis J.R.');
   assert.equal(STUDIO_CONTACT.email, 'abudevis5@gmail.com');
-  assert.equal(STUDIO_CONTACT.phone, '+62 851-2279-7969');
+  assert.equal(STUDIO_CONTACT.phone, '+62 851-2297-969');
   assert.equal(STUDIO_CONTACT.monogram, 'ADR // RUMIVERSE ARCHITECT');
 });
 
@@ -78,7 +78,7 @@ test('validateConsultationInput accepts valid enterprise inquiry', () => {
     name: 'Budi Santoso',
     organization: 'PT Agro Lumajang Nusantara',
     email: 'budi@agrolumajang.co.id',
-    phone: '+62 851 2279 7969',
+    phone: '+62 851 2297 969',
     focus: 'integrated',
     notes: 'Kami membutuhkan integrasi sensor kandang sapi dan hidroponik dengan dasbor ERP.',
   };

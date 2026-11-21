@@ -82,8 +82,8 @@ export interface ValidationResult {
 export const STUDIO_CONTACT = {
   brand: 'RUMIVERSE',
   email: 'abudevis5@gmail.com',
-  phone: '+62 851-2279-7969',
-  phoneHref: 'tel:+6285122797969',
+  phone: '+62 851-2297-969',
+  phoneHref: 'tel:+628512297969',
   location: 'Studio & Living Lab: Lumajang, Jawa Timur.',
   appointmentNote: 'Tersedia sesi daring & kunjungan lapangan.',
   architectName: 'Abu Devis J.R.',
