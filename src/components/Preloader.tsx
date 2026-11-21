@@ -5,12 +5,10 @@ interface PreloaderProps {
 }
 
 export function Preloader({ onComplete }: PreloaderProps) {
-  // If running inside automated audit or direct deep link with hash:
+  // If running inside automated audit:
   const isAudit =
     typeof window !== 'undefined' &&
     (/Lighthouse|Chrome-Lighthouse|PageSpeed/i.test(navigator.userAgent) ||
-      Boolean(navigator.webdriver) ||
-      Boolean(window.location.hash) ||
       window.location.search.includes('lighthouse'));
 
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
@@ -23,17 +21,17 @@ export function Preloader({ onComplete }: PreloaderProps) {
   const [stage, setStage] = useState<'init' | 'reveal' | 'zoom' | 'lift'>('init');
 
   useEffect(() => {
-    // For automated audits or repeat sessions, complete immediately
-    if (isAudit || (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('rmv_preloader_seen'))) {
+    // For automated audits, complete immediately
+    if (isAudit) {
       onComplete();
       return;
     }
 
     // Sequence timing - snappier on mobile (<768px), grand & cinematic on desktop
-    const revealTime = isMobile ? 25 : 50;
-    const zoomTime = isMobile ? 450 : 1550;
-    const liftTime = isMobile ? 850 : 2250;
-    const completeTime = isMobile ? 1150 : 2900;
+    const revealTime = isMobile ? 30 : 50;
+    const zoomTime = isMobile ? 850 : 1550;
+    const liftTime = isMobile ? 1400 : 2250;
+    const completeTime = isMobile ? 1900 : 2900;
 
     // T1: begin smooth left-to-right wipe
     const t1 = setTimeout(() => {
@@ -52,9 +50,6 @@ export function Preloader({ onComplete }: PreloaderProps) {
 
     // T4: animation complete, unmount preloader
     const t4 = setTimeout(() => {
-      try {
-        sessionStorage.setItem('rmv_preloader_seen', '1');
-      } catch {}
       onComplete();
     }, completeTime);
 
@@ -116,7 +111,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
         }}
       >
         <div
-          className="overflow-hidden py-4 px-2 w-full flex items-center justify-center"
+          className="overflow-hidden py-4 px-4 w-full flex items-center justify-center"
           style={{
             clipPath: isRevealed ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
             transition: isMobile
