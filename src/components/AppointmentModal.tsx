@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { X, CheckCircle2 } from 'lucide-react';
+import { X, CheckCircle2, MessageCircle, ArrowUpRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 import {
@@ -28,6 +28,8 @@ const FOCUS_LABELS: Record<ConsultationFormValues['focus'], string> = {
   'precision-iot': 'Instrumen IoT & Sistem Lapangan (Pilar 03)',
   integrated: 'Sistem Terintegrasi Penuh (Web + AI + IoT)',
 };
+
+const cleanPhone = STUDIO_CONTACT.phone.replace(/[^0-9]/g, '');
 
 export function AppointmentModal({
   open,
@@ -170,24 +172,44 @@ export function AppointmentModal({
                   </div>
                 </dl>
 
-                <div className="pt-4 border-t border-[#D8D6CE] flex items-center justify-between gap-4">
+                <div className="pt-4 border-t border-[#D8D6CE] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <a
-                    href={`mailto:${STUDIO_CONTACT.email}?subject=${encodeURIComponent(
-                      `Konsultasi Sistem — ${submittedRecord.organization}`
-                    )}&body=${encodeURIComponent(
-                      `Nama: ${submittedRecord.name}\nInstansi: ${submittedRecord.organization}\nTelepon: ${submittedRecord.phone}\nFokus: ${FOCUS_LABELS[submittedRecord.focus]}\n\nCatatan:\n${submittedRecord.notes}`
+                    href={`https://wa.me/${cleanPhone}?text=${encodeURIComponent(
+                      `Halo Studio RUMIVERSE, saya telah mengajukan konsultasi teknis di website.\n\n` +
+                      `Nama: ${submittedRecord.name}\n` +
+                      `Instansi: ${submittedRecord.organization}\n` +
+                      `Pilar Kebutuhan: ${FOCUS_LABELS[submittedRecord.focus]}\n` +
+                      `Kontak: ${submittedRecord.email} / ${submittedRecord.phone}\n\n` +
+                      `Catatan Kebutuhan:\n${submittedRecord.notes || '-'}`
                     )}`}
-                    className="font-mono text-xs text-[#1B3B2B] underline underline-offset-4 hover:text-[#121311]"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-[#121311] font-semibold text-xs tracking-tight transition-all cursor-pointer shadow-md hover:scale-[1.01]"
                   >
-                    Kirim salinan langsung via email
+                    <MessageCircle className="w-4 h-4 fill-current" />
+                    <span>Lanjutkan di WhatsApp</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
                   </a>
-                  <button
-                    type="button"
-                    onClick={handleResetAndClose}
-                    className="px-5 py-2.5 text-xs font-semibold rounded-xl bg-[#1B3B2B] text-[#F4F3EF] hover:bg-[#121311] transition-all cursor-pointer shadow-xs hover:scale-[1.01]"
-                  >
-                    Selesai
-                  </button>
+
+                  <div className="flex items-center justify-end gap-4">
+                    <a
+                      href={`mailto:${STUDIO_CONTACT.email}?subject=${encodeURIComponent(
+                        `Konsultasi Sistem — ${submittedRecord.organization}`
+                      )}&body=${encodeURIComponent(
+                        `Nama: ${submittedRecord.name}\nInstansi: ${submittedRecord.organization}\nTelepon: ${submittedRecord.phone}\nFokus: ${FOCUS_LABELS[submittedRecord.focus]}\n\nCatatan:\n${submittedRecord.notes}`
+                      )}`}
+                      className="font-mono text-xs text-[#4A4D46] underline underline-offset-4 hover:text-[#121311]"
+                    >
+                      Kirim salinan via email
+                    </a>
+                    <button
+                      type="button"
+                      onClick={handleResetAndClose}
+                      className="px-5 py-2.5 text-xs font-semibold rounded-xl bg-[#1B3B2B] text-[#F4F3EF] hover:bg-[#121311] transition-all cursor-pointer shadow-xs hover:scale-[1.01]"
+                    >
+                      Selesai
+                    </button>
+                  </div>
                 </div>
               </motion.div>
             ) : (
@@ -327,20 +349,35 @@ export function AppointmentModal({
                   )}
                 </div>
 
-                <div className="pt-4 border-t border-[#D8D6CE] flex items-center justify-end gap-3">
-                  <button
-                    type="button"
-                    onClick={onClose}
-                    className="px-4 py-2.5 text-xs font-semibold rounded-xl border border-[#D8D6CE] text-[#4A4D46] hover:bg-[#EAE8E1] hover:text-[#121311] transition-all duration-150 cursor-pointer"
+                <div className="pt-4 border-t border-[#D8D6CE] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <a
+                    href={`https://wa.me/${cleanPhone}?text=${encodeURIComponent(
+                      'Halo Studio RUMIVERSE, saya ingin konsultasi teknis arsitektur sistem langsung via WhatsApp.'
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-xs text-[#1B3B2B] hover:text-[#121311] inline-flex items-center gap-1.5 font-medium underline underline-offset-4"
                   >
-                    Batal
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-6 py-2.5 text-xs font-semibold rounded-xl bg-[#1B3B2B] text-[#F4F3EF] hover:bg-[#121311] transition-all duration-150 cursor-pointer shadow-xs hover:scale-[1.01] active:scale-[0.99]"
-                  >
-                    Kirim Permintaan
-                  </button>
+                    <MessageCircle className="w-3.5 h-3.5 fill-current text-[#2E7D5B]" />
+                    <span>Chat WhatsApp Studio</span>
+                    <ArrowUpRight className="w-3 h-3" />
+                  </a>
+
+                  <div className="flex items-center justify-end gap-3">
+                    <button
+                      type="button"
+                      onClick={onClose}
+                      className="px-4 py-2.5 text-xs font-semibold rounded-xl border border-[#D8D6CE] text-[#4A4D46] hover:bg-[#EAE8E1] hover:text-[#121311] transition-all duration-150 cursor-pointer"
+                    >
+                      Batal
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-6 py-2.5 text-xs font-semibold rounded-xl bg-[#1B3B2B] text-[#F4F3EF] hover:bg-[#121311] transition-all duration-150 cursor-pointer shadow-xs hover:scale-[1.01] active:scale-[0.99]"
+                    >
+                      Kirim Permintaan
+                    </button>
+                  </div>
                 </div>
               </form>
             )}

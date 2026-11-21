@@ -24,8 +24,9 @@ export function FooterSection({ onOpenConsultation }: FooterSectionProps) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const whatsappUrl = `https://wa.me/6285122797969?text=${encodeURIComponent(
-    'Halo Devis, saya tertarik berdiskusi mengenai implementasi arsitektur sistem presisi RUMIVERSE untuk usaha/lahan saya.'
+  const cleanPhone = STUDIO_CONTACT.phone.replace(/[^0-9]/g, '');
+  const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(
+    'Halo Studio RUMIVERSE, saya tertarik berdiskusi mengenai implementasi arsitektur sistem presisi untuk bisnis/institusi saya.'
   )}`;
 
   return (
@@ -105,7 +106,7 @@ export function FooterSection({ onOpenConsultation }: FooterSectionProps) {
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-[#121311] font-semibold text-xs tracking-tight transition-all cursor-pointer shadow-md hover:scale-[1.01]"
               >
                 <MessageCircle className="w-4 h-4 fill-current" />
-                <span>Chat WhatsApp Langsung (+62 851-2279-7969)</span>
+                <span>Chat WhatsApp Langsung ({STUDIO_CONTACT.phone})</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
 
