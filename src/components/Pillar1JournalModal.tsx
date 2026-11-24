@@ -4,7 +4,6 @@ import {
   ArrowRight,
   Briefcase,
   CheckCircle2,
-  ChevronRight,
   FileCheck2,
   Globe,
   LayoutDashboard,

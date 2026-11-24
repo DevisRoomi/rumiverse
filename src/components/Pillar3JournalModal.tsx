@@ -1,31 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-  Activity,
   AlertTriangle,
   ArrowLeft,
   ArrowRight,
   Bell,
   CheckCircle2,
-  Clock,
-  Cpu,
   Droplets,
   Fish,
-  Flame,
-  Gauge,
-  Layers,
   Radio,
-  RotateCcw,
   ShieldAlert,
-  ShieldCheck,
   Sliders,
   Sprout,
-  Thermometer,
   TrendingDown,
   TrendingUp,
   Warehouse,
   Wind,
   X,
-  Zap,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { EditorialImage } from './EditorialImage';

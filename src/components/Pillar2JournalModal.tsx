@@ -3,18 +3,13 @@ import {
   ArrowLeft,
   ArrowRight,
   BarChart3,
-  Bot,
   CheckCircle2,
-  ChevronRight,
   Cpu,
-  FileSearch,
   FileText,
   MessageSquare,
-  Radio,
   Search,
   ShieldCheck,
   Terminal,
-  Zap,
   X,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
