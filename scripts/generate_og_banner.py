@@ -1,7 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 import os
 
-# Target dimensions
 WIDTH = 1200
 HEIGHT = 630
 
@@ -10,95 +9,114 @@ base_img_path = r"C:\Users\Lenovo\.gemini\antigravity\brain\4738d412-2f63-4234-8
 syne_font_path = "src/assets/Syne.ttf"
 mono_font_path = "C:/Windows/Fonts/consolab.ttf"
 
-# Load and resize base image
+# Load and prepare base image
 if os.path.exists(base_img_path):
     base = Image.open(base_img_path).convert("RGBA")
     base = base.resize((WIDTH, HEIGHT), Image.Resampling.LANCZOS)
-    # Slight blur on background for cinematic depth of field
-    base = base.filter(ImageFilter.GaussianBlur(radius=1.8))
+    # Refined cinematic blur: soft focus background that creates calm luxury depth
+    base = base.filter(ImageFilter.GaussianBlur(radius=4.0))
 else:
-    base = Image.new("RGBA", (WIDTH, HEIGHT), (18, 19, 17, 255))
+    base = Image.new("RGBA", (WIDTH, HEIGHT), (12, 16, 14, 255))
 
-# Dark gradient overlay for extreme contrast and luxury atmosphere
+# Dark luxury vignette overlay: deep obsidian / forest noir
 overlay = Image.new("RGBA", (WIDTH, HEIGHT), (0, 0, 0, 0))
 draw_ov = ImageDraw.Draw(overlay)
 
-# Fill with semi-transparent deep obsidian/emerald gradient
+# Fill with smooth vertical gradient for deep contrast and calm aesthetic
 for y in range(HEIGHT):
-    # Darker at top and bottom, slightly transparent in center
-    factor = abs(y - HEIGHT/2) / (HEIGHT/2)
-    alpha = int(175 + factor * 55) # 175 to 230
-    draw_ov.line([(0, y), (WIDTH, y)], fill=(15, 20, 17, alpha))
+    norm_y = (y - HEIGHT / 2) / (HEIGHT / 2)
+    dist = abs(norm_y)
+    alpha = int(190 + dist * 50)  # 190 in center to 240 at top/bottom
+    draw_ov.line([(0, y), (WIDTH, y)], fill=(11, 15, 13, alpha))
 
-# Composite overlay onto base
 img = Image.alpha_composite(base, overlay)
+
+# Add subtle inner radial glow / light pool in the center for calm luxury radiance
+glow = Image.new("RGBA", (WIDTH, HEIGHT), (0, 0, 0, 0))
+draw_glow = ImageDraw.Draw(glow)
+center_x, center_y = WIDTH // 2, HEIGHT // 2
+for r in range(450, 0, -25):
+    g_alpha = int((1 - (r / 450)) * 26)
+    draw_glow.ellipse(
+        [center_x - r * 1.6, center_y - r * 0.9, center_x + r * 1.6, center_y + r * 0.9],
+        fill=(116, 198, 157, g_alpha)
+    )
+img = Image.alpha_composite(img, glow)
 draw = ImageDraw.Draw(img)
 
-# Load fonts
-try:
-    font_watermark = ImageFont.truetype(syne_font_path, 210)
-    font_title = ImageFont.truetype(syne_font_path, 94)
-    font_badge = ImageFont.truetype(mono_font_path, 17)
-    font_subtitle = ImageFont.truetype(syne_font_path, 22)
-    font_telemetry = ImageFont.truetype(mono_font_path, 15)
-except Exception as e:
-    print(f"Font loading error: {e}")
-    font_title = ImageFont.load_default()
+# Load typography fonts
+font_title = ImageFont.truetype(syne_font_path, 104)
+font_badge = ImageFont.truetype(mono_font_path, 13)
+font_sub = ImageFont.truetype(syne_font_path, 22)
+font_mono = ImageFont.truetype(mono_font_path, 13)
 
-# 1. Subtle Watermark in Background
-watermark_text = "RMV"
-draw.text((WIDTH / 2, HEIGHT / 2 - 25), watermark_text, font=font_watermark,
-          fill=(232, 230, 222, 18), anchor="mm")
+# 1. Elegant Eyebrow Badge (Minimalist, calm, understated)
+badge_text = "BOUTIQUE SYSTEMS STUDIO // LUMAJANG"
+badge_y = 175
+draw.text((center_x, badge_y), badge_text, font=font_badge,
+          fill=(140, 206, 172, 220), anchor="mm", tracking=5)
 
-# 2. Top Pill Badge
-badge_text = "● BOUTIQUE SYSTEMS STUDIO // LUMAJANG LIVING LAB"
-badge_bbox = draw.textbbox((0, 0), badge_text, font=font_badge)
-badge_w = badge_bbox[2] - badge_bbox[0]
-badge_h = badge_bbox[3] - badge_bbox[1]
+# Small subtle dot indicator above the text
+draw.ellipse([center_x - 3, badge_y - 20, center_x + 3, badge_y - 14], fill=(116, 198, 157, 180))
 
-pill_x = WIDTH / 2
-pill_y = 125
-pill_pad_x = 22
-pill_pad_y = 8
-pill_rect = [
-    pill_x - badge_w / 2 - pill_pad_x,
-    pill_y - badge_h / 2 - pill_pad_y,
-    pill_x + badge_w / 2 + pill_pad_x,
-    pill_y + badge_h / 2 + pill_pad_y
+# 2. Main Brand Title: RUMIVERSE (Clean, elegant, no distracting watermarks)
+title_text = "RUMIVERSE"
+title_y = center_y - 12
+
+# Subtle ambient drop shadow for gentle architectural depth
+draw.text((center_x, title_y + 3), title_text, font=font_title,
+          fill=(0, 0, 0, 160), anchor="mm", tracking=12)
+
+# Main title in warm ivory / silk white for calm, sophisticated elegance
+draw.text((center_x, title_y), title_text, font=font_title,
+          fill=(248, 247, 242, 255), anchor="mm", tracking=12)
+
+# 3. Delicate Architectural Hairline
+line_w = 160
+line_y = center_y + 54
+draw.line(
+    [(center_x - line_w // 2, line_y), (center_x + line_w // 2, line_y)],
+    fill=(116, 198, 157, 95),
+    width=1
+)
+
+# 4. Refined Subtitle
+sub_text = "Sistem Presisi · Agen AI Otonom · Rekayasa Lapangan"
+sub_y = center_y + 92
+draw.text((center_x, sub_y), sub_text, font=font_sub,
+          fill=(202, 208, 200, 230), anchor="mm", tracking=3)
+
+# 5. Framing & Corner Coordinates (Subtle architectural monograph details)
+frame_inset = 28
+# Outer delicate frame
+draw.rectangle(
+    [(frame_inset, frame_inset), (WIDTH - frame_inset, HEIGHT - frame_inset)],
+    outline=(255, 255, 255, 22),
+    width=1
+)
+
+# Corner crosshairs (architectural precision marks)
+mark_len = 8
+corners = [
+    (frame_inset, frame_inset),
+    (WIDTH - frame_inset, frame_inset),
+    (frame_inset, HEIGHT - frame_inset),
+    (WIDTH - frame_inset, HEIGHT - frame_inset)
 ]
+for cx, cy in corners:
+    draw.line([(cx - mark_len, cy), (cx + mark_len, cy)], fill=(116, 198, 157, 110), width=1)
+    draw.line([(cx, cy - mark_len), (cx, cy + mark_len)], fill=(116, 198, 157, 110), width=1)
 
-# Pill background & border
-draw.rounded_rectangle(pill_rect, radius=20, fill=(27, 59, 43, 210), outline=(116, 198, 157, 120), width=1)
-draw.text((pill_x, pill_y), badge_text, font=font_badge, fill=(116, 198, 157, 255), anchor="mm")
+# Subtle telemetry at bottom
+draw.text((frame_inset + 20, HEIGHT - frame_inset - 18), "8°08'00\"S 113°13'00\"E // LIVING LAB",
+          font=font_mono, fill=(150, 155, 148, 180), anchor="ls", tracking=2)
+draw.text((WIDTH - frame_inset - 20, HEIGHT - frame_inset - 18), "rumiverse.devisrumi.my.id ↗",
+          font=font_mono, fill=(140, 206, 172, 210), anchor="rs", tracking=2)
 
-# 3. Main Wordmark: RUMIVERSE
-title_text = "R U M I V E R S E"
-# Soft shadow for title
-draw.text((WIDTH / 2, HEIGHT / 2 - 2), title_text, font=font_title, fill=(0, 0, 0, 180), anchor="mm")
-draw.text((WIDTH / 2, HEIGHT / 2 - 5), title_text, font=font_title, fill=(250, 249, 246, 255), anchor="mm")
-
-# 4. Subtitle
-sub_text = "REKAYASA PERANGKAT LUNAK · AGEN AI OTONOM · SISTEM LAPANGAN"
-draw.text((WIDTH / 2, HEIGHT / 2 + 75), sub_text, font=font_subtitle, fill=(208, 214, 207, 240), anchor="mm")
-
-# 5. Fine divider line
-line_w = 420
-draw.line([(WIDTH / 2 - line_w / 2, HEIGHT / 2 + 105), (WIDTH / 2 + line_w / 2, HEIGHT / 2 + 105)],
-          fill=(116, 198, 157, 75), width=1)
-
-# 6. Bottom Telemetry Bar
-draw.text((50, HEIGHT - 45), "COORD: 8°08'00.0\"S 113°13'00.0\"E // LUMAJANG, ID", font=font_telemetry,
-          fill=(161, 163, 155, 200), anchor="ls")
-draw.text((WIDTH - 50, HEIGHT - 45), "rumiverse.devisrumi.my.id ↗", font=font_telemetry,
-          fill=(116, 198, 157, 220), anchor="rs")
-
-# 7. Subtle luxury outer border
-draw.rectangle([(20, 20), (WIDTH - 20, HEIGHT - 20)], outline=(255, 255, 255, 30), width=1)
-
-# Convert to RGB and save as optimized JPEG (~150-220 KB)
+# Save as optimized JPEG
 final_img = img.convert("RGB")
 out_path = "public/og-image.jpg"
 final_img.save(out_path, format="JPEG", quality=88, optimize=True)
 
 size_kb = os.path.getsize(out_path) / 1024
-print(f"OG Banner created at {out_path} ({size_kb:.2f} KB)")
+print(f"Aesthetic OG Banner created at {out_path} ({size_kb:.2f} KB)")
