@@ -5,14 +5,18 @@ import { TopBar } from './components/TopBar';
 import { HeroSection } from './components/HeroSection';
 import { AboutSection } from './components/AboutSection';
 import { PillarsSection } from './components/PillarsSection';
-import { MasterplanSection } from './components/MasterplanSection';
-import { SectorSimulationSection } from './components/SectorSimulationSection';
 import { EngagementRoadmapSection } from './components/EngagementRoadmapSection';
 import { SecurityReliabilityBar } from './components/SecurityReliabilityBar';
 import { ExecutiveProfileSection } from './components/ExecutiveProfileSection';
 import { FooterSection } from './components/FooterSection';
 import type { ConsultationFormValues } from './utils/ecosystemData';
 
+const MasterplanSection = lazy(() =>
+  import('./components/MasterplanSection').then((m) => ({ default: m.MasterplanSection }))
+);
+const SectorSimulationSection = lazy(() =>
+  import('./components/SectorSimulationSection').then((m) => ({ default: m.SectorSimulationSection }))
+);
 const AppointmentModal = lazy(() =>
   import('./components/AppointmentModal').then((m) => ({ default: m.AppointmentModal }))
 );
@@ -41,9 +45,13 @@ export default function App() {
         <HeroSection />
         <AboutSection />
         <PillarsSection onOpenConsultation={openWithFocus} />
-        <MasterplanSection onOpenConsultation={openWithFocus} />
+        <Suspense fallback={<div className="min-h-[300px]" />}>
+          <MasterplanSection onOpenConsultation={openWithFocus} />
+        </Suspense>
         <div className="content-visibility-auto">
-          <SectorSimulationSection onConsultSector={openWithFocus} />
+          <Suspense fallback={<div className="min-h-[300px]" />}>
+            <SectorSimulationSection onConsultSector={openWithFocus} />
+          </Suspense>
         </div>
         <div className="content-visibility-auto">
           <EngagementRoadmapSection />
