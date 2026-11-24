@@ -19,9 +19,9 @@ export function GlobalSmokeCursorCanvas() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
-    // Only run on desktop devices with fine pointer (no touch screens)
+    // Only run on desktop devices with fine pointer (no mobile/touch screens)
     if (typeof window === 'undefined') return;
-    if (window.matchMedia('(pointer: coarse)').matches) return;
+    if (window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;

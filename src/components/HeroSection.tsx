@@ -349,7 +349,7 @@ export function HeroSection() {
                   className="w-full h-full object-contain pointer-events-none"
                   fallbackTitle="RUMIVERSE Studio Virtual Command Center"
                   fallbackSubtitle="Visualisasi pemantauan agen AI otonom dan ekosistem lab secara real-time."
-                  priority={typeof window !== 'undefined' ? window.innerWidth >= 1024 : false}
+                  priority={true}
                 />
 
                 {/* Ambient Living Micro-Motion 1: Server Rack LEDs in AI Foundry */}
